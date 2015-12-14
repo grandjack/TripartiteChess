@@ -280,6 +280,10 @@ namespace WpfApplication2
         {
             if (e.ClickCount == 2)
             {
+                string str = listBox1.SelectedItem.ToString();
+                string index = listBox1.SelectedIndex.ToString();
+                str += " " + index;
+                //MessageBox.Show(str);
                 if (tab_game_hall.IsSelected != true)
                 {
                     tab_game_hall.Visibility = Visibility.Visible;
@@ -292,6 +296,14 @@ namespace WpfApplication2
                     tab_game_describe.IsSelected = true;
                 }
             }
+        }
+
+        private void GameHallSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {/*
+            string str = listBox1.SelectedItem.ToString();
+            string index = listBox1.SelectedIndex.ToString();
+            str += " " + index;
+            MessageBox.Show(str);*/
         }
     }
 }

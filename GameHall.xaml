@@ -195,7 +195,7 @@
                 
                 <Button Name="quick_startBtn" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Width="150" Content="{x:Static props:Resources.quick_start}" Margin="10,10,3,10" Background="#FF00A9FF" >
                 </Button>
-                <ListBox Name="listBox1" HorizontalAlignment="Left" ItemsSource="{Binding}" Background="White" Margin="3,0,0,0" BorderThickness="0" VerticalAlignment="Top">
+                <ListBox Name="listBox1" HorizontalAlignment="Left" ItemsSource="{Binding}" Background="White" Margin="3,0,0,0" BorderThickness="0" VerticalAlignment="Top" SelectionChanged ="GameHallSelectionChanged">
                     <StackPanel Orientation="Horizontal" PreviewMouseLeftButtonDown ="list_select1">
                         <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\APPTopn.png" Height="20" Width="20"/>
                         <Label VerticalAlignment="Center" Content="{x:Static props:Resources.gamehall_no1}" />
@@ -258,7 +258,24 @@
                         </ScrollViewer>
                     </Grid>
                 </TabItem>
-                <TabItem Header="{x:Static props:Resources.gamehall_no1}" Name="tab_game_hall" Visibility="Hidden" FocusVisualStyle="{x:Null}"></TabItem>
+                <TabItem Header="{x:Static props:Resources.gamehall_no1}" Name="tab_game_hall" Visibility="Hidden" FocusVisualStyle="{x:Null}">
+                    <Grid Background="#942C5F88" FocusVisualStyle="{x:Null}">
+                        <ScrollViewer Grid.Column="1" Name="scrollViewer2" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
+                            <Grid x:Name="grid_game_hall" Background="#942C5F88" FocusVisualStyle="{x:Null}">
+                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0"/>
+                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="115,0,0,0"/>
+                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,0,0,0"/>
+                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="345,0,0,0"/>
+                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="460,0,0,0"/>
+
+                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,115,0,0"/>
+                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="115,115,0,0"/>
+                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,115,0,0"/>
+                                
+                            </Grid>
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
                                 
             </TabControl>
         </Grid>

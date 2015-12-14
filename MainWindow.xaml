@@ -5,7 +5,6 @@
         Title="MainWindow" Height="263" Width="401" AllowsTransparency="True" WindowStyle="None" Background="Transparent"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         WindowStartupLocation="CenterScreen">
-
     <Window.Resources>
         <ControlTemplate x:Key="MaxButtonTemplate" TargetType="{x:Type Button}">
             <Border Name="Border" CornerRadius="0"  Background="Transparent">

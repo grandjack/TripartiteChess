@@ -5,5 +5,3 @@
 
 # do NOT filter important files
 !.gitignore
-!*.cs
-!*.xaml

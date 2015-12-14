@@ -1,7 +1,7 @@
 #wpf C# object files
-bin
-Images
-obj
+bin/*
+Images/*
+obj/*
 
 #
 

@@ -1,0 +1,10 @@
+#wpf C# object files
+/bin/*
+/Images/*
+/obj/*
+
+# do NOT filter important files
+!.gitignore
+!*.cs
+!*.xaml
+

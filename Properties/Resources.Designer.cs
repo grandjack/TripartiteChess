@@ -133,11 +133,11 @@ namespace WpfApplication2.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 游戏大厅1.
+        ///   Looks up a localized string similar to 游戏大厅.
         /// </summary>
-        public static string gamehall_no1 {
+        public static string gamehall_no {
             get {
-                return ResourceManager.GetString("gamehall_no1", resourceCulture);
+                return ResourceManager.GetString("gamehall_no", resourceCulture);
             }
         }
         

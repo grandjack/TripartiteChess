@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:props="clr-namespace:WpfApplication2.Properties"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
-        Height="600" Width="820" 
+        Height="600" Width="875" 
         WindowStartupLocation="CenterScreen" ResizeMode="CanResize" WindowState="Maximized" Topmost="False"
         SizeChanged="Window_size_changed" SourceInitialized="Window_SourceInitialized">
 
@@ -162,7 +162,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="210" />
+                <ColumnDefinition Width="180" />
                 <ColumnDefinition Width="586*" />
             </Grid.ColumnDefinitions>
 
@@ -175,8 +175,14 @@
                         <GradientStop Color="#FF42A3FF" Offset="0.974" />
                     </LinearGradientBrush>
                 </Border.Background>
-                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\MyIcon.png" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Height="53" Width="53" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="1" Margin="10" />
+                <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Height="53" Width="53" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="1" Margin="10" Initialized="icon_Initialized"/>
             </Border>
+
+            <Rectangle Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2"
+                       Name="FocusCue" Visibility="Visible" Stroke="Red" StrokeThickness="5" Width="150" Height="60"
+                               SnapsToDevicePixels="True"  Fill="Red" Opacity="0.4">
+            </Rectangle>
+
             <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Opacity="1" Background="#FF9FC5E4">
                 <Label Width="85" Content="{x:Static props:Resources.game_name}" HorizontalAlignment="Left" Margin="50,0,0,0" />
             </StackPanel>
@@ -198,7 +204,7 @@
                 <ListBox Name="listBox1" HorizontalAlignment="Left" ItemsSource="{Binding}" Background="White" Margin="3,0,0,0" BorderThickness="0" VerticalAlignment="Top" SelectionChanged ="GameHallSelectionChanged">
                     <StackPanel Orientation="Horizontal" PreviewMouseLeftButtonDown ="list_select1">
                         <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\APPTopn.png" Height="20" Width="20"/>
-                        <Label VerticalAlignment="Center" Content="{x:Static props:Resources.gamehall_no1}" />
+                        <Label VerticalAlignment="Center" Content="{x:Static props:Resources.gamehall_no}" />
                         <Label VerticalAlignment="Center" Content="{x:Static props:Resources.hall_state_Not_full}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" PreviewMouseLeftButtonDown ="list_select1">
@@ -229,7 +235,7 @@
                             <TextBlock  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <Label Content="【游戏界面】" Height="28" HorizontalAlignment="Left" Margin="10,27,0,0" Name="label1" VerticalAlignment="Top" Width="71" />
-                                    <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\QQiPan.png" Margin="10,10,0,0" Name="image1" Stretch="Fill" />
+                                    <Image Margin="10,10,0,0" Name="image1" Stretch="Fill" Initialized="game_qipan_loaded"/>
                                     <Label Content="一．游戏简介" Height="28" HorizontalAlignment="Left" Margin="10,27,0,0" Name="label2" VerticalAlignment="Top" Width="93" />
                                     <TextBlock Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
                                     <TextBlock Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
@@ -258,21 +264,16 @@
                         </ScrollViewer>
                     </Grid>
                 </TabItem>
-                <TabItem Header="{x:Static props:Resources.gamehall_no1}" Name="tab_game_hall" Visibility="Hidden" FocusVisualStyle="{x:Null}">
+                <TabItem Header="{x:Static props:Resources.gamehall_no}" Name="tab_game_hall" Visibility="Hidden" FocusVisualStyle="{x:Null}">
                     <Grid Background="#942C5F88" FocusVisualStyle="{x:Null}">
-                        <ScrollViewer Grid.Column="1" Name="scrollViewer2" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
-                            <Grid x:Name="grid_game_hall" Background="#942C5F88" FocusVisualStyle="{x:Null}">
+                        <ScrollViewer Grid.Column="1" Name="scrollViewer2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">
+                            <Grid x:Name="grid_game_hall" Background="#942C5F88" FocusVisualStyle="{x:Null}" Loaded="game_hall_loaded" >
                                 <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0"/>
-                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="115,0,0,0"/>
-                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,0,0,0"/>
-                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="345,0,0,0"/>
-                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="460,0,0,0"/>
-
-                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,115,0,0"/>
-                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="115,115,0,0"/>
-                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,115,0,0"/>
-                                
-                            </Grid>
+                                <Border HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,35,0,0" 
+                                    Visibility="Visible" Width="44" Height="44"
+                                    SnapsToDevicePixels="True"  Background="Brown"  CornerRadius="10" Opacity="0.3"
+                                 />
+                            </Grid>                        
                         </ScrollViewer>
                     </Grid>
                 </TabItem>

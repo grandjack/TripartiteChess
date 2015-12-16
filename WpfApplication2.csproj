@@ -100,7 +100,19 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Images\" />
+    <Resource Include="Images\MyIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\QQiPan.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\tableh.png" />
+    <Resource Include="Images\tablen.bmp" />
+    <Resource Include="Images\tablen.png" />
+    <Resource Include="Images\tables.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

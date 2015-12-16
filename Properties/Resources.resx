@@ -148,8 +148,8 @@
   <data name="game_name" xml:space="preserve">
     <value>三人中国象棋</value>
   </data>
-  <data name="gamehall_no1" xml:space="preserve">
-    <value>游戏大厅1</value>
+  <data name="gamehall_no" xml:space="preserve">
+    <value>游戏大厅</value>
   </data>
   <data name="hall_state_full" xml:space="preserve">
     <value>(99/99)已满</value>

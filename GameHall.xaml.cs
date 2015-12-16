@@ -65,11 +65,13 @@ namespace WpfApplication2
             {
                 max_win.Visibility = Visibility.Collapsed;
                 normal_win.Visibility = Visibility.Visible;
+                game_hall_loaded(null, null);
             }
             else if (this.WindowState == WindowState.Normal)
             {
                 max_win.Visibility = Visibility.Visible;
                 normal_win.Visibility = Visibility.Collapsed;
+                game_hall_loaded(null, null);
             }
         }
 
@@ -305,5 +307,162 @@ namespace WpfApplication2
             str += " " + index;
             MessageBox.Show(str);*/
         }
+
+        private void game_hall_loaded(object sender, RoutedEventArgs e)
+        {
+            grid_game_hall.Children.Clear();
+            const int total_seats_num = 60;
+            int total_row = 0;
+            int total_column = 0;
+
+            if (this.WindowState == WindowState.Normal)
+            {
+                total_column = 5;
+                total_row = total_seats_num / total_column;
+            }
+            else if (this.WindowState == WindowState.Maximized)
+            {
+                total_column = 10;
+                total_row = total_seats_num / total_column;
+            }
+
+            for (int row = 0; row < total_row; ++row)
+            {
+                for (int column = 0; column < total_column; ++column)
+                {
+                    Thickness margin = new Thickness(15 + column * 131, 15 + row * 131, 0, 0);
+                    draw_seat_image(margin);
+                }
+            }
+        }
+
+        private Image g_select_image;
+        private void draw_seat_image(Thickness margin)
+        {
+            Image myImage = new Image();
+            myImage.Width = 115;
+
+            // Create source
+            BitmapImage myBitmapImage = new BitmapImage();
+
+            // BitmapImage.UriSource must be in a BeginInit/EndInit block
+            myBitmapImage.BeginInit();
+            myBitmapImage.UriSource = new Uri(@"\Images\tablen.bmp", UriKind.Relative);
+
+            // To save significant application memory, set the DecodePixelWidth or  
+            // DecodePixelHeight of the BitmapImage value of the image source to the desired 
+            // height or width of the rendered image. If you don't do this, the application will 
+            // cache the image as though it were rendered as its normal size rather then just 
+            // the size that is displayed.
+            // Note: In order to preserve aspect ratio, set DecodePixelWidth
+            // or DecodePixelHeight but not both.
+            myBitmapImage.DecodePixelWidth = 115;
+            myBitmapImage.EndInit();
+            //set image source
+            myImage.Source = myBitmapImage;
+            myImage.HorizontalAlignment = HorizontalAlignment.Left;
+            myImage.VerticalAlignment = VerticalAlignment.Top;
+            myImage.Margin = margin;
+            myImage.MouseLeftButtonDown += new MouseButtonEventHandler(this.seat_mouse_lbtn_down);
+            myImage.MouseLeftButtonUp += new MouseButtonEventHandler(this.seat_mouse_lbtn_up);
+            myImage.MouseMove += new MouseEventHandler(this.myImage_MouseMove);
+
+
+            grid_game_hall.Children.Add(myImage);
+
+
+        }
+
+        private void seat_mouse_lbtn_down(object sender, MouseButtonEventArgs e)
+        {
+            g_select_image = sender as Image;
+        }
+
+        private void seat_mouse_lbtn_up(object sender, MouseButtonEventArgs e)
+        {
+            //MessageBox.Show("Catch a lbtndown event!");
+            Image myImage = sender as Image;
+
+            if (g_select_image != myImage)
+            {
+                return;
+            }
+
+            /*
+            BitmapImage myBitmapImage = new BitmapImage();
+
+            myBitmapImage.BeginInit();
+            myBitmapImage.UriSource = new Uri(@"Images\tableh.png", UriKind.Relative);
+            myBitmapImage.DecodePixelWidth = 115;
+            myBitmapImage.EndInit();
+            myImage.Source = myBitmapImage;
+            */
+
+
+            //add rectangle
+            Border select_tag = new Border();
+            select_tag.HorizontalAlignment = HorizontalAlignment.Left;
+            select_tag.VerticalAlignment = VerticalAlignment.Top;
+            select_tag.Margin = new Thickness(myImage.Margin.Left + 35, myImage.Margin.Top + 35, myImage.Margin.Right, myImage.Margin.Bottom);
+            select_tag.Visibility = Visibility.Visible;
+            select_tag.Width = 44;
+            select_tag.Height = 44;
+            select_tag.Background = Brushes.Brown;
+            select_tag.CornerRadius = new CornerRadius(10);
+            select_tag.Opacity = 0.3;
+
+            grid_game_hall.Children.Add(select_tag);
+            //grid_game_hall.Children.Remove(select_tag);
+
+        }
+        //private void icon_loaded(object sender, RoutedEventArgs e)
+        private void icon_Initialized(object sender, EventArgs e)
+        {
+            // ... Create a new BitmapImage.
+            BitmapImage b = new BitmapImage();
+            b.BeginInit();
+            b.UriSource = new Uri(@"Images/MyIcon.png",UriKind.Relative);
+            b.EndInit();
+
+            // ... Get Image reference from sender.
+            var image = sender as Image;
+            // ... Assign Source.
+            image.Source = b;
+        }
+
+        //private void game_qipan_loaded(object sender, RoutedEventArgs e)
+        private void game_qipan_loaded(object sender, EventArgs e)
+        {
+                        // ... Create a new BitmapImage.
+            BitmapImage b = new BitmapImage();
+            b.BeginInit();
+            b.UriSource = new Uri(@"Images\QQiPan.png", UriKind.Relative);
+            b.EndInit();
+
+            // ... Get Image reference from sender.
+            var image = sender as Image;
+            // ... Assign Source.
+            image.Source = b;
+        }
+
+        private void myImage_MouseMove(object sender, MouseEventArgs e)
+        {
+            Image myImage = sender as Image;
+
+            Point p = e.GetPosition((IInputElement)sender);
+            log_describe.Text = "x:" + p.X + " y:" + p.Y;
+
+            if ( (((p.X >= 37.5) && (p.Y >= 37.5)) && ((p.X <= 75) && (p.Y <= 75))) ||  //middle table
+                 (((p.X >= 13) && (p.Y >= 45.6)) && ((p.X <= 33.2) && (p.Y <= 66.4))) || //left seat
+                (((p.X >= 81) && (p.Y >= 45.6)) && ((p.X <= 103.2) && (p.Y <= 66.4))) )  //right seat
+            {
+                myImage.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                myImage.Cursor = Cursors.Arrow;
+            }
+        }
+
     }
 }

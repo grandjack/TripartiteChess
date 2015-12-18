@@ -1,4 +1,4 @@
-#wpf C# object files
+#wpf C# object files should be ignored
 /bin/*
 /Images/*
 /obj/*

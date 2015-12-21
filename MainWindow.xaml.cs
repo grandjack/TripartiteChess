@@ -176,8 +176,10 @@ namespace WpfApplication2
                     MessageBox.Show("密码不能为空");
                     return;
                 }
+
                 Window1 gameHall = new Window1();
                 this.Hide();
+                gameHall.Owner = this;
                 gameHall.ShowDialog();
                 this.Close();
 

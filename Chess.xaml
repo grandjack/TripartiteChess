@@ -1,0 +1,293 @@
+﻿<Window x:Class="WpfApplication2.Chess"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:props="clr-namespace:WpfApplication2.Properties"
+        Height="600" Width="875"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanResize" WindowState="Maximized" Topmost="False"
+        SourceInitialized="Window_SourceInitialized" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        Icon="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\MyIcon.png"
+        Title="{x:Static props:Resources.game_name}">
+
+    <Window.Resources>
+        <ControlTemplate x:Key="MaxButtonTemplate" TargetType="{x:Type Button}">
+            <Border Name="Border" CornerRadius="0"  Background="Transparent">
+                <Grid >
+                    <Rectangle Name="FocusCue" Visibility="Hidden" Stroke="Black" StrokeThickness="1" StrokeDashArray="1 2"
+                               SnapsToDevicePixels="True" >
+                    </Rectangle>
+                    <Path x:Name="MaxBtn" Data="M8.1,1.5 L30.1,1.5 L30.1,23.5 L8.1,23.5 z M1.5,7.7 L23.5,7.7 L23.5,29.7 L1.5,29.7 z" 
+                          Height="10" Width="10" HorizontalAlignment="Center" Stretch="Uniform" Stroke="White" StrokeThickness="1" VerticalAlignment="Center">
+                    </Path>
+                    <ContentPresenter RecognizesAccessKey="True"  Margin="{TemplateBinding Padding}" />
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" Opacity="0.7">
+                                <GradientStop Offset="0" Color="#FF0090FF" />
+                                <GradientStop Offset="0.5" Color="#FF007EFF" />
+                                <GradientStop Offset="1" Color="Transparent" />
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter TargetName="Border" Property="BorderBrush" Value="DarkKhaki" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="Border" Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#FF0090FF" Opacity="0.9" />
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="NormalButtonTemplate" TargetType="{x:Type Button}">
+            <Border Name="Border" CornerRadius="0"  Background="Transparent">
+                <Grid >
+                    <Rectangle Name="FocusCue" Visibility="Hidden" Stroke="Black" StrokeThickness="1" StrokeDashArray="1 2"
+                               SnapsToDevicePixels="True" >
+                    </Rectangle>
+                    <Path x:Name="normal" Data="M1.5,1.5 L28.5,1.5 L28.5,28.5 L1.5,28.5 z"
+                          Height="10" Width="10" HorizontalAlignment="Center" Stretch="Uniform" Stroke="White" StrokeThickness="2" VerticalAlignment="Center">
+                    </Path>
+                    <ContentPresenter RecognizesAccessKey="True"  Margin="{TemplateBinding Padding}" />
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" Opacity="0.7">
+                                <GradientStop Offset="0" Color="#FF0090FF" />
+                                <GradientStop Offset="0.5" Color="#FF007EFF" />
+                                <GradientStop Offset="1" Color="Transparent" />
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter TargetName="Border" Property="BorderBrush" Value="DarkKhaki" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="Border" Property="Background" >
+                        <Setter.Value>
+                            <SolidColorBrush Color="#FF0090FF" Opacity="0.9" />
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="CloseButtonTemplate" TargetType="{x:Type Button}">
+            <Border Name="Border" CornerRadius="0"  Background="Transparent">
+                <Grid >
+                    <Rectangle Name="FocusCue" Visibility="Hidden" Stroke="Black" StrokeThickness="1" StrokeDashArray="1 2"
+                               SnapsToDevicePixels="True" >
+                    </Rectangle>
+                    <Path x:Name="close" Data="M1.5,1.5 L32.700018,32.299997 M1.5,32.299997 L32.700018,1.5"
+                          Height="10" Width="10" HorizontalAlignment="Center" Stretch="Uniform" Stroke="White" StrokeThickness="2" VerticalAlignment="Center">
+                    </Path>
+
+                    <ContentPresenter RecognizesAccessKey="True"  Margin="{TemplateBinding Padding}" />
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" Opacity="0.7">
+                                <GradientStop Offset="0" Color="Red" />
+                                <GradientStop Offset="0.5" Color="DeepPink" />
+                                <GradientStop Offset="1" Color="Transparent" />
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter TargetName="Border" Property="BorderBrush" Value="DarkKhaki" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="Border" Property="Background" >
+                        <Setter.Value>
+                            <SolidColorBrush Color="Red" Opacity="0.9" />
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="MinButtonTemplate" TargetType="{x:Type Button}">
+            <Border Name="Border" CornerRadius="0"  Background="Transparent">
+                <Grid >
+                    <Rectangle Name="FocusCue" Visibility="Hidden" Stroke="Black" StrokeThickness="1" StrokeDashArray="1 2"
+                               SnapsToDevicePixels="True" >
+                    </Rectangle>
+                    <Path x:Name="min" Data="M444.2,147.4 L475.4,147.4" 
+                          Height="10" Width="10" HorizontalAlignment="Center" Stretch="Uniform" Stroke="White" StrokeThickness="2" VerticalAlignment="Center">
+                    </Path>
+
+                    <ContentPresenter RecognizesAccessKey="True"  Margin="{TemplateBinding Padding}" />
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" Opacity="0.7">
+                                <GradientStop Offset="0" Color="#FF0090FF" />
+                                <GradientStop Offset="0.5" Color="#FF007EFF" />
+                                <GradientStop Offset="1" Color="Transparent" />
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter TargetName="Border" Property="BorderBrush" Value="DarkKhaki" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="Border" Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#FF0090FF" Opacity="0.9" />
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="ChatButtonTemplate" TargetType="{x:Type Button}">
+            <Border Name="Border" CornerRadius="0" BorderThickness="1" BorderBrush="Transparent">
+                <Border.Background>
+                    <ImageBrush ImageSource="C:\Users\GBX386\Desktop\Visual C#\Image\chat.png" />
+                </Border.Background>
+                <Grid >
+                    <Rectangle Name="FocusCue" Visibility="Hidden" Stroke="Black" StrokeThickness="0" 
+                               SnapsToDevicePixels="True" Fill="Gray" Opacity="0.3">
+                    </Rectangle>
+                    <ContentPresenter RecognizesAccessKey="True"  Margin="{TemplateBinding Padding}" />
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="FocusCue" Property="Visibility" Value="Visible"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="Border" Property="BorderBrush" Value="DarkKhaki" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
+
+    <!-- Window design and layout Code-->
+    <Grid>
+        <Border CornerRadius="2" BorderThickness="2" BorderBrush="#FF00A3FF">
+            <Border.Background>
+                <SolidColorBrush Color="Gray" Opacity="1" />
+            </Border.Background>
+        </Border>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="180" />
+                <ColumnDefinition Width="586*" />
+            </Grid.ColumnDefinitions>
+
+            <!--标题栏框-->
+            <Border Name="toolBar2" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Opacity="1" 
+                        Height="Auto" Width="auto" Padding="0" 
+                        CornerRadius="2,2,0,0" BorderThickness="0" BorderBrush="Blue" PreviewMouseLeftButtonDown="rctHeader_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="rctHeader_PreviewMouseLeftButtonUp" PreviewMouseMove="rctHeader_PreviewMouseMove" >
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                        <GradientStop Color="#FF0148E3" Offset="0" />
+                        <GradientStop Color="#FF5BE2FB" Offset="0.475" />
+                        <GradientStop Color="#FF42A3FF" Offset="0.974" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid Background="Transparent">
+                    <TextBlock Text="{x:Static props:Resources.game_name}" Margin="30,0,0,0"/>
+                    <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Height="20" Width="20" HorizontalAlignment="Left" VerticalAlignment="Top"
+                               Opacity="1" Margin="5,2,10,10" Source="C:\Users\GBX386\Desktop\Visual C#\Image\cchess.ico"/>
+                </Grid>
+            </Border>
+
+            <!-- System Button-->
+            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                <Button Grid.Column="1" Template="{StaticResource CloseButtonTemplate}" Height="25" HorizontalAlignment="Right" Name="close_win2" VerticalAlignment="Top" Width="25" Click="Close_Window" Margin="0,6,6,0" IsTabStop="False" FocusVisualStyle="{x:Null}"/>
+                <Button Grid.Column="1" Template="{StaticResource MaxButtonTemplate}" Height="25" HorizontalAlignment="Right" Name="normal_win2" VerticalAlignment="Top" Width="25" Click="Normal_Window" Margin="0,6,36,0" IsTabStop="False" FocusVisualStyle="{x:Null}"/>
+                <Button Grid.Column="1" Template="{StaticResource NormalButtonTemplate}" Height="25" Visibility="Hidden" HorizontalAlignment="Right" Name="max_win2" VerticalAlignment="Top" Width="25" Click="Normal_Window" Margin="0,6,36,0" IsTabStop="False" FocusVisualStyle="{x:Null}"/>
+                <Button Grid.Column="1" Template="{StaticResource MinButtonTemplate}"  Height="25" HorizontalAlignment="Right" Name="min_win2" VerticalAlignment="Top" Width="25" Click="Min_window" Margin="0,6,66,0" IsTabStop="False" FocusVisualStyle="{x:Null}"/>
+            </Grid>
+
+            <!--extern title bar -->
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" >
+                <Border Grid.ColumnSpan="2" Opacity="1" 
+                        Height="Auto" Width="auto" VerticalAlignment="Top"
+                        CornerRadius="0" BorderThickness="0" BorderBrush="Blue" PreviewMouseLeftButtonDown="rctHeader_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="rctHeader_PreviewMouseLeftButtonUp" PreviewMouseMove="rctHeader_PreviewMouseMove" >
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                            <GradientStop Color="#FF0148E3" Offset="0" />
+                            <GradientStop Color="#FF5BE2FB" Offset="0.475" />
+                            <GradientStop Color="#FF42A3FF" Offset="0.974" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Grid Background="Transparent">
+                        <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Height="45" Width="45" HorizontalAlignment="Left" VerticalAlignment="Top"
+                               Opacity="1" Margin="10,0,0,2" Source="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2 - Copy\WpfApplication2\Images\MyIcon.png"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!--Content-->
+            <Grid x:Name="chessContent" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                <Image Source="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\QQipan.png" 
+                       Height="374" HorizontalAlignment="Left" Margin="115,19,0,0" VerticalAlignment="Top" Width="406" 
+                       Stretch="Fill"/>
+                <Border x:Name="webChat" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="232" Height="300"
+                        BorderThickness="3" Margin="0,0,16,8" CornerRadius="4" Visibility="Hidden">
+                    <Border.Background>
+                        <SolidColorBrush Color="#FF343204" />
+                    </Border.Background>
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="Black" />
+                    </Border.BorderBrush>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="20" />
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Row="0" Template="{StaticResource CloseButtonTemplate}" Margin="2" Height="10" Width="10" HorizontalAlignment="Right" 
+                                VerticalAlignment="Top" IsTabStop="False" FocusVisualStyle="{x:Null}" Click="HidewebChat" Cursor="Hand"/>
+                        <TextBlock Text="{x:Static props:Resources.message}" Grid.Row="0" Foreground="White" HorizontalAlignment="Left" Width="auto" Height="auto" Margin="8,0,0,0"/>
+                        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,0,2,2" >
+                            
+                        </ScrollViewer>
+                            <ComboBox Grid.Row="2" Width="190" HorizontalAlignment="Left" IsEditable="True" Background="White">
+                            <ComboBoxItem>
+                                <TextBlock Text="{x:Static props:Resources.tips_come_on}"/>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock Text="{x:Static props:Resources.tips_praise}"/>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock Text="{x:Static props:Resources.tips_flaunt}"/>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock Text="{x:Static props:Resources.tips_lose_heart}"/>
+                            </ComboBoxItem>
+                        </ComboBox>
+                        <Button Content="{x:Static props:Resources.send_msg}" Grid.Row="2" Width="35" HorizontalAlignment="Right" />
+                    </Grid>
+                </Border>
+                <Button Height="25" Template="{StaticResource ChatButtonTemplate}" HorizontalAlignment="Right" Margin="0,0,20,8" 
+                        Name="chat_btn" VerticalAlignment="Bottom" Width="32" Click="Chat_Click" Cursor="Hand" IsTabStop="False" 
+                        FocusVisualStyle="{x:Null}" ToolTip="{x:Static props:Resources.chat}">
+                </Button>
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+</Window>

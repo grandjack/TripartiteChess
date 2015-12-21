@@ -4,72 +4,9 @@
         xmlns:props="clr-namespace:WpfApplication2.Properties"
         Title="MainWindow" Height="263" Width="401" AllowsTransparency="True" WindowStyle="None" Background="Transparent"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
-        WindowStartupLocation="CenterScreen">  
-    <Window.Resources>
-        <ControlTemplate x:Key="MaxButtonTemplate" TargetType="{x:Type Button}">
-            <Border Name="Border" CornerRadius="0"  Background="Transparent">
-                <Grid >
-                    <Rectangle Name="FocusCue" Visibility="Hidden" Stroke="Black" StrokeThickness="1" StrokeDashArray="1 2"
-                               SnapsToDevicePixels="True" >
-                    </Rectangle>
-                    <Path x:Name="MaxBtn" Data="M8.1,1.5 L30.1,1.5 L30.1,23.5 L8.1,23.5 z M1.5,7.7 L23.5,7.7 L23.5,29.7 L1.5,29.7 z" 
-                          Height="20" Width="20" HorizontalAlignment="Center" Stretch="Uniform" Stroke="White" StrokeThickness="3" VerticalAlignment="Center">
-                    </Path>
-
-                    <ContentPresenter RecognizesAccessKey="True"  Margin="{TemplateBinding Padding}" />
-                </Grid>
-            </Border>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter TargetName="Border" Property="Background">
-                        <Setter.Value>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Offset="0" Color="DarkRed" />
-                                <GradientStop Offset="0.5" Color="DeepPink" />
-                                <GradientStop Offset="1" Color="Transparent" />
-                            </LinearGradientBrush>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter TargetName="Border" Property="BorderBrush" Value="DarkKhaki" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter TargetName="Border" Property="Background" Value="Red" />
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
-        
-        <ControlTemplate x:Key="NormalButtonTemplate" TargetType="{x:Type Button}">
-            <Border Name="Border" CornerRadius="0"  Background="Transparent">
-                <Grid >
-                    <Rectangle Name="FocusCue" Visibility="Hidden" Stroke="Black" StrokeThickness="1" StrokeDashArray="1 2"
-                               SnapsToDevicePixels="True" >
-                    </Rectangle>
-                    <Path x:Name="normal" Data="M1.5,1.5 L28.5,1.5 L28.5,28.5 L1.5,28.5 z"
-                          Height="20" Width="20" HorizontalAlignment="Center" Stretch="Uniform" Stroke="White" StrokeThickness="3" VerticalAlignment="Center">
-                    </Path>
-
-                    <ContentPresenter RecognizesAccessKey="True"  Margin="{TemplateBinding Padding}" />
-                </Grid>
-            </Border>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter TargetName="Border" Property="Background">
-                        <Setter.Value>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Offset="0" Color="DarkRed" />
-                                <GradientStop Offset="0.5" Color="DeepPink" />
-                                <GradientStop Offset="1" Color="Transparent" />
-                            </LinearGradientBrush>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter TargetName="Border" Property="BorderBrush" Value="DarkKhaki" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter TargetName="Border" Property="Background" Value="Red" />
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
-        
+        WindowStartupLocation="CenterScreen" ShowInTaskbar="True"
+        Icon="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\MyIcon.png">  
+    <Window.Resources>        
         <ControlTemplate x:Key="CloseButtonTemplate" TargetType="{x:Type Button}">
             <Border Name="Border" CornerRadius="0,3,0,0"  Background="Transparent">
                 <Grid >
@@ -145,7 +82,7 @@
 
     <Border CornerRadius="3" >
         <Border.Background>
-            <ImageBrush ImageSource="C:\Users\Public\Pictures\Sample Pictures\Desert.jpg" Opacity="0.8"/>
+            <ImageBrush ImageSource="C:\Users\Public\Pictures\Sample Pictures\Desert.jpg" Opacity="0.95"/>
         </Border.Background>
         <Grid>
             <Grid.RowDefinitions>

@@ -336,7 +336,6 @@ namespace WpfApplication2
             }
         }
 
-        private Image g_select_image;
         private void draw_seat_image(Thickness margin)
         {
             Image myImage = new Image();
@@ -363,57 +362,40 @@ namespace WpfApplication2
             myImage.HorizontalAlignment = HorizontalAlignment.Left;
             myImage.VerticalAlignment = VerticalAlignment.Top;
             myImage.Margin = margin;
-            myImage.MouseLeftButtonDown += new MouseButtonEventHandler(this.seat_mouse_lbtn_down);
-            myImage.MouseLeftButtonUp += new MouseButtonEventHandler(this.seat_mouse_lbtn_up);
+            //myImage.MouseLeftButtonDown += new MouseButtonEventHandler(this.seat_mouse_lbtn_down);
+            //myImage.MouseLeftButtonUp += new MouseButtonEventHandler(this.seat_mouse_lbtn_up);
             myImage.MouseMove += new MouseEventHandler(this.myImage_MouseMove);
-
 
             grid_game_hall.Children.Add(myImage);
 
 
         }
 
+        private Border g_select_display_border = null;
+        private Brush g_select_background = null;
         private void seat_mouse_lbtn_down(object sender, MouseButtonEventArgs e)
         {
-            g_select_image = sender as Image;
+            g_select_display_border = sender as Border;
+            g_select_background = g_select_display_border.Background;
+            g_select_display_border.Background = Brushes.Red;
         }
 
         private void seat_mouse_lbtn_up(object sender, MouseButtonEventArgs e)
         {
             //MessageBox.Show("Catch a lbtndown event!");
-            Image myImage = sender as Image;
+            Border border = sender as Border;
 
-            if (g_select_image != myImage)
+            g_select_display_border.Background = g_select_background;
+
+            if (g_select_display_border != border)
             {
                 return;
             }
 
-            /*
-            BitmapImage myBitmapImage = new BitmapImage();
+            g_select_display_border = null;
 
-            myBitmapImage.BeginInit();
-            myBitmapImage.UriSource = new Uri(@"Images\tableh.png", UriKind.Relative);
-            myBitmapImage.DecodePixelWidth = 115;
-            myBitmapImage.EndInit();
-            myImage.Source = myBitmapImage;
-            */
-
-
-            //add rectangle
-            Border select_tag = new Border();
-            select_tag.HorizontalAlignment = HorizontalAlignment.Left;
-            select_tag.VerticalAlignment = VerticalAlignment.Top;
-            select_tag.Margin = new Thickness(myImage.Margin.Left + 35, myImage.Margin.Top + 35, myImage.Margin.Right, myImage.Margin.Bottom);
-            select_tag.Visibility = Visibility.Visible;
-            select_tag.Width = 44;
-            select_tag.Height = 44;
-            select_tag.Background = Brushes.Brown;
-            select_tag.CornerRadius = new CornerRadius(10);
-            select_tag.Opacity = 0.3;
-
-            grid_game_hall.Children.Add(select_tag);
-            //grid_game_hall.Children.Remove(select_tag);
-
+            Chess chess = new Chess();
+            chess.Show();
         }
         //private void icon_loaded(object sender, RoutedEventArgs e)
         private void icon_Initialized(object sender, EventArgs e)
@@ -445,14 +427,58 @@ namespace WpfApplication2
             image.Source = b;
         }
 
+
+
+        private Image current_mouse_over_image = null;
+        private Border current_display_border = null;
         private void myImage_MouseMove(object sender, MouseEventArgs e)
         {
             Image myImage = sender as Image;
+             
 
             Point p = e.GetPosition((IInputElement)sender);
-            log_describe.Text = "x:" + p.X + " y:" + p.Y;
+            //log_describe.Text = "x:" + p.X + " y:" + p.Y;
 
-            if ( (((p.X >= 37.5) && (p.Y >= 37.5)) && ((p.X <= 75) && (p.Y <= 75))) ||  //middle table
+            if (((p.X >= 37.5) && (p.Y >= 37.5)) && ((p.X <= 75) && (p.Y <= 75)))
+            {
+                if (current_mouse_over_image != myImage)
+                {
+                    //add rectangle
+                    Border select_tag = new Border();
+                    select_tag.HorizontalAlignment = HorizontalAlignment.Left;
+                    select_tag.VerticalAlignment = VerticalAlignment.Top;
+                    select_tag.Margin = new Thickness(myImage.Margin.Left + 35, myImage.Margin.Top + 35, myImage.Margin.Right, myImage.Margin.Bottom);
+                    select_tag.Visibility = Visibility.Visible;
+                    select_tag.Width = 44;
+                    select_tag.Height = 44;
+                    select_tag.Background = Brushes.Brown;
+                    select_tag.CornerRadius = new CornerRadius(10);
+                    select_tag.Opacity = 0.3;
+                    select_tag.Cursor = Cursors.Hand;
+
+                    select_tag.MouseLeftButtonDown += new MouseButtonEventHandler(this.seat_mouse_lbtn_down);
+                    select_tag.MouseLeftButtonUp += new MouseButtonEventHandler(this.seat_mouse_lbtn_up);
+
+                    current_display_border = select_tag;
+                    current_mouse_over_image = myImage;
+                    grid_game_hall.Children.Add(select_tag);
+                    //grid_game_hall.Children.Remove(select_tag);
+                }
+            }
+            else
+            {
+                if ((current_mouse_over_image != null) && (current_display_border != null))
+                {
+                    //if (g_select_display_border != current_display_border)
+                    {
+                        grid_game_hall.Children.Remove(current_display_border);
+                        current_mouse_over_image = null;
+                        current_display_border = null;
+                    }
+                }
+            }
+
+            if ( //(((p.X >= 37.5) && (p.Y >= 37.5)) && ((p.X <= 75) && (p.Y <= 75))) ||  //middle table
                  (((p.X >= 13) && (p.Y >= 45.6)) && ((p.X <= 33.2) && (p.Y <= 66.4))) || //left seat
                 (((p.X >= 81) && (p.Y >= 45.6)) && ((p.X <= 103.2) && (p.Y <= 66.4))) )  //right seat
             {
@@ -462,6 +488,12 @@ namespace WpfApplication2
             {
                 myImage.Cursor = Cursors.Arrow;
             }
+        }
+
+        private void rec_ad_open(object sender, MouseButtonEventArgs e)
+        {
+            // 打开一个链接
+            System.Diagnostics.Process.Start("http://www.baidu.com/");
         }
 
     }

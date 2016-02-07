@@ -79,6 +79,15 @@ namespace WpfApplication2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 聊天.
+        /// </summary>
+        public static string chat {
+            get {
+                return ResourceManager.GetString("chat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 请输入邮箱地址.
         /// </summary>
         public static string email_input {
@@ -124,7 +133,7 @@ namespace WpfApplication2.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 三人中国象棋.
+        ///   Looks up a localized string similar to 众游三人象棋.
         /// </summary>
         public static string game_name {
             get {
@@ -142,7 +151,7 @@ namespace WpfApplication2.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (99/99)已满.
+        ///   Looks up a localized string similar to 已满.
         /// </summary>
         public static string hall_state_full {
             get {
@@ -151,7 +160,7 @@ namespace WpfApplication2.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (33/99)未满.
+        ///   Looks up a localized string similar to 未满.
         /// </summary>
         public static string hall_state_Not_full {
             get {
@@ -165,6 +174,15 @@ namespace WpfApplication2.Properties {
         public static string Login_name {
             get {
                 return ResourceManager.GetString("Login_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 消息.
+        /// </summary>
+        public static string message {
+            get {
+                return ResourceManager.GetString("message", resourceCulture);
             }
         }
         
@@ -192,6 +210,60 @@ namespace WpfApplication2.Properties {
         public static string register {
             get {
                 return ResourceManager.GetString("register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 发送.
+        /// </summary>
+        public static string send_msg {
+            get {
+                return ResourceManager.GetString("send_msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 快点儿啊，我等得花儿都谢了！.
+        /// </summary>
+        public static string tips_come_on {
+            get {
+                return ResourceManager.GetString("tips_come_on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 好不容易吃掉一家,^_^.
+        /// </summary>
+        public static string tips_flaunt {
+            get {
+                return ResourceManager.GetString("tips_flaunt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 真是浪费时间!.
+        /// </summary>
+        public static string tips_lose_heart {
+            get {
+                return ResourceManager.GetString("tips_lose_heart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 你简直太Niubility了！.
+        /// </summary>
+        public static string tips_niubi {
+            get {
+                return ResourceManager.GetString("tips_niubi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 真是高手啊!.
+        /// </summary>
+        public static string tips_praise {
+            get {
+                return ResourceManager.GetString("tips_praise", resourceCulture);
             }
         }
     }

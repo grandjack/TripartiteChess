@@ -144,7 +144,7 @@ namespace WpfApplication2
             curState = loggonState.FindPwd;
         }
 
-        private void CancelBtn(object sender, RoutedEventArgs e)
+        public void CancelBtn(object sender, RoutedEventArgs e)
         {
             if (curState == loggonState.FindPwd)
             {
@@ -177,14 +177,18 @@ namespace WpfApplication2
                     return;
                 }
 
-                Window1 gameHall = new Window1();
-                this.Hide();
-                gameHall.Owner = this;
-                gameHall.ShowDialog();
-                this.Close();
+                NetworkThread.CreateWorkThread();
+                GameState.SetCurrentWin(this);
+                LoginState login = new LoginState();
+                login.SendLoginReq(cbUser.Text, passwordBox.Password);
 
-            } else if (curState == loggonState.Register) {
-                MessageBox.Show("暂不支持注册功能");
+            }
+            else if (curState == loggonState.Register)
+            {
+                NetworkThread.CreateWorkThread();
+                GameState.SetCurrentWin(this);
+                LoginState register = new LoginState();
+                register.SendRegist(cbUser.Text, passwordBox.Password);
             } else if (curState == loggonState.FindPwd)
             {
                 MessageBox.Show("暂不支持找回密码功能");

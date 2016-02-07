@@ -10,9 +10,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using MessageStruct;
 
 namespace WpfApplication2
 {
@@ -20,7 +20,11 @@ namespace WpfApplication2
     /// Interaction logic for Window1.xaml
     /// </summary>
     /// 
-    
+    public class ChessBoardImg : Image
+    {
+        public int id;
+    }
+
     public partial class Window1 : Window
     {
         private bool mRestoreIfMove = false;
@@ -286,17 +290,14 @@ namespace WpfApplication2
                 string index = listBox1.SelectedIndex.ToString();
                 str += " " + index;
                 //MessageBox.Show(str);
-                if (tab_game_hall.IsSelected != true)
-                {
-                    tab_game_hall.Visibility = Visibility.Visible;
-                    tab_game_hall.IsSelected = true;
-                }
-                else
-                {
-                    tab_game_hall.Visibility = Visibility.Hidden;
-                    tab_game_hall.IsSelected = false;
-                    tab_game_describe.IsSelected = true;
-                }
+                Console.WriteLine(str);
+
+                tab_game_hall.IsSelected = true;
+                tab_game_hall.Visibility = Visibility.Visible;
+                tab_game_hall.Header = (string)Properties.Resources.gamehall_no  + (listBox1.SelectedIndex + 1);
+
+                GameReadyState state = new GameReadyState();
+                state.GameHallRequest(listBox1.SelectedIndex + 1);
             }
         }
 
@@ -308,10 +309,15 @@ namespace WpfApplication2
             MessageBox.Show(str);*/
         }
 
-        private void game_hall_loaded(object sender, RoutedEventArgs e)
+        public void game_hall_loaded(object sender, RoutedEventArgs e)
         {
+            if (listBox1.SelectedIndex == -1)
+            {
+                return;
+            }
+
             grid_game_hall.Children.Clear();
-            const int total_seats_num = 60;
+            int total_seats_num = (int)GameState.sumary.GetHallInfo((int)(listBox1.SelectedIndex)).TotalChessboard;
             int total_row = 0;
             int total_column = 0;
 
@@ -326,20 +332,22 @@ namespace WpfApplication2
                 total_row = total_seats_num / total_column;
             }
 
+            int index = 0;
             for (int row = 0; row < total_row; ++row)
             {
                 for (int column = 0; column < total_column; ++column)
                 {
                     Thickness margin = new Thickness(15 + column * 131, 15 + row * 131, 0, 0);
-                    draw_seat_image(margin);
+                    draw_seat_image(margin, ++index);
                 }
             }
         }
 
-        private void draw_seat_image(Thickness margin)
+        private void draw_seat_image(Thickness margin, int index)
         {
-            Image myImage = new Image();
+            ChessBoardImg myImage = new ChessBoardImg();
             myImage.Width = 115;
+            myImage.id = index;
 
             // Create source
             BitmapImage myBitmapImage = new BitmapImage();
@@ -366,9 +374,17 @@ namespace WpfApplication2
             //myImage.MouseLeftButtonUp += new MouseButtonEventHandler(this.seat_mouse_lbtn_up);
             myImage.MouseMove += new MouseEventHandler(this.myImage_MouseMove);
 
+            Label chessBoardNo = new Label();
+            chessBoardNo.HorizontalAlignment = HorizontalAlignment.Left;
+            chessBoardNo.VerticalAlignment = VerticalAlignment.Top;
+            chessBoardNo.Margin = new Thickness(margin.Left + 47, margin.Top + 110, 0, 0);
+            chessBoardNo.Foreground = Brushes.White;
+            chessBoardNo.FontSize = 10;
+            chessBoardNo.Content = index.ToString();
+
+            Console.WriteLine("Current ChessBoard : " + chessBoardNo.Content);
+            grid_game_hall.Children.Add(chessBoardNo);
             grid_game_hall.Children.Add(myImage);
-
-
         }
 
         private Border g_select_display_border = null;
@@ -394,8 +410,32 @@ namespace WpfApplication2
 
             g_select_display_border = null;
 
-            Chess chess = new Chess();
-            chess.Show();
+            if (current_mouse_over_image != null)
+            {
+                Console.WriteLine("Current Select Hall :" + listBox1.SelectedIndex + "  ChessBoard ID :" + current_mouse_over_image.id);
+            }
+           
+            int locate = 0;
+            ChessBoardInfo chessBoard = GameState.hallInfo.GetChessBoard((int)(current_mouse_over_image.id - 1));
+            if (chessBoard != null)
+            {
+                if (chessBoard.LeftUser.ChessBoardEmpty)
+                {
+                    locate = (int)Location.left;
+                }
+                else if (chessBoard.RightUser.ChessBoardEmpty)
+                {
+                    locate = (int)Location.right;
+                }
+                else if (chessBoard.BottomUser.ChessBoardEmpty)
+                {
+                    locate = (int)Location.bottom;
+                }
+            }
+
+            GameReadyState state = new GameReadyState();
+            state.RequestGamePlay(listBox1.SelectedIndex + 1, current_mouse_over_image.id, locate);
+
         }
         //private void icon_loaded(object sender, RoutedEventArgs e)
         private void icon_Initialized(object sender, EventArgs e)
@@ -429,7 +469,7 @@ namespace WpfApplication2
 
 
 
-        private Image current_mouse_over_image = null;
+        private ChessBoardImg current_mouse_over_image = null;
         private Border current_display_border = null;
         private void myImage_MouseMove(object sender, MouseEventArgs e)
         {
@@ -460,7 +500,7 @@ namespace WpfApplication2
                     select_tag.MouseLeftButtonUp += new MouseButtonEventHandler(this.seat_mouse_lbtn_up);
 
                     current_display_border = select_tag;
-                    current_mouse_over_image = myImage;
+                    current_mouse_over_image = (ChessBoardImg)myImage;
                     grid_game_hall.Children.Add(select_tag);
                     //grid_game_hall.Children.Remove(select_tag);
                 }
@@ -494,6 +534,53 @@ namespace WpfApplication2
         {
             // 打开一个链接
             System.Diagnostics.Process.Start("http://www.baidu.com/");
+        }
+
+        public void HallListBoxLoaded(object sender, RoutedEventArgs e)
+        {
+            if (GameState.sumary == null || sender != null)//loaded List box just after the workthread receive the game hall info.
+            {
+                return;
+            }
+
+            uint hallNum = GameState.sumary.HallNum;
+            ListBox listBox = listBox1;// sender as ListBox;
+            listBox.Items.Clear();
+
+            for (uint i = 1; i <= hallNum; ++i)
+            {
+                StackPanel stack = new StackPanel();
+                stack.Orientation = Orientation.Horizontal;
+                stack.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(list_select1);
+
+                Image myImage = new Image();
+                myImage.Width = 20;
+                myImage.Height = 20;
+
+                // Create source
+                BitmapImage myBitmapImage = new BitmapImage();
+
+                // BitmapImage.UriSource must be in a BeginInit/EndInit block
+                myBitmapImage.BeginInit();
+                myBitmapImage.UriSource = new Uri(@"C:\Users\GBX386\Desktop\Visual C#\Image\APPTopn.png", UriKind.Absolute);
+
+                myBitmapImage.DecodePixelWidth = 20;
+                myBitmapImage.EndInit();
+                //set image source
+                myImage.Source = myBitmapImage;
+
+
+                Label lable = new Label();
+                lable.VerticalAlignment = VerticalAlignment.Center;
+                lable.Content = (string)Properties.Resources.gamehall_no + GameState.sumary.GetHallInfo((int)(i - 1)).GameHallId;
+                lable.Content += " (" + GameState.sumary.GetHallInfo((int)(i - 1)).CurrPeople + "/" + GameState.sumary.GetHallInfo((int)(i - 1)).TotalPeople +
+                    ")" + (GameState.sumary.GetHallInfo((int)(i - 1)).CurrPeople == GameState.sumary.GetHallInfo((int)(i - 1)).TotalPeople ? (string)Properties.Resources.hall_state_full : (string)Properties.Resources.hall_state_Not_full);
+                
+                stack.Children.Add(myImage);
+                stack.Children.Add(lable);
+
+                listBox.Items.Add(stack);
+            }
         }
 
     }

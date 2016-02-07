@@ -269,5 +269,63 @@ namespace WpfApplication2
             btn.Visibility = Visibility.Hidden;
         }
         //自定义窗口实现最大化不覆盖任务栏--End
+
+        private void ChessBoardLoaded(object sender, RoutedEventArgs e)
+        {
+            gridChessBoard.Children.Clear();
+            //ChessMan chess = new Horse;
+            ChessBoard chessBoard = ChessBoard.GetChessBoardObj(Location.bottom, this);
+            /*for (int row = 0; row < 14; ++row)
+            {
+                for (int column = 0; column < 19; ++column)
+                {
+                    Thickness margin = new Thickness(4.5 + column * 50.4, 4 + row * 50.4, 0, 0);
+                    this.draw_seat_image(margin);
+                }
+            }
+            */
+        }
+
+        private void draw_seat_image(Thickness margin)
+        {
+            Image myImage = new Image();
+            int wide = 40;
+            myImage.Width = wide;
+
+            // Create source
+            BitmapImage myBitmapImage = new BitmapImage();
+
+            // BitmapImage.UriSource must be in a BeginInit/EndInit block
+            myBitmapImage.BeginInit();
+            string imageSource = @"C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\ChessMan\RedChess\ju.png";
+            myBitmapImage.UriSource = new Uri(imageSource, UriKind.Absolute);
+
+            // To save significant application memory, set the DecodePixelWidth or  
+            // DecodePixelHeight of the BitmapImage value of the image source to the desired 
+            // height or width of the rendered image. If you don't do this, the application will 
+            // cache the image as though it were rendered as its normal size rather then just 
+            // the size that is displayed.
+            // Note: In order to preserve aspect ratio, set DecodePixelWidth
+            // or DecodePixelHeight but not both.
+            myBitmapImage.DecodePixelWidth = wide;
+            myBitmapImage.EndInit();
+            //set image source
+            myImage.Source = myBitmapImage;
+            myImage.HorizontalAlignment = HorizontalAlignment.Left;
+            myImage.VerticalAlignment = VerticalAlignment.Top;
+            myImage.Margin = margin;
+            //myImage.MouseLeftButtonDown += new MouseButtonEventHandler(this.seat_mouse_lbtn_down);
+            //myImage.MouseLeftButtonUp += new MouseButtonEventHandler(this.seat_mouse_lbtn_up);
+            //myImage.MouseMove += new MouseEventHandler(this.myImage_MouseMove);
+
+            gridChessBoard.Children.Add(myImage);
+
+
+        }
+        private void ChessBoardMouseMove(object sender, MouseEventArgs e)
+        {
+            Point p = e.GetPosition((IInputElement)sender);
+            chessBoardPosition.Text = "ChessBoard Point X:" + p.X + "  Y:" + p.Y;
+        }
     }
 }

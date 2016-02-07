@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Google.ProtocolBuffers">
+      <HintPath>bin\Google.ProtocolBuffers.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -55,9 +58,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Chess.xaml.cs">
+      <DependentUpon>Chess.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChessBoard.cs" />
+    <Compile Include="ChessImage.cs" />
+    <Compile Include="GameState.cs" />
+    <Compile Include="Message.cs" />
+    <Compile Include="NetworkThread.cs" />
+    <Compile Include="User.cs" />
     <Compile Include="GameHall.xaml.cs">
       <DependentUpon>GameHall.xaml</DependentUpon>
     </Compile>
+    <Page Include="Chess.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -113,6 +129,9 @@
     <Resource Include="Images\tablen.bmp" />
     <Resource Include="Images\tablen.png" />
     <Resource Include="Images\tables.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Images\ChessMan\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

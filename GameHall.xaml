@@ -236,28 +236,7 @@
                                     Background="White" Margin="2,0,2,2">
                                 <Button Name="quick_startBtn" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Width="150" Content="{x:Static props:Resources.quick_start}" Margin="10,10,3,10" Background="#FF00A9FF" >
                                 </Button>
-                                <ListBox Name="listBox1" HorizontalAlignment="Left" ItemsSource="{Binding}" Background="White" Margin="3,0,0,0" BorderThickness="0" VerticalAlignment="Top" SelectionChanged ="GameHallSelectionChanged">
-                                    <StackPanel Orientation="Horizontal" PreviewMouseLeftButtonDown ="list_select1">
-                                        <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\APPTopn.png" Height="20" Width="20"/>
-                                        <Label VerticalAlignment="Center" Content="{x:Static props:Resources.gamehall_no}" />
-                                        <Label VerticalAlignment="Center" Content="{x:Static props:Resources.hall_state_Not_full}" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" PreviewMouseLeftButtonDown ="list_select1">
-                                        <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\APPTopn.png" Height="20" Width="20"/>
-                                        <Label VerticalAlignment="Center" >ListBoxItem1</Label>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" PreviewMouseLeftButtonDown ="list_select1">
-                                        <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\APPTopn.png" Height="20" Width="20"/>
-                                        <Label VerticalAlignment="Center" >ListBoxItem1</Label>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" PreviewMouseLeftButtonDown ="list_select1">
-                                        <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\APPTopn.png" Height="20" Width="20"/>
-                                        <Label VerticalAlignment="Center" >ListBoxItem1</Label>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" PreviewMouseLeftButtonDown ="list_select1">
-                                        <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\APPTopn.png" Height="20" Width="20"/>
-                                        <Label VerticalAlignment="Center" >ListBoxItem1</Label>
-                                    </StackPanel>
+                                <ListBox Name="listBox1" HorizontalAlignment="Left" ItemsSource="{Binding}" Background="Transparent" Margin="3,0,0,0" BorderThickness="0" VerticalAlignment="Top" SelectionChanged ="GameHallSelectionChanged" Loaded="HallListBoxLoaded">
                                 </ListBox>
                             </StackPanel>
 
@@ -268,33 +247,34 @@
 
                                             <TextBlock  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,2,2">
                                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,2,2">
-                                                <Label Content="【游戏界面】" Height="28" HorizontalAlignment="Left" Margin="10,27,0,0" Name="label1" VerticalAlignment="Top" Width="71" />
-                                                <Image Margin="10,10,0,0" Name="image1" Stretch="Fill" Initialized="game_qipan_loaded"/>
-                                                <Label Content="一．游戏简介" Height="28" HorizontalAlignment="Left" Margin="10,27,0,0" Name="label2" VerticalAlignment="Top" Width="93" />
-                                                <TextBlock Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
-                                                <TextBlock Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
-                                                <TextBlock Text="着象征性的军事战斗。" />
-                                                 <TextBlock Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
-                                                <TextBlock Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
-                                                <TextBlock Text="着象征性的军事战斗。" />
-                                                 <TextBlock Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
-                                                <TextBlock Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
-                                                <TextBlock Text="着象征性的军事战斗。" />
-                                                 <TextBlock Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
-                                                <TextBlock Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
-                                                <TextBlock Text="着象征性的军事战斗。" />
-                                                 <TextBlock Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
-                                                <TextBlock Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
-                                                <TextBlock Text="着象征性的军事战斗。" />
-                                                 <TextBlock Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
-                                                <TextBlock Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
-                                                <TextBlock Text="着象征性的军事战斗。" />
-                                                 <TextBlock Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
-                                                <TextBlock Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
-                                                <TextBlock Text="着象征性的军事战斗。" />
-                                                <TextBox IsReadOnly="True" BorderThickness="0">可以选择拷贝</TextBox> 
-                                    </StackPanel>
+                                                    <Label Content="【游戏界面】" Height="28" HorizontalAlignment="Left" Margin="10,27,0,0" Name="label1" VerticalAlignment="Top" Width="71" />
+                                                    <Image Margin="10,10,0,0" Name="image1" Stretch="Fill" Initialized="game_qipan_loaded"/>
+                                                    <Label Content="一．游戏简介" Height="28" HorizontalAlignment="Left" Margin="10,27,0,0" Name="label2" VerticalAlignment="Top" Width="93" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="着象征性的军事战斗。" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="着象征性的军事战斗。" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="着象征性的军事战斗。" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="着象征性的军事战斗。" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="着象征性的军事战斗。" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="着象征性的军事战斗。" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="着象征性的军事战斗。" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent">可以选择拷贝</TextBox> 
+                                                </StackPanel>
                                             </TextBlock>
+                                            
                                         </ScrollViewer>
                                     </Grid>
                                 </TabItem>
@@ -302,11 +282,7 @@
                                     <Grid Background="#942C5F88" FocusVisualStyle="{x:Null}">
                                         <ScrollViewer Grid.Column="1" Name="scrollViewer2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">
                                             <Grid x:Name="grid_game_hall" Background="#942C5F88" FocusVisualStyle="{x:Null}" Loaded="game_hall_loaded" >
-                                                <Image Source="C:\Users\GBX386\Desktop\Visual C#\Image\tableh.png" Height="115" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0"/>
-                                                <Border HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,35,0,0" 
-                                    Visibility="Visible" Width="44" Height="44"
-                                    SnapsToDevicePixels="True"  Background="Brown"  CornerRadius="10" Opacity="0.3"
-                                 />
+                                                
                                             </Grid>
                                         </ScrollViewer>
                                     </Grid>

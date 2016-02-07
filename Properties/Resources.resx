@@ -146,21 +146,45 @@
     <value>立即注册</value>
   </data>
   <data name="game_name" xml:space="preserve">
-    <value>三人中国象棋</value>
+    <value>众游三人象棋</value>
   </data>
   <data name="gamehall_no" xml:space="preserve">
     <value>游戏大厅</value>
   </data>
   <data name="hall_state_full" xml:space="preserve">
-    <value>(99/99)已满</value>
+    <value>已满</value>
   </data>
   <data name="hall_state_Not_full" xml:space="preserve">
-    <value>(33/99)未满</value>
+    <value>未满</value>
   </data>
   <data name="quick_start" xml:space="preserve">
     <value>快速开始</value>
   </data>
   <data name="game_describe" xml:space="preserve">
     <value>游戏说明</value>
+  </data>
+  <data name="chat" xml:space="preserve">
+    <value>聊天</value>
+  </data>
+  <data name="message" xml:space="preserve">
+    <value>消息</value>
+  </data>
+  <data name="send_msg" xml:space="preserve">
+    <value>发送</value>
+  </data>
+  <data name="tips_come_on" xml:space="preserve">
+    <value>快点儿啊，我等得花儿都谢了！</value>
+  </data>
+  <data name="tips_flaunt" xml:space="preserve">
+    <value>好不容易吃掉一家,^_^</value>
+  </data>
+  <data name="tips_lose_heart" xml:space="preserve">
+    <value>真是浪费时间!</value>
+  </data>
+  <data name="tips_praise" xml:space="preserve">
+    <value>真是高手啊!</value>
+  </data>
+  <data name="tips_niubi" xml:space="preserve">
+    <value>你简直太Niubility了！</value>
   </data>
 </root>

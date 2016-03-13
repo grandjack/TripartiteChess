@@ -278,19 +278,39 @@ namespace WpfApplication2
             return ret;
         }
 
-        public bool MoveChess(byte des_row, byte des_column)
+        public bool MoveChess(byte des_row, byte des_column, bool shouldbrocast = true)
         {
             MoveEvent ret = this.CheckMoveEvent(des_row, des_column);
             bool status = false;
+            byte src_row = this.Row;
+            byte src_column = this.Column;
 
+            ChessSpec origType = this.GetChessType();
             if (ret == MoveEvent.MOVE_TO_EAT_EVENT)
             {
+                ChessSpec tarType = ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess.GetChessType();
+                int tarLocate = (int)ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess.ownerUsr.GetUserLocation();
+                User tarUsr = ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess.GetOwnUser();
+                
                 status = this.EatAction(des_row, des_column);
                 if (status)
                 {
                     MediaPlayer player = new MediaPlayer ();
                     player.Open(new Uri(@"D:\My Software\QQGame\CChess\res\eat.wav", UriKind.Absolute));
                     player.Play();
+
+                    if (shouldbrocast)
+                    {
+                        GamePlayingState state = new GamePlayingState();
+                        if (tarUsr.State == User.GameState.LOSE)
+                        {
+                            state.MoveChessReq((int)origType, GameState.locate, src_row, src_column, des_row, des_column, true, (int)tarType, tarLocate);
+                        }
+                        else
+                        {
+                            state.MoveChessReq((int)origType, GameState.locate, src_row, src_column, des_row, des_column, false, (int)tarType, tarLocate);
+                        }
+                    }
                 }
             }
             else if (ret == MoveEvent.JUST_MOVE_EVENT)
@@ -301,6 +321,12 @@ namespace WpfApplication2
                     MediaPlayer player = new MediaPlayer();
                     player.Open(new Uri(@"D:\My Software\QQGame\CChess\res\go.wav", UriKind.Absolute));
                     player.Play();
+
+                    if (shouldbrocast)
+                    {
+                        GamePlayingState state = new GamePlayingState();
+                        state.MoveChessReq((int)origType, GameState.locate, src_row, src_column, des_row, des_column, false);
+                    }
                 }
             }
 

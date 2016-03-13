@@ -26,6 +26,8 @@ namespace MessageStruct {
     internal static pb::FieldAccess.FieldAccessorTable<global::MessageStruct.Register, global::MessageStruct.Register.Builder> internal__static_MessageStruct_Register__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_MessageStruct_ChessBoardUser__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::MessageStruct.ChessBoardUser, global::MessageStruct.ChessBoardUser.Builder> internal__static_MessageStruct_ChessBoardUser__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_MessageStruct_ChessBoardInfoReq__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::MessageStruct.ChessBoardInfoReq, global::MessageStruct.ChessBoardInfoReq.Builder> internal__static_MessageStruct_ChessBoardInfoReq__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_MessageStruct_ChessBoardInfo__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::MessageStruct.ChessBoardInfo, global::MessageStruct.ChessBoardInfo.Builder> internal__static_MessageStruct_ChessBoardInfo__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_MessageStruct_HallInfoReq__Descriptor;
@@ -58,6 +60,16 @@ namespace MessageStruct {
     internal static pb::FieldAccess.FieldAccessorTable<global::MessageStruct.GameReadyReq, global::MessageStruct.GameReadyReq.Builder> internal__static_MessageStruct_GameReadyReq__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_MessageStruct_GameStatusReply__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::MessageStruct.GameStatusReply, global::MessageStruct.GameStatusReply.Builder> internal__static_MessageStruct_GameStatusReply__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_MessageStruct_FindPassword__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::MessageStruct.FindPassword, global::MessageStruct.FindPassword.Builder> internal__static_MessageStruct_FindPassword__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_MessageStruct_UpdateUserInfo__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::MessageStruct.UpdateUserInfo, global::MessageStruct.UpdateUserInfo.Builder> internal__static_MessageStruct_UpdateUserInfo__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_MessageStruct_AdPictureItemReply__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::MessageStruct.AdPictureItemReply, global::MessageStruct.AdPictureItemReply.Builder> internal__static_MessageStruct_AdPictureItemReply__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_MessageStruct_AdPictureReq__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::MessageStruct.AdPictureReq, global::MessageStruct.AdPictureReq.Builder> internal__static_MessageStruct_AdPictureReq__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_MessageStruct_AdPictureContentReply__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::MessageStruct.AdPictureContentReply, global::MessageStruct.AdPictureContentReply.Builder> internal__static_MessageStruct_AdPictureContentReply__FieldAccessorTable;
     #endregion
     #region Descriptor
     public static pbd::FileDescriptor Descriptor {
@@ -70,48 +82,66 @@ namespace MessageStruct {
           string.Concat(
             "Cg1tZXNzYWdlLnByb3RvEg1NZXNzYWdlU3RydWN0IhoKBEVjaG8SEgoKdGlt", 
             "ZV9zdGFtcBgBIAEoCSIvCgpMb2dPbm9yT3V0Eg8KB2FjY291bnQYASACKAkS", 
-            "EAoIcGFzc3dvcmQYAiACKAkiHQoLUmVwbHlTdGF0dXMSDgoGc3RhdHVzGAEg", 
-            "AigNIkUKCFJlZ2lzdGVyEhUKDWVtYWlsX2FjY291bnQYASACKAkSEAoIcGFz", 
-            "c3dvcmQYAiACKAkSEAoIdXNlcm5hbWUYAyABKAkicQoOQ2hlc3NCb2FyZFVz", 
-            "ZXISGQoRY2hlc3NfYm9hcmRfZW1wdHkYASACKAgSEQoJdXNlcl9uYW1lGAIg", 
-            "ASgJEg0KBXNjb3JlGAMgASgNEg4KBnN0YXR1cxgEIAEoDRISCgpoZWFkX2lt", 
-            "YWdlGAUgASgMIskBCg5DaGVzc0JvYXJkSW5mbxIKCgJpZBgBIAIoDRISCgpw", 
-            "ZW9wbGVfbnVtGAIgAigNEjAKCWxlZnRfdXNlchgDIAIoCzIdLk1lc3NhZ2VT", 
-            "dHJ1Y3QuQ2hlc3NCb2FyZFVzZXISMQoKcmlnaHRfdXNlchgEIAIoCzIdLk1l", 
-            "c3NhZ2VTdHJ1Y3QuQ2hlc3NCb2FyZFVzZXISMgoLYm90dG9tX3VzZXIYBSAC", 
-            "KAsyHS5NZXNzYWdlU3RydWN0LkNoZXNzQm9hcmRVc2VyIjMKC0hhbGxJbmZv", 
-            "UmVxEhQKDGdhbWVfaGFsbF9pZBgBIAIoBRIOCgZvcGNvZGUYAiABKAUimQEK", 
-            "CEhhbGxJbmZvEhQKDGdhbWVfaGFsbF9pZBgBIAIoBRIUCgx0b3RhbF9wZW9w", 
-            "bGUYAiACKA0SEwoLY3Vycl9wZW9wbGUYAyACKA0SGAoQdG90YWxfY2hlc3Ni", 
-            "b2FyZBgEIAEoDRIyCgtjaGVzc19ib2FyZBgFIAMoCzIdLk1lc3NhZ2VTdHJ1", 
-            "Y3QuQ2hlc3NCb2FyZEluZm8iIwoRR2FtZUhhbGxTdW1hcnlSZXESDgoGb3Bj", 
-            "b2RlGAEgASgFIq8BCg5HYW1lSGFsbFN1bWFyeRIQCgh1c2VybmFtZRgBIAIo", 
-            "CRINCgVzY29yZRgCIAIoDRIQCghoYWxsX251bRgDIAIoDRIUCgxoZWFkX3Bp", 
-            "Y3R1cmUYBCACKAkSEwoLYWRfcGljdHVyZTEYBSACKAkSEwoLYWRfcGljdHVy", 
-            "ZTIYBiABKAkSKgoJaGFsbF9pbmZvGAcgAygLMhcuTWVzc2FnZVN0cnVjdC5I", 
-            "YWxsSW5mbyJLCgtSZXF1ZXN0UGxheRIUCgxnYW1lX2hhbGxfaWQYASACKAUS", 
-            "FgoOY2hlc3NfYm9hcmRfaWQYAiACKAUSDgoGbG9jYXRlGAMgAigFIlUKEFJl", 
-            "cXVlc3RQbGF5UmVwbHkSDgoGc3RhdHVzGAEgAigFEjEKCmNoZXNzQm9hcmQY", 
-            "AiABKAsyHS5NZXNzYWdlU3RydWN0LkNoZXNzQm9hcmRJbmZvItwBCglNb3Zl", 
-            "Q2hlc3MSFgoOc3JjX2NoZXNzX3R5cGUYASACKAUSFwoPc3JjX3VzZXJfbG9j", 
-            "YXRlGAIgAigFEhMKC2Zyb21fcG9pbnRYGAMgAigFEhMKC2Zyb21fcG9pbnRZ", 
-            "GAQgAigFEhIKCmRlc19wb2ludFgYBSACKAUSEgoKZGVzX3BvaW50WRgGIAIo", 
-            "BRIRCglpc193aW5uZXIYByACKAgSHQoVZWF0X3RhcmdldF9jaGVzc190eXBl", 
-            "GAggASgFEhoKEnRhcmdldF91c2VyX2xvY2F0ZRgJIAEoDSJoCgpNb3ZlQWN0", 
-            "aW9uEhcKD3NyY191c2VyX2xvY2F0ZRgBIAIoDRIrCgltb3ZlY2hlc3MYAiAC", 
-            "KAsyGC5NZXNzYWdlU3RydWN0Lk1vdmVDaGVzcxIUCgx0b2tlbl9sb2NhdGUY", 
-            "AyACKA0iOgoLVXNlck1lc3NhZ2USFwoPc3JjX3VzZXJfbG9jYXRlGAEgAigN", 
-            "EhIKCm1zZ0NvbnRlbnQYAiACKAkiIwoNU3lzdGVtTWVzc2FnZRISCgptc2dD", 
-            "b250ZW50GAEgAigJImYKClJlY29uY2lsZWQSFgoOYXBwbHlfb3JfcmVwbHkY", 
-            "ASACKA0SFwoPc3JjX3VzZXJfbG9jYXRlGAIgAigNEhcKD3Rhcl91c2VyX2xv", 
-            "Y2F0ZRgDIAIoDRIOCgZzdGF0dXMYBCABKAkiLgoGR2l2ZVVwEhcKD3NyY191", 
-            "c2VyX2xvY2F0ZRgBIAIoDRILCgNvcHQYAiABKAkiXwoEVW5kbxIVCg1yZXBf", 
-            "b3JfcmVzcG9uGAEgAigNEhcKD3NyY191c2VyX2xvY2F0ZRgCIAIoDRIXCg90", 
-            "YXJfdXNlcl9sb2NhdGUYAyACKA0SDgoGc3RhdHVzGAQgASgIIjcKDEdhbWVS", 
-            "ZWFkeVJlcRIXCg9zcmNfdXNlcl9sb2NhdGUYASACKA0SDgoGb3Bjb2RlGAIg", 
-            "ASgNImIKD0dhbWVTdGF0dXNSZXBseRIYChBsZWZ0X3VzZXJfc3RhdHVzGAEg", 
-            "AigIEhkKEXJpZ2h0X3VzZXJfc3RhdHVzGAIgAigIEhoKEmJvdHRvbV91c2Vy", 
-          "X3N0YXR1cxgDIAIoCA=="));
+            "EAoIcGFzc3dvcmQYAiACKAkiSgoLUmVwbHlTdGF0dXMSDgoGc3RhdHVzGAEg", 
+            "AigNEisKBHVzZXIYAiABKAsyHS5NZXNzYWdlU3RydWN0LkNoZXNzQm9hcmRV", 
+            "c2VyIkUKCFJlZ2lzdGVyEhUKDWVtYWlsX2FjY291bnQYASACKAkSEAoIcGFz", 
+            "c3dvcmQYAiACKAkSEAoIdXNlcm5hbWUYAyABKAkiowEKDkNoZXNzQm9hcmRV", 
+            "c2VyEhkKEWNoZXNzX2JvYXJkX2VtcHR5GAEgAigIEhEKCXVzZXJfbmFtZRgC", 
+            "IAEoCRIPCgdhY2NvdW50GAMgASgJEg0KBXNjb3JlGAQgASgFEhAKCGV4X2Vt", 
+            "YWlsGAUgASgJEg0KBXBob25lGAYgASgJEhIKCmhlYWRfaW1hZ2UYByABKAwS", 
+            "DgoGc3RhdHVzGAggASgNIjsKEUNoZXNzQm9hcmRJbmZvUmVxEhYKDmNoZXNz", 
+            "X2JvYXJkX2lkGAEgAigFEg4KBm9wY29kZRgCIAEoBSLJAQoOQ2hlc3NCb2Fy", 
+            "ZEluZm8SCgoCaWQYASACKA0SEgoKcGVvcGxlX251bRgCIAIoDRIwCglsZWZ0", 
+            "X3VzZXIYAyACKAsyHS5NZXNzYWdlU3RydWN0LkNoZXNzQm9hcmRVc2VyEjEK", 
+            "CnJpZ2h0X3VzZXIYBCACKAsyHS5NZXNzYWdlU3RydWN0LkNoZXNzQm9hcmRV", 
+            "c2VyEjIKC2JvdHRvbV91c2VyGAUgAigLMh0uTWVzc2FnZVN0cnVjdC5DaGVz", 
+            "c0JvYXJkVXNlciIzCgtIYWxsSW5mb1JlcRIUCgxnYW1lX2hhbGxfaWQYASAC", 
+            "KAUSDgoGb3Bjb2RlGAIgASgFIpkBCghIYWxsSW5mbxIUCgxnYW1lX2hhbGxf", 
+            "aWQYASACKAUSFAoMdG90YWxfcGVvcGxlGAIgAigNEhMKC2N1cnJfcGVvcGxl", 
+            "GAMgAigNEhgKEHRvdGFsX2NoZXNzYm9hcmQYBCABKA0SMgoLY2hlc3NfYm9h", 
+            "cmQYBSADKAsyHS5NZXNzYWdlU3RydWN0LkNoZXNzQm9hcmRJbmZvIiMKEUdh", 
+            "bWVIYWxsU3VtYXJ5UmVxEg4KBm9wY29kZRgBIAEoBSLAAQoOR2FtZUhhbGxT", 
+            "dW1hcnkSDwoHYWNjb3VudBgBIAIoCRIQCgh1c2VybmFtZRgCIAIoCRINCgVz", 
+            "Y29yZRgDIAIoBRIQCghoYWxsX251bRgEIAIoDRIUCgxoZWFkX3BpY3R1cmUY", 
+            "BSACKAkSEwoLYWRfcGljdHVyZTEYBiACKAkSEwoLYWRfcGljdHVyZTIYByAB", 
+            "KAkSKgoJaGFsbF9pbmZvGAggAygLMhcuTWVzc2FnZVN0cnVjdC5IYWxsSW5m", 
+            "byJLCgtSZXF1ZXN0UGxheRIUCgxnYW1lX2hhbGxfaWQYASACKAUSFgoOY2hl", 
+            "c3NfYm9hcmRfaWQYAiACKAUSDgoGbG9jYXRlGAMgAigFInUKEFJlcXVlc3RQ", 
+            "bGF5UmVwbHkSDgoGc3RhdHVzGAEgAigFEh4KFmZpcnN0X2NvbWVfdXNlcl9s", 
+            "b2NhdGUYAiACKA0SMQoKY2hlc3NCb2FyZBgDIAEoCzIdLk1lc3NhZ2VTdHJ1", 
+            "Y3QuQ2hlc3NCb2FyZEluZm8i3AEKCU1vdmVDaGVzcxIWCg5zcmNfY2hlc3Nf", 
+            "dHlwZRgBIAIoBRIXCg9zcmNfdXNlcl9sb2NhdGUYAiACKAUSEwoLZnJvbV9w", 
+            "b2ludFgYAyACKAUSEwoLZnJvbV9wb2ludFkYBCACKAUSEgoKZGVzX3BvaW50", 
+            "WBgFIAIoBRISCgpkZXNfcG9pbnRZGAYgAigFEhEKCWlzX3dpbm5lchgHIAIo", 
+            "CBIdChVlYXRfdGFyZ2V0X2NoZXNzX3R5cGUYCCABKAUSGgoSdGFyZ2V0X3Vz", 
+            "ZXJfbG9jYXRlGAkgASgNImgKCk1vdmVBY3Rpb24SFwoPc3JjX3VzZXJfbG9j", 
+            "YXRlGAEgAigNEisKCW1vdmVjaGVzcxgCIAIoCzIYLk1lc3NhZ2VTdHJ1Y3Qu", 
+            "TW92ZUNoZXNzEhQKDHRva2VuX2xvY2F0ZRgDIAIoDSI6CgtVc2VyTWVzc2Fn", 
+            "ZRIXCg9zcmNfdXNlcl9sb2NhdGUYASACKA0SEgoKbXNnQ29udGVudBgCIAIo", 
+            "CSIjCg1TeXN0ZW1NZXNzYWdlEhIKCm1zZ0NvbnRlbnQYASACKAkiZgoKUmVj", 
+            "b25jaWxlZBIWCg5hcHBseV9vcl9yZXBseRgBIAIoDRIXCg9zcmNfdXNlcl9s", 
+            "b2NhdGUYAiACKA0SFwoPdGFyX3VzZXJfbG9jYXRlGAMgAigNEg4KBnN0YXR1", 
+            "cxgEIAEoCSIuCgZHaXZlVXASFwoPc3JjX3VzZXJfbG9jYXRlGAEgAigNEgsK", 
+            "A29wdBgCIAEoCSJfCgRVbmRvEhUKDXJlcF9vcl9yZXNwb24YASACKA0SFwoP", 
+            "c3JjX3VzZXJfbG9jYXRlGAIgAigNEhcKD3Rhcl91c2VyX2xvY2F0ZRgDIAIo", 
+            "DRIOCgZzdGF0dXMYBCABKAgiZQoMR2FtZVJlYWR5UmVxEhcKD3NyY191c2Vy", 
+            "X2xvY2F0ZRgBIAIoDRIOCgZvcGNvZGUYAiABKA0SEgoKdG90YWxfdGltZRgD", 
+            "IAEoDRIYChBzaW5nbGVfc3RlcF90aW1lGAQgASgNIqYBCg9HYW1lU3RhdHVz", 
+            "UmVwbHkSGAoQbGVmdF91c2VyX3N0YXR1cxgBIAIoCBIZChFyaWdodF91c2Vy", 
+            "X3N0YXR1cxgCIAIoCBIaChJib3R0b21fdXNlcl9zdGF0dXMYAyACKAgSFAoM", 
+            "dG9rZW5fbG9jYXRlGAQgAigNEhIKCnRvdGFsX3RpbWUYBSACKA0SGAoQc2lu", 
+            "Z2xlX3N0ZXBfdGltZRgGIAIoDSIqCgxGaW5kUGFzc3dvcmQSDQoFZW1haWwY", 
+            "ASACKAkSCwoDb3B0GAIgASgJInsKDlVwZGF0ZVVzZXJJbmZvEhEKCXVzZXJf", 
+            "bmFtZRgBIAIoCRIPCgdhY2NvdW50GAIgAigJEhAKCHBhc3N3b3JkGAMgAigJ", 
+            "EhAKCGV4X2VtYWlsGAQgASgJEg0KBXBob25lGAUgASgJEhIKCmhlYWRfaW1h", 
+            "Z2UYBiABKAwimAEKEkFkUGljdHVyZUl0ZW1SZXBseRIQCghpbWFnZV9pZBgB", 
+            "IAIoDRIPCgdleGlzdGVkGAIgAigIEhIKCmltYWdlX3R5cGUYAyABKAkSEgoK", 
+            "aW1hZ2VfbmFtZRgEIAEoCRIWCg5pbWFnZV9oYXNoY29kZRgFIAEoCRILCgN1", 
+            "cmwYBiABKAkSEgoKaW1hZ2Vfc2l6ZRgHIAEoDSJXCgxBZFBpY3R1cmVSZXES", 
+            "EAoIaW1hZ2VfaWQYASACKA0SFgoOaW1hZ2VfaGFzaGNvZGUYAiABKAkSCwoD", 
+            "dXJsGAMgASgJEhAKCGxhc3Rfb25lGAQgASgIIkcKFUFkUGljdHVyZUNvbnRl", 
+            "bnRSZXBseRIOCgZzeW5jZWQYASACKAgSDwoHY29udGVudBgCIAEoDBINCgVl", 
+          "bmRlZBgDIAEoCA=="));
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_MessageStruct_Echo__Descriptor = Descriptor.MessageTypes[0];
@@ -125,7 +155,7 @@ namespace MessageStruct {
         internal__static_MessageStruct_ReplyStatus__Descriptor = Descriptor.MessageTypes[2];
         internal__static_MessageStruct_ReplyStatus__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.ReplyStatus, global::MessageStruct.ReplyStatus.Builder>(internal__static_MessageStruct_ReplyStatus__Descriptor,
-                new string[] { "Status", });
+                new string[] { "Status", "User", });
         internal__static_MessageStruct_Register__Descriptor = Descriptor.MessageTypes[3];
         internal__static_MessageStruct_Register__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.Register, global::MessageStruct.Register.Builder>(internal__static_MessageStruct_Register__Descriptor,
@@ -133,71 +163,95 @@ namespace MessageStruct {
         internal__static_MessageStruct_ChessBoardUser__Descriptor = Descriptor.MessageTypes[4];
         internal__static_MessageStruct_ChessBoardUser__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.ChessBoardUser, global::MessageStruct.ChessBoardUser.Builder>(internal__static_MessageStruct_ChessBoardUser__Descriptor,
-                new string[] { "ChessBoardEmpty", "UserName", "Score", "Status", "HeadImage", });
-        internal__static_MessageStruct_ChessBoardInfo__Descriptor = Descriptor.MessageTypes[5];
+                new string[] { "ChessBoardEmpty", "UserName", "Account", "Score", "ExEmail", "Phone", "HeadImage", "Status", });
+        internal__static_MessageStruct_ChessBoardInfoReq__Descriptor = Descriptor.MessageTypes[5];
+        internal__static_MessageStruct_ChessBoardInfoReq__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.ChessBoardInfoReq, global::MessageStruct.ChessBoardInfoReq.Builder>(internal__static_MessageStruct_ChessBoardInfoReq__Descriptor,
+                new string[] { "ChessBoardId", "Opcode", });
+        internal__static_MessageStruct_ChessBoardInfo__Descriptor = Descriptor.MessageTypes[6];
         internal__static_MessageStruct_ChessBoardInfo__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.ChessBoardInfo, global::MessageStruct.ChessBoardInfo.Builder>(internal__static_MessageStruct_ChessBoardInfo__Descriptor,
                 new string[] { "Id", "PeopleNum", "LeftUser", "RightUser", "BottomUser", });
-        internal__static_MessageStruct_HallInfoReq__Descriptor = Descriptor.MessageTypes[6];
+        internal__static_MessageStruct_HallInfoReq__Descriptor = Descriptor.MessageTypes[7];
         internal__static_MessageStruct_HallInfoReq__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.HallInfoReq, global::MessageStruct.HallInfoReq.Builder>(internal__static_MessageStruct_HallInfoReq__Descriptor,
                 new string[] { "GameHallId", "Opcode", });
-        internal__static_MessageStruct_HallInfo__Descriptor = Descriptor.MessageTypes[7];
+        internal__static_MessageStruct_HallInfo__Descriptor = Descriptor.MessageTypes[8];
         internal__static_MessageStruct_HallInfo__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.HallInfo, global::MessageStruct.HallInfo.Builder>(internal__static_MessageStruct_HallInfo__Descriptor,
                 new string[] { "GameHallId", "TotalPeople", "CurrPeople", "TotalChessboard", "ChessBoard", });
-        internal__static_MessageStruct_GameHallSumaryReq__Descriptor = Descriptor.MessageTypes[8];
+        internal__static_MessageStruct_GameHallSumaryReq__Descriptor = Descriptor.MessageTypes[9];
         internal__static_MessageStruct_GameHallSumaryReq__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.GameHallSumaryReq, global::MessageStruct.GameHallSumaryReq.Builder>(internal__static_MessageStruct_GameHallSumaryReq__Descriptor,
                 new string[] { "Opcode", });
-        internal__static_MessageStruct_GameHallSumary__Descriptor = Descriptor.MessageTypes[9];
+        internal__static_MessageStruct_GameHallSumary__Descriptor = Descriptor.MessageTypes[10];
         internal__static_MessageStruct_GameHallSumary__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.GameHallSumary, global::MessageStruct.GameHallSumary.Builder>(internal__static_MessageStruct_GameHallSumary__Descriptor,
-                new string[] { "Username", "Score", "HallNum", "HeadPicture", "AdPicture1", "AdPicture2", "HallInfo", });
-        internal__static_MessageStruct_RequestPlay__Descriptor = Descriptor.MessageTypes[10];
+                new string[] { "Account", "Username", "Score", "HallNum", "HeadPicture", "AdPicture1", "AdPicture2", "HallInfo", });
+        internal__static_MessageStruct_RequestPlay__Descriptor = Descriptor.MessageTypes[11];
         internal__static_MessageStruct_RequestPlay__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.RequestPlay, global::MessageStruct.RequestPlay.Builder>(internal__static_MessageStruct_RequestPlay__Descriptor,
                 new string[] { "GameHallId", "ChessBoardId", "Locate", });
-        internal__static_MessageStruct_RequestPlayReply__Descriptor = Descriptor.MessageTypes[11];
+        internal__static_MessageStruct_RequestPlayReply__Descriptor = Descriptor.MessageTypes[12];
         internal__static_MessageStruct_RequestPlayReply__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.RequestPlayReply, global::MessageStruct.RequestPlayReply.Builder>(internal__static_MessageStruct_RequestPlayReply__Descriptor,
-                new string[] { "Status", "ChessBoard", });
-        internal__static_MessageStruct_MoveChess__Descriptor = Descriptor.MessageTypes[12];
+                new string[] { "Status", "FirstComeUserLocate", "ChessBoard", });
+        internal__static_MessageStruct_MoveChess__Descriptor = Descriptor.MessageTypes[13];
         internal__static_MessageStruct_MoveChess__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.MoveChess, global::MessageStruct.MoveChess.Builder>(internal__static_MessageStruct_MoveChess__Descriptor,
                 new string[] { "SrcChessType", "SrcUserLocate", "FromPointX", "FromPointY", "DesPointX", "DesPointY", "IsWinner", "EatTargetChessType", "TargetUserLocate", });
-        internal__static_MessageStruct_MoveAction__Descriptor = Descriptor.MessageTypes[13];
+        internal__static_MessageStruct_MoveAction__Descriptor = Descriptor.MessageTypes[14];
         internal__static_MessageStruct_MoveAction__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.MoveAction, global::MessageStruct.MoveAction.Builder>(internal__static_MessageStruct_MoveAction__Descriptor,
                 new string[] { "SrcUserLocate", "Movechess", "TokenLocate", });
-        internal__static_MessageStruct_UserMessage__Descriptor = Descriptor.MessageTypes[14];
+        internal__static_MessageStruct_UserMessage__Descriptor = Descriptor.MessageTypes[15];
         internal__static_MessageStruct_UserMessage__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.UserMessage, global::MessageStruct.UserMessage.Builder>(internal__static_MessageStruct_UserMessage__Descriptor,
                 new string[] { "SrcUserLocate", "MsgContent", });
-        internal__static_MessageStruct_SystemMessage__Descriptor = Descriptor.MessageTypes[15];
+        internal__static_MessageStruct_SystemMessage__Descriptor = Descriptor.MessageTypes[16];
         internal__static_MessageStruct_SystemMessage__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.SystemMessage, global::MessageStruct.SystemMessage.Builder>(internal__static_MessageStruct_SystemMessage__Descriptor,
                 new string[] { "MsgContent", });
-        internal__static_MessageStruct_Reconciled__Descriptor = Descriptor.MessageTypes[16];
+        internal__static_MessageStruct_Reconciled__Descriptor = Descriptor.MessageTypes[17];
         internal__static_MessageStruct_Reconciled__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.Reconciled, global::MessageStruct.Reconciled.Builder>(internal__static_MessageStruct_Reconciled__Descriptor,
                 new string[] { "ApplyOrReply", "SrcUserLocate", "TarUserLocate", "Status", });
-        internal__static_MessageStruct_GiveUp__Descriptor = Descriptor.MessageTypes[17];
+        internal__static_MessageStruct_GiveUp__Descriptor = Descriptor.MessageTypes[18];
         internal__static_MessageStruct_GiveUp__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.GiveUp, global::MessageStruct.GiveUp.Builder>(internal__static_MessageStruct_GiveUp__Descriptor,
                 new string[] { "SrcUserLocate", "Opt", });
-        internal__static_MessageStruct_Undo__Descriptor = Descriptor.MessageTypes[18];
+        internal__static_MessageStruct_Undo__Descriptor = Descriptor.MessageTypes[19];
         internal__static_MessageStruct_Undo__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.Undo, global::MessageStruct.Undo.Builder>(internal__static_MessageStruct_Undo__Descriptor,
                 new string[] { "RepOrRespon", "SrcUserLocate", "TarUserLocate", "Status", });
-        internal__static_MessageStruct_GameReadyReq__Descriptor = Descriptor.MessageTypes[19];
+        internal__static_MessageStruct_GameReadyReq__Descriptor = Descriptor.MessageTypes[20];
         internal__static_MessageStruct_GameReadyReq__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.GameReadyReq, global::MessageStruct.GameReadyReq.Builder>(internal__static_MessageStruct_GameReadyReq__Descriptor,
-                new string[] { "SrcUserLocate", "Opcode", });
-        internal__static_MessageStruct_GameStatusReply__Descriptor = Descriptor.MessageTypes[20];
+                new string[] { "SrcUserLocate", "Opcode", "TotalTime", "SingleStepTime", });
+        internal__static_MessageStruct_GameStatusReply__Descriptor = Descriptor.MessageTypes[21];
         internal__static_MessageStruct_GameStatusReply__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.GameStatusReply, global::MessageStruct.GameStatusReply.Builder>(internal__static_MessageStruct_GameStatusReply__Descriptor,
-                new string[] { "LeftUserStatus", "RightUserStatus", "BottomUserStatus", });
+                new string[] { "LeftUserStatus", "RightUserStatus", "BottomUserStatus", "TokenLocate", "TotalTime", "SingleStepTime", });
+        internal__static_MessageStruct_FindPassword__Descriptor = Descriptor.MessageTypes[22];
+        internal__static_MessageStruct_FindPassword__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.FindPassword, global::MessageStruct.FindPassword.Builder>(internal__static_MessageStruct_FindPassword__Descriptor,
+                new string[] { "Email", "Opt", });
+        internal__static_MessageStruct_UpdateUserInfo__Descriptor = Descriptor.MessageTypes[23];
+        internal__static_MessageStruct_UpdateUserInfo__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.UpdateUserInfo, global::MessageStruct.UpdateUserInfo.Builder>(internal__static_MessageStruct_UpdateUserInfo__Descriptor,
+                new string[] { "UserName", "Account", "Password", "ExEmail", "Phone", "HeadImage", });
+        internal__static_MessageStruct_AdPictureItemReply__Descriptor = Descriptor.MessageTypes[24];
+        internal__static_MessageStruct_AdPictureItemReply__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.AdPictureItemReply, global::MessageStruct.AdPictureItemReply.Builder>(internal__static_MessageStruct_AdPictureItemReply__Descriptor,
+                new string[] { "ImageId", "Existed", "ImageType", "ImageName", "ImageHashcode", "Url", "ImageSize", });
+        internal__static_MessageStruct_AdPictureReq__Descriptor = Descriptor.MessageTypes[25];
+        internal__static_MessageStruct_AdPictureReq__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.AdPictureReq, global::MessageStruct.AdPictureReq.Builder>(internal__static_MessageStruct_AdPictureReq__Descriptor,
+                new string[] { "ImageId", "ImageHashcode", "Url", "LastOne", });
+        internal__static_MessageStruct_AdPictureContentReply__Descriptor = Descriptor.MessageTypes[26];
+        internal__static_MessageStruct_AdPictureContentReply__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.AdPictureContentReply, global::MessageStruct.AdPictureContentReply.Builder>(internal__static_MessageStruct_AdPictureContentReply__Descriptor,
+                new string[] { "Synced", "Content", "Ended", });
         return null;
       };
       pbd::FileDescriptor.InternalBuildGeneratedFileFrom(descriptorData,
@@ -810,8 +864,8 @@ namespace MessageStruct {
   public sealed partial class ReplyStatus : pb::GeneratedMessage<ReplyStatus, ReplyStatus.Builder> {
     private ReplyStatus() { }
     private static readonly ReplyStatus defaultInstance = new ReplyStatus().MakeReadOnly();
-    private static readonly string[] _replyStatusFieldNames = new string[] { "status" };
-    private static readonly uint[] _replyStatusFieldTags = new uint[] { 8 };
+    private static readonly string[] _replyStatusFieldNames = new string[] { "status", "user" };
+    private static readonly uint[] _replyStatusFieldTags = new uint[] { 8, 18 };
     public static ReplyStatus DefaultInstance {
       get { return defaultInstance; }
     }
@@ -843,9 +897,22 @@ namespace MessageStruct {
       get { return status_; }
     }
     
+    public const int UserFieldNumber = 2;
+    private bool hasUser;
+    private global::MessageStruct.ChessBoardUser user_;
+    public bool HasUser {
+      get { return hasUser; }
+    }
+    public global::MessageStruct.ChessBoardUser User {
+      get { return user_ ?? global::MessageStruct.ChessBoardUser.DefaultInstance; }
+    }
+    
     public override bool IsInitialized {
       get {
         if (!hasStatus) return false;
+        if (HasUser) {
+          if (!User.IsInitialized) return false;
+        }
         return true;
       }
     }
@@ -855,6 +922,9 @@ namespace MessageStruct {
       string[] field_names = _replyStatusFieldNames;
       if (hasStatus) {
         output.WriteUInt32(1, field_names[0], Status);
+      }
+      if (hasUser) {
+        output.WriteMessage(2, field_names[1], User);
       }
       UnknownFields.WriteTo(output);
     }
@@ -875,6 +945,9 @@ namespace MessageStruct {
       size = 0;
       if (hasStatus) {
         size += pb::CodedOutputStream.ComputeUInt32Size(1, Status);
+      }
+      if (hasUser) {
+        size += pb::CodedOutputStream.ComputeMessageSize(2, User);
       }
       size += UnknownFields.SerializedSize;
       memoizedSerializedSize = size;
@@ -1001,6 +1074,9 @@ namespace MessageStruct {
         if (other.HasStatus) {
           Status = other.Status;
         }
+        if (other.HasUser) {
+          MergeUser(other.User);
+        }
         this.MergeUnknownFields(other.UnknownFields);
         return this;
       }
@@ -1048,6 +1124,15 @@ namespace MessageStruct {
               result.hasStatus = input.ReadUInt32(ref result.status_);
               break;
             }
+            case 18: {
+              global::MessageStruct.ChessBoardUser.Builder subBuilder = global::MessageStruct.ChessBoardUser.CreateBuilder();
+              if (result.hasUser) {
+                subBuilder.MergeFrom(User);
+              }
+              input.ReadMessage(subBuilder, extensionRegistry);
+              User = subBuilder.BuildPartial();
+              break;
+            }
           }
         }
         
@@ -1077,6 +1162,46 @@ namespace MessageStruct {
         PrepareBuilder();
         result.hasStatus = false;
         result.status_ = 0;
+        return this;
+      }
+      
+      public bool HasUser {
+       get { return result.hasUser; }
+      }
+      public global::MessageStruct.ChessBoardUser User {
+        get { return result.User; }
+        set { SetUser(value); }
+      }
+      public Builder SetUser(global::MessageStruct.ChessBoardUser value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasUser = true;
+        result.user_ = value;
+        return this;
+      }
+      public Builder SetUser(global::MessageStruct.ChessBoardUser.Builder builderForValue) {
+        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
+        PrepareBuilder();
+        result.hasUser = true;
+        result.user_ = builderForValue.Build();
+        return this;
+      }
+      public Builder MergeUser(global::MessageStruct.ChessBoardUser value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        if (result.hasUser &&
+            result.user_ != global::MessageStruct.ChessBoardUser.DefaultInstance) {
+            result.user_ = global::MessageStruct.ChessBoardUser.CreateBuilder(result.user_).MergeFrom(value).BuildPartial();
+        } else {
+          result.user_ = value;
+        }
+        result.hasUser = true;
+        return this;
+      }
+      public Builder ClearUser() {
+        PrepareBuilder();
+        result.hasUser = false;
+        result.user_ = null;
         return this;
       }
     }
@@ -1455,8 +1580,8 @@ namespace MessageStruct {
   public sealed partial class ChessBoardUser : pb::GeneratedMessage<ChessBoardUser, ChessBoardUser.Builder> {
     private ChessBoardUser() { }
     private static readonly ChessBoardUser defaultInstance = new ChessBoardUser().MakeReadOnly();
-    private static readonly string[] _chessBoardUserFieldNames = new string[] { "chess_board_empty", "head_image", "score", "status", "user_name" };
-    private static readonly uint[] _chessBoardUserFieldTags = new uint[] { 8, 42, 24, 32, 18 };
+    private static readonly string[] _chessBoardUserFieldNames = new string[] { "account", "chess_board_empty", "ex_email", "head_image", "phone", "score", "status", "user_name" };
+    private static readonly uint[] _chessBoardUserFieldTags = new uint[] { 26, 8, 42, 58, 50, 32, 64, 18 };
     public static ChessBoardUser DefaultInstance {
       get { return defaultInstance; }
     }
@@ -1497,18 +1622,57 @@ namespace MessageStruct {
       get { return userName_; }
     }
     
-    public const int ScoreFieldNumber = 3;
+    public const int AccountFieldNumber = 3;
+    private bool hasAccount;
+    private string account_ = "";
+    public bool HasAccount {
+      get { return hasAccount; }
+    }
+    public string Account {
+      get { return account_; }
+    }
+    
+    public const int ScoreFieldNumber = 4;
     private bool hasScore;
-    private uint score_;
+    private int score_;
     public bool HasScore {
       get { return hasScore; }
     }
-    [global::System.CLSCompliant(false)]
-    public uint Score {
+    public int Score {
       get { return score_; }
     }
     
-    public const int StatusFieldNumber = 4;
+    public const int ExEmailFieldNumber = 5;
+    private bool hasExEmail;
+    private string exEmail_ = "";
+    public bool HasExEmail {
+      get { return hasExEmail; }
+    }
+    public string ExEmail {
+      get { return exEmail_; }
+    }
+    
+    public const int PhoneFieldNumber = 6;
+    private bool hasPhone;
+    private string phone_ = "";
+    public bool HasPhone {
+      get { return hasPhone; }
+    }
+    public string Phone {
+      get { return phone_; }
+    }
+    
+    public const int HeadImageFieldNumber = 7;
+    private bool hasHeadImage;
+    private pb::ByteString headImage_ = pb::ByteString.Empty;
+    public bool HasHeadImage {
+      get { return hasHeadImage; }
+    }
+    public pb::ByteString HeadImage {
+      get { return headImage_; }
+    }
+    
+    public const int StatusFieldNumber = 8;
     private bool hasStatus;
     private uint status_;
     public bool HasStatus {
@@ -1517,16 +1681,6 @@ namespace MessageStruct {
     [global::System.CLSCompliant(false)]
     public uint Status {
       get { return status_; }
-    }
-    
-    public const int HeadImageFieldNumber = 5;
-    private bool hasHeadImage;
-    private pb::ByteString headImage_ = pb::ByteString.Empty;
-    public bool HasHeadImage {
-      get { return hasHeadImage; }
-    }
-    public pb::ByteString HeadImage {
-      get { return headImage_; }
     }
     
     public override bool IsInitialized {
@@ -1540,19 +1694,28 @@ namespace MessageStruct {
       CalcSerializedSize();
       string[] field_names = _chessBoardUserFieldNames;
       if (hasChessBoardEmpty) {
-        output.WriteBool(1, field_names[0], ChessBoardEmpty);
+        output.WriteBool(1, field_names[1], ChessBoardEmpty);
       }
       if (hasUserName) {
-        output.WriteString(2, field_names[4], UserName);
+        output.WriteString(2, field_names[7], UserName);
+      }
+      if (hasAccount) {
+        output.WriteString(3, field_names[0], Account);
       }
       if (hasScore) {
-        output.WriteUInt32(3, field_names[2], Score);
+        output.WriteInt32(4, field_names[5], Score);
       }
-      if (hasStatus) {
-        output.WriteUInt32(4, field_names[3], Status);
+      if (hasExEmail) {
+        output.WriteString(5, field_names[2], ExEmail);
+      }
+      if (hasPhone) {
+        output.WriteString(6, field_names[4], Phone);
       }
       if (hasHeadImage) {
-        output.WriteBytes(5, field_names[1], HeadImage);
+        output.WriteBytes(7, field_names[3], HeadImage);
+      }
+      if (hasStatus) {
+        output.WriteUInt32(8, field_names[6], Status);
       }
       UnknownFields.WriteTo(output);
     }
@@ -1577,14 +1740,23 @@ namespace MessageStruct {
       if (hasUserName) {
         size += pb::CodedOutputStream.ComputeStringSize(2, UserName);
       }
-      if (hasScore) {
-        size += pb::CodedOutputStream.ComputeUInt32Size(3, Score);
+      if (hasAccount) {
+        size += pb::CodedOutputStream.ComputeStringSize(3, Account);
       }
-      if (hasStatus) {
-        size += pb::CodedOutputStream.ComputeUInt32Size(4, Status);
+      if (hasScore) {
+        size += pb::CodedOutputStream.ComputeInt32Size(4, Score);
+      }
+      if (hasExEmail) {
+        size += pb::CodedOutputStream.ComputeStringSize(5, ExEmail);
+      }
+      if (hasPhone) {
+        size += pb::CodedOutputStream.ComputeStringSize(6, Phone);
       }
       if (hasHeadImage) {
-        size += pb::CodedOutputStream.ComputeBytesSize(5, HeadImage);
+        size += pb::CodedOutputStream.ComputeBytesSize(7, HeadImage);
+      }
+      if (hasStatus) {
+        size += pb::CodedOutputStream.ComputeUInt32Size(8, Status);
       }
       size += UnknownFields.SerializedSize;
       memoizedSerializedSize = size;
@@ -1714,14 +1886,23 @@ namespace MessageStruct {
         if (other.HasUserName) {
           UserName = other.UserName;
         }
+        if (other.HasAccount) {
+          Account = other.Account;
+        }
         if (other.HasScore) {
           Score = other.Score;
         }
-        if (other.HasStatus) {
-          Status = other.Status;
+        if (other.HasExEmail) {
+          ExEmail = other.ExEmail;
+        }
+        if (other.HasPhone) {
+          Phone = other.Phone;
         }
         if (other.HasHeadImage) {
           HeadImage = other.HeadImage;
+        }
+        if (other.HasStatus) {
+          Status = other.Status;
         }
         this.MergeUnknownFields(other.UnknownFields);
         return this;
@@ -1774,16 +1955,28 @@ namespace MessageStruct {
               result.hasUserName = input.ReadString(ref result.userName_);
               break;
             }
-            case 24: {
-              result.hasScore = input.ReadUInt32(ref result.score_);
+            case 26: {
+              result.hasAccount = input.ReadString(ref result.account_);
               break;
             }
             case 32: {
-              result.hasStatus = input.ReadUInt32(ref result.status_);
+              result.hasScore = input.ReadInt32(ref result.score_);
               break;
             }
             case 42: {
+              result.hasExEmail = input.ReadString(ref result.exEmail_);
+              break;
+            }
+            case 50: {
+              result.hasPhone = input.ReadString(ref result.phone_);
+              break;
+            }
+            case 58: {
               result.hasHeadImage = input.ReadBytes(ref result.headImage_);
+              break;
+            }
+            case 64: {
+              result.hasStatus = input.ReadUInt32(ref result.status_);
               break;
             }
           }
@@ -1837,16 +2030,35 @@ namespace MessageStruct {
         return this;
       }
       
+      public bool HasAccount {
+        get { return result.hasAccount; }
+      }
+      public string Account {
+        get { return result.Account; }
+        set { SetAccount(value); }
+      }
+      public Builder SetAccount(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasAccount = true;
+        result.account_ = value;
+        return this;
+      }
+      public Builder ClearAccount() {
+        PrepareBuilder();
+        result.hasAccount = false;
+        result.account_ = "";
+        return this;
+      }
+      
       public bool HasScore {
         get { return result.hasScore; }
       }
-      [global::System.CLSCompliant(false)]
-      public uint Score {
+      public int Score {
         get { return result.Score; }
         set { SetScore(value); }
       }
-      [global::System.CLSCompliant(false)]
-      public Builder SetScore(uint value) {
+      public Builder SetScore(int value) {
         PrepareBuilder();
         result.hasScore = true;
         result.score_ = value;
@@ -1856,6 +2068,69 @@ namespace MessageStruct {
         PrepareBuilder();
         result.hasScore = false;
         result.score_ = 0;
+        return this;
+      }
+      
+      public bool HasExEmail {
+        get { return result.hasExEmail; }
+      }
+      public string ExEmail {
+        get { return result.ExEmail; }
+        set { SetExEmail(value); }
+      }
+      public Builder SetExEmail(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasExEmail = true;
+        result.exEmail_ = value;
+        return this;
+      }
+      public Builder ClearExEmail() {
+        PrepareBuilder();
+        result.hasExEmail = false;
+        result.exEmail_ = "";
+        return this;
+      }
+      
+      public bool HasPhone {
+        get { return result.hasPhone; }
+      }
+      public string Phone {
+        get { return result.Phone; }
+        set { SetPhone(value); }
+      }
+      public Builder SetPhone(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasPhone = true;
+        result.phone_ = value;
+        return this;
+      }
+      public Builder ClearPhone() {
+        PrepareBuilder();
+        result.hasPhone = false;
+        result.phone_ = "";
+        return this;
+      }
+      
+      public bool HasHeadImage {
+        get { return result.hasHeadImage; }
+      }
+      public pb::ByteString HeadImage {
+        get { return result.HeadImage; }
+        set { SetHeadImage(value); }
+      }
+      public Builder SetHeadImage(pb::ByteString value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasHeadImage = true;
+        result.headImage_ = value;
+        return this;
+      }
+      public Builder ClearHeadImage() {
+        PrepareBuilder();
+        result.hasHeadImage = false;
+        result.headImage_ = pb::ByteString.Empty;
         return this;
       }
       
@@ -1880,29 +2155,327 @@ namespace MessageStruct {
         result.status_ = 0;
         return this;
       }
+    }
+    static ChessBoardUser() {
+      object.ReferenceEquals(global::MessageStruct.Message.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class ChessBoardInfoReq : pb::GeneratedMessage<ChessBoardInfoReq, ChessBoardInfoReq.Builder> {
+    private ChessBoardInfoReq() { }
+    private static readonly ChessBoardInfoReq defaultInstance = new ChessBoardInfoReq().MakeReadOnly();
+    private static readonly string[] _chessBoardInfoReqFieldNames = new string[] { "chess_board_id", "opcode" };
+    private static readonly uint[] _chessBoardInfoReqFieldTags = new uint[] { 8, 16 };
+    public static ChessBoardInfoReq DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override ChessBoardInfoReq DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override ChessBoardInfoReq ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::MessageStruct.Message.internal__static_MessageStruct_ChessBoardInfoReq__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<ChessBoardInfoReq, ChessBoardInfoReq.Builder> InternalFieldAccessors {
+      get { return global::MessageStruct.Message.internal__static_MessageStruct_ChessBoardInfoReq__FieldAccessorTable; }
+    }
+    
+    public const int ChessBoardIdFieldNumber = 1;
+    private bool hasChessBoardId;
+    private int chessBoardId_;
+    public bool HasChessBoardId {
+      get { return hasChessBoardId; }
+    }
+    public int ChessBoardId {
+      get { return chessBoardId_; }
+    }
+    
+    public const int OpcodeFieldNumber = 2;
+    private bool hasOpcode;
+    private int opcode_;
+    public bool HasOpcode {
+      get { return hasOpcode; }
+    }
+    public int Opcode {
+      get { return opcode_; }
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasChessBoardId) return false;
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      CalcSerializedSize();
+      string[] field_names = _chessBoardInfoReqFieldNames;
+      if (hasChessBoardId) {
+        output.WriteInt32(1, field_names[0], ChessBoardId);
+      }
+      if (hasOpcode) {
+        output.WriteInt32(2, field_names[1], Opcode);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        return CalcSerializedSize();
+      }
+    }
+    
+    private int CalcSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
       
-      public bool HasHeadImage {
-        get { return result.hasHeadImage; }
+      size = 0;
+      if (hasChessBoardId) {
+        size += pb::CodedOutputStream.ComputeInt32Size(1, ChessBoardId);
       }
-      public pb::ByteString HeadImage {
-        get { return result.HeadImage; }
-        set { SetHeadImage(value); }
+      if (hasOpcode) {
+        size += pb::CodedOutputStream.ComputeInt32Size(2, Opcode);
       }
-      public Builder SetHeadImage(pb::ByteString value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
-        PrepareBuilder();
-        result.hasHeadImage = true;
-        result.headImage_ = value;
+      size += UnknownFields.SerializedSize;
+      memoizedSerializedSize = size;
+      return size;
+    }
+    public static ChessBoardInfoReq ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static ChessBoardInfoReq ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static ChessBoardInfoReq ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static ChessBoardInfoReq ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static ChessBoardInfoReq ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static ChessBoardInfoReq ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static ChessBoardInfoReq ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static ChessBoardInfoReq ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static ChessBoardInfoReq ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static ChessBoardInfoReq ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private ChessBoardInfoReq MakeReadOnly() {
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(ChessBoardInfoReq prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<ChessBoardInfoReq, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(ChessBoardInfoReq cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private ChessBoardInfoReq result;
+      
+      private ChessBoardInfoReq PrepareBuilder() {
+        if (resultIsReadOnly) {
+          ChessBoardInfoReq original = result;
+          result = new ChessBoardInfoReq();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override ChessBoardInfoReq MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
         return this;
       }
-      public Builder ClearHeadImage() {
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::MessageStruct.ChessBoardInfoReq.Descriptor; }
+      }
+      
+      public override ChessBoardInfoReq DefaultInstanceForType {
+        get { return global::MessageStruct.ChessBoardInfoReq.DefaultInstance; }
+      }
+      
+      public override ChessBoardInfoReq BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is ChessBoardInfoReq) {
+          return MergeFrom((ChessBoardInfoReq) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(ChessBoardInfoReq other) {
+        if (other == global::MessageStruct.ChessBoardInfoReq.DefaultInstance) return this;
         PrepareBuilder();
-        result.hasHeadImage = false;
-        result.headImage_ = pb::ByteString.Empty;
+        if (other.HasChessBoardId) {
+          ChessBoardId = other.ChessBoardId;
+        }
+        if (other.HasOpcode) {
+          Opcode = other.Opcode;
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_chessBoardInfoReqFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _chessBoardInfoReqFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 8: {
+              result.hasChessBoardId = input.ReadInt32(ref result.chessBoardId_);
+              break;
+            }
+            case 16: {
+              result.hasOpcode = input.ReadInt32(ref result.opcode_);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasChessBoardId {
+        get { return result.hasChessBoardId; }
+      }
+      public int ChessBoardId {
+        get { return result.ChessBoardId; }
+        set { SetChessBoardId(value); }
+      }
+      public Builder SetChessBoardId(int value) {
+        PrepareBuilder();
+        result.hasChessBoardId = true;
+        result.chessBoardId_ = value;
+        return this;
+      }
+      public Builder ClearChessBoardId() {
+        PrepareBuilder();
+        result.hasChessBoardId = false;
+        result.chessBoardId_ = 0;
+        return this;
+      }
+      
+      public bool HasOpcode {
+        get { return result.hasOpcode; }
+      }
+      public int Opcode {
+        get { return result.Opcode; }
+        set { SetOpcode(value); }
+      }
+      public Builder SetOpcode(int value) {
+        PrepareBuilder();
+        result.hasOpcode = true;
+        result.opcode_ = value;
+        return this;
+      }
+      public Builder ClearOpcode() {
+        PrepareBuilder();
+        result.hasOpcode = false;
+        result.opcode_ = 0;
         return this;
       }
     }
-    static ChessBoardUser() {
+    static ChessBoardInfoReq() {
       object.ReferenceEquals(global::MessageStruct.Message.Descriptor, null);
     }
   }
@@ -3530,8 +4103,8 @@ namespace MessageStruct {
   public sealed partial class GameHallSumary : pb::GeneratedMessage<GameHallSumary, GameHallSumary.Builder> {
     private GameHallSumary() { }
     private static readonly GameHallSumary defaultInstance = new GameHallSumary().MakeReadOnly();
-    private static readonly string[] _gameHallSumaryFieldNames = new string[] { "ad_picture1", "ad_picture2", "hall_info", "hall_num", "head_picture", "score", "username" };
-    private static readonly uint[] _gameHallSumaryFieldTags = new uint[] { 42, 50, 58, 24, 34, 16, 10 };
+    private static readonly string[] _gameHallSumaryFieldNames = new string[] { "account", "ad_picture1", "ad_picture2", "hall_info", "hall_num", "head_picture", "score", "username" };
+    private static readonly uint[] _gameHallSumaryFieldTags = new uint[] { 10, 50, 58, 66, 32, 42, 24, 18 };
     public static GameHallSumary DefaultInstance {
       get { return defaultInstance; }
     }
@@ -3552,7 +4125,17 @@ namespace MessageStruct {
       get { return global::MessageStruct.Message.internal__static_MessageStruct_GameHallSumary__FieldAccessorTable; }
     }
     
-    public const int UsernameFieldNumber = 1;
+    public const int AccountFieldNumber = 1;
+    private bool hasAccount;
+    private string account_ = "";
+    public bool HasAccount {
+      get { return hasAccount; }
+    }
+    public string Account {
+      get { return account_; }
+    }
+    
+    public const int UsernameFieldNumber = 2;
     private bool hasUsername;
     private string username_ = "";
     public bool HasUsername {
@@ -3562,18 +4145,17 @@ namespace MessageStruct {
       get { return username_; }
     }
     
-    public const int ScoreFieldNumber = 2;
+    public const int ScoreFieldNumber = 3;
     private bool hasScore;
-    private uint score_;
+    private int score_;
     public bool HasScore {
       get { return hasScore; }
     }
-    [global::System.CLSCompliant(false)]
-    public uint Score {
+    public int Score {
       get { return score_; }
     }
     
-    public const int HallNumFieldNumber = 3;
+    public const int HallNumFieldNumber = 4;
     private bool hasHallNum;
     private uint hallNum_;
     public bool HasHallNum {
@@ -3584,7 +4166,7 @@ namespace MessageStruct {
       get { return hallNum_; }
     }
     
-    public const int HeadPictureFieldNumber = 4;
+    public const int HeadPictureFieldNumber = 5;
     private bool hasHeadPicture;
     private string headPicture_ = "";
     public bool HasHeadPicture {
@@ -3594,7 +4176,7 @@ namespace MessageStruct {
       get { return headPicture_; }
     }
     
-    public const int AdPicture1FieldNumber = 5;
+    public const int AdPicture1FieldNumber = 6;
     private bool hasAdPicture1;
     private string adPicture1_ = "";
     public bool HasAdPicture1 {
@@ -3604,7 +4186,7 @@ namespace MessageStruct {
       get { return adPicture1_; }
     }
     
-    public const int AdPicture2FieldNumber = 6;
+    public const int AdPicture2FieldNumber = 7;
     private bool hasAdPicture2;
     private string adPicture2_ = "";
     public bool HasAdPicture2 {
@@ -3614,7 +4196,7 @@ namespace MessageStruct {
       get { return adPicture2_; }
     }
     
-    public const int HallInfoFieldNumber = 7;
+    public const int HallInfoFieldNumber = 8;
     private pbc::PopsicleList<global::MessageStruct.HallInfo> hallInfo_ = new pbc::PopsicleList<global::MessageStruct.HallInfo>();
     public scg::IList<global::MessageStruct.HallInfo> HallInfoList {
       get { return hallInfo_; }
@@ -3628,6 +4210,7 @@ namespace MessageStruct {
     
     public override bool IsInitialized {
       get {
+        if (!hasAccount) return false;
         if (!hasUsername) return false;
         if (!hasScore) return false;
         if (!hasHallNum) return false;
@@ -3643,26 +4226,29 @@ namespace MessageStruct {
     public override void WriteTo(pb::ICodedOutputStream output) {
       CalcSerializedSize();
       string[] field_names = _gameHallSumaryFieldNames;
+      if (hasAccount) {
+        output.WriteString(1, field_names[0], Account);
+      }
       if (hasUsername) {
-        output.WriteString(1, field_names[6], Username);
+        output.WriteString(2, field_names[7], Username);
       }
       if (hasScore) {
-        output.WriteUInt32(2, field_names[5], Score);
+        output.WriteInt32(3, field_names[6], Score);
       }
       if (hasHallNum) {
-        output.WriteUInt32(3, field_names[3], HallNum);
+        output.WriteUInt32(4, field_names[4], HallNum);
       }
       if (hasHeadPicture) {
-        output.WriteString(4, field_names[4], HeadPicture);
+        output.WriteString(5, field_names[5], HeadPicture);
       }
       if (hasAdPicture1) {
-        output.WriteString(5, field_names[0], AdPicture1);
+        output.WriteString(6, field_names[1], AdPicture1);
       }
       if (hasAdPicture2) {
-        output.WriteString(6, field_names[1], AdPicture2);
+        output.WriteString(7, field_names[2], AdPicture2);
       }
       if (hallInfo_.Count > 0) {
-        output.WriteMessageArray(7, field_names[2], hallInfo_);
+        output.WriteMessageArray(8, field_names[3], hallInfo_);
       }
       UnknownFields.WriteTo(output);
     }
@@ -3681,26 +4267,29 @@ namespace MessageStruct {
       if (size != -1) return size;
       
       size = 0;
+      if (hasAccount) {
+        size += pb::CodedOutputStream.ComputeStringSize(1, Account);
+      }
       if (hasUsername) {
-        size += pb::CodedOutputStream.ComputeStringSize(1, Username);
+        size += pb::CodedOutputStream.ComputeStringSize(2, Username);
       }
       if (hasScore) {
-        size += pb::CodedOutputStream.ComputeUInt32Size(2, Score);
+        size += pb::CodedOutputStream.ComputeInt32Size(3, Score);
       }
       if (hasHallNum) {
-        size += pb::CodedOutputStream.ComputeUInt32Size(3, HallNum);
+        size += pb::CodedOutputStream.ComputeUInt32Size(4, HallNum);
       }
       if (hasHeadPicture) {
-        size += pb::CodedOutputStream.ComputeStringSize(4, HeadPicture);
+        size += pb::CodedOutputStream.ComputeStringSize(5, HeadPicture);
       }
       if (hasAdPicture1) {
-        size += pb::CodedOutputStream.ComputeStringSize(5, AdPicture1);
+        size += pb::CodedOutputStream.ComputeStringSize(6, AdPicture1);
       }
       if (hasAdPicture2) {
-        size += pb::CodedOutputStream.ComputeStringSize(6, AdPicture2);
+        size += pb::CodedOutputStream.ComputeStringSize(7, AdPicture2);
       }
       foreach (global::MessageStruct.HallInfo element in HallInfoList) {
-        size += pb::CodedOutputStream.ComputeMessageSize(7, element);
+        size += pb::CodedOutputStream.ComputeMessageSize(8, element);
       }
       size += UnknownFields.SerializedSize;
       memoizedSerializedSize = size;
@@ -3825,6 +4414,9 @@ namespace MessageStruct {
       public override Builder MergeFrom(GameHallSumary other) {
         if (other == global::MessageStruct.GameHallSumary.DefaultInstance) return this;
         PrepareBuilder();
+        if (other.HasAccount) {
+          Account = other.Account;
+        }
         if (other.HasUsername) {
           Username = other.Username;
         }
@@ -3890,30 +4482,34 @@ namespace MessageStruct {
               break;
             }
             case 10: {
+              result.hasAccount = input.ReadString(ref result.account_);
+              break;
+            }
+            case 18: {
               result.hasUsername = input.ReadString(ref result.username_);
               break;
             }
-            case 16: {
-              result.hasScore = input.ReadUInt32(ref result.score_);
+            case 24: {
+              result.hasScore = input.ReadInt32(ref result.score_);
               break;
             }
-            case 24: {
+            case 32: {
               result.hasHallNum = input.ReadUInt32(ref result.hallNum_);
               break;
             }
-            case 34: {
+            case 42: {
               result.hasHeadPicture = input.ReadString(ref result.headPicture_);
               break;
             }
-            case 42: {
+            case 50: {
               result.hasAdPicture1 = input.ReadString(ref result.adPicture1_);
               break;
             }
-            case 50: {
+            case 58: {
               result.hasAdPicture2 = input.ReadString(ref result.adPicture2_);
               break;
             }
-            case 58: {
+            case 66: {
               input.ReadMessageArray(tag, field_name, result.hallInfo_, global::MessageStruct.HallInfo.DefaultInstance, extensionRegistry);
               break;
             }
@@ -3926,6 +4522,27 @@ namespace MessageStruct {
         return this;
       }
       
+      
+      public bool HasAccount {
+        get { return result.hasAccount; }
+      }
+      public string Account {
+        get { return result.Account; }
+        set { SetAccount(value); }
+      }
+      public Builder SetAccount(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasAccount = true;
+        result.account_ = value;
+        return this;
+      }
+      public Builder ClearAccount() {
+        PrepareBuilder();
+        result.hasAccount = false;
+        result.account_ = "";
+        return this;
+      }
       
       public bool HasUsername {
         get { return result.hasUsername; }
@@ -3951,13 +4568,11 @@ namespace MessageStruct {
       public bool HasScore {
         get { return result.hasScore; }
       }
-      [global::System.CLSCompliant(false)]
-      public uint Score {
+      public int Score {
         get { return result.Score; }
         set { SetScore(value); }
       }
-      [global::System.CLSCompliant(false)]
-      public Builder SetScore(uint value) {
+      public Builder SetScore(int value) {
         PrepareBuilder();
         result.hasScore = true;
         result.score_ = value;
@@ -4472,8 +5087,8 @@ namespace MessageStruct {
   public sealed partial class RequestPlayReply : pb::GeneratedMessage<RequestPlayReply, RequestPlayReply.Builder> {
     private RequestPlayReply() { }
     private static readonly RequestPlayReply defaultInstance = new RequestPlayReply().MakeReadOnly();
-    private static readonly string[] _requestPlayReplyFieldNames = new string[] { "chessBoard", "status" };
-    private static readonly uint[] _requestPlayReplyFieldTags = new uint[] { 18, 8 };
+    private static readonly string[] _requestPlayReplyFieldNames = new string[] { "chessBoard", "first_come_user_locate", "status" };
+    private static readonly uint[] _requestPlayReplyFieldTags = new uint[] { 26, 16, 8 };
     public static RequestPlayReply DefaultInstance {
       get { return defaultInstance; }
     }
@@ -4504,7 +5119,18 @@ namespace MessageStruct {
       get { return status_; }
     }
     
-    public const int ChessBoardFieldNumber = 2;
+    public const int FirstComeUserLocateFieldNumber = 2;
+    private bool hasFirstComeUserLocate;
+    private uint firstComeUserLocate_;
+    public bool HasFirstComeUserLocate {
+      get { return hasFirstComeUserLocate; }
+    }
+    [global::System.CLSCompliant(false)]
+    public uint FirstComeUserLocate {
+      get { return firstComeUserLocate_; }
+    }
+    
+    public const int ChessBoardFieldNumber = 3;
     private bool hasChessBoard;
     private global::MessageStruct.ChessBoardInfo chessBoard_;
     public bool HasChessBoard {
@@ -4517,6 +5143,7 @@ namespace MessageStruct {
     public override bool IsInitialized {
       get {
         if (!hasStatus) return false;
+        if (!hasFirstComeUserLocate) return false;
         if (HasChessBoard) {
           if (!ChessBoard.IsInitialized) return false;
         }
@@ -4528,10 +5155,13 @@ namespace MessageStruct {
       CalcSerializedSize();
       string[] field_names = _requestPlayReplyFieldNames;
       if (hasStatus) {
-        output.WriteInt32(1, field_names[1], Status);
+        output.WriteInt32(1, field_names[2], Status);
+      }
+      if (hasFirstComeUserLocate) {
+        output.WriteUInt32(2, field_names[1], FirstComeUserLocate);
       }
       if (hasChessBoard) {
-        output.WriteMessage(2, field_names[0], ChessBoard);
+        output.WriteMessage(3, field_names[0], ChessBoard);
       }
       UnknownFields.WriteTo(output);
     }
@@ -4553,8 +5183,11 @@ namespace MessageStruct {
       if (hasStatus) {
         size += pb::CodedOutputStream.ComputeInt32Size(1, Status);
       }
+      if (hasFirstComeUserLocate) {
+        size += pb::CodedOutputStream.ComputeUInt32Size(2, FirstComeUserLocate);
+      }
       if (hasChessBoard) {
-        size += pb::CodedOutputStream.ComputeMessageSize(2, ChessBoard);
+        size += pb::CodedOutputStream.ComputeMessageSize(3, ChessBoard);
       }
       size += UnknownFields.SerializedSize;
       memoizedSerializedSize = size;
@@ -4681,6 +5314,9 @@ namespace MessageStruct {
         if (other.HasStatus) {
           Status = other.Status;
         }
+        if (other.HasFirstComeUserLocate) {
+          FirstComeUserLocate = other.FirstComeUserLocate;
+        }
         if (other.HasChessBoard) {
           MergeChessBoard(other.ChessBoard);
         }
@@ -4731,7 +5367,11 @@ namespace MessageStruct {
               result.hasStatus = input.ReadInt32(ref result.status_);
               break;
             }
-            case 18: {
+            case 16: {
+              result.hasFirstComeUserLocate = input.ReadUInt32(ref result.firstComeUserLocate_);
+              break;
+            }
+            case 26: {
               global::MessageStruct.ChessBoardInfo.Builder subBuilder = global::MessageStruct.ChessBoardInfo.CreateBuilder();
               if (result.hasChessBoard) {
                 subBuilder.MergeFrom(ChessBoard);
@@ -4767,6 +5407,28 @@ namespace MessageStruct {
         PrepareBuilder();
         result.hasStatus = false;
         result.status_ = 0;
+        return this;
+      }
+      
+      public bool HasFirstComeUserLocate {
+        get { return result.hasFirstComeUserLocate; }
+      }
+      [global::System.CLSCompliant(false)]
+      public uint FirstComeUserLocate {
+        get { return result.FirstComeUserLocate; }
+        set { SetFirstComeUserLocate(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetFirstComeUserLocate(uint value) {
+        PrepareBuilder();
+        result.hasFirstComeUserLocate = true;
+        result.firstComeUserLocate_ = value;
+        return this;
+      }
+      public Builder ClearFirstComeUserLocate() {
+        PrepareBuilder();
+        result.hasFirstComeUserLocate = false;
+        result.firstComeUserLocate_ = 0;
         return this;
       }
       
@@ -7601,8 +8263,8 @@ namespace MessageStruct {
   public sealed partial class GameReadyReq : pb::GeneratedMessage<GameReadyReq, GameReadyReq.Builder> {
     private GameReadyReq() { }
     private static readonly GameReadyReq defaultInstance = new GameReadyReq().MakeReadOnly();
-    private static readonly string[] _gameReadyReqFieldNames = new string[] { "opcode", "src_user_locate" };
-    private static readonly uint[] _gameReadyReqFieldTags = new uint[] { 16, 8 };
+    private static readonly string[] _gameReadyReqFieldNames = new string[] { "opcode", "single_step_time", "src_user_locate", "total_time" };
+    private static readonly uint[] _gameReadyReqFieldTags = new uint[] { 16, 32, 8, 24 };
     public static GameReadyReq DefaultInstance {
       get { return defaultInstance; }
     }
@@ -7645,6 +8307,28 @@ namespace MessageStruct {
       get { return opcode_; }
     }
     
+    public const int TotalTimeFieldNumber = 3;
+    private bool hasTotalTime;
+    private uint totalTime_;
+    public bool HasTotalTime {
+      get { return hasTotalTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public uint TotalTime {
+      get { return totalTime_; }
+    }
+    
+    public const int SingleStepTimeFieldNumber = 4;
+    private bool hasSingleStepTime;
+    private uint singleStepTime_;
+    public bool HasSingleStepTime {
+      get { return hasSingleStepTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public uint SingleStepTime {
+      get { return singleStepTime_; }
+    }
+    
     public override bool IsInitialized {
       get {
         if (!hasSrcUserLocate) return false;
@@ -7656,10 +8340,16 @@ namespace MessageStruct {
       CalcSerializedSize();
       string[] field_names = _gameReadyReqFieldNames;
       if (hasSrcUserLocate) {
-        output.WriteUInt32(1, field_names[1], SrcUserLocate);
+        output.WriteUInt32(1, field_names[2], SrcUserLocate);
       }
       if (hasOpcode) {
         output.WriteUInt32(2, field_names[0], Opcode);
+      }
+      if (hasTotalTime) {
+        output.WriteUInt32(3, field_names[3], TotalTime);
+      }
+      if (hasSingleStepTime) {
+        output.WriteUInt32(4, field_names[1], SingleStepTime);
       }
       UnknownFields.WriteTo(output);
     }
@@ -7683,6 +8373,12 @@ namespace MessageStruct {
       }
       if (hasOpcode) {
         size += pb::CodedOutputStream.ComputeUInt32Size(2, Opcode);
+      }
+      if (hasTotalTime) {
+        size += pb::CodedOutputStream.ComputeUInt32Size(3, TotalTime);
+      }
+      if (hasSingleStepTime) {
+        size += pb::CodedOutputStream.ComputeUInt32Size(4, SingleStepTime);
       }
       size += UnknownFields.SerializedSize;
       memoizedSerializedSize = size;
@@ -7812,6 +8508,12 @@ namespace MessageStruct {
         if (other.HasOpcode) {
           Opcode = other.Opcode;
         }
+        if (other.HasTotalTime) {
+          TotalTime = other.TotalTime;
+        }
+        if (other.HasSingleStepTime) {
+          SingleStepTime = other.SingleStepTime;
+        }
         this.MergeUnknownFields(other.UnknownFields);
         return this;
       }
@@ -7861,6 +8563,14 @@ namespace MessageStruct {
             }
             case 16: {
               result.hasOpcode = input.ReadUInt32(ref result.opcode_);
+              break;
+            }
+            case 24: {
+              result.hasTotalTime = input.ReadUInt32(ref result.totalTime_);
+              break;
+            }
+            case 32: {
+              result.hasSingleStepTime = input.ReadUInt32(ref result.singleStepTime_);
               break;
             }
           }
@@ -7916,6 +8626,50 @@ namespace MessageStruct {
         result.opcode_ = 0;
         return this;
       }
+      
+      public bool HasTotalTime {
+        get { return result.hasTotalTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public uint TotalTime {
+        get { return result.TotalTime; }
+        set { SetTotalTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetTotalTime(uint value) {
+        PrepareBuilder();
+        result.hasTotalTime = true;
+        result.totalTime_ = value;
+        return this;
+      }
+      public Builder ClearTotalTime() {
+        PrepareBuilder();
+        result.hasTotalTime = false;
+        result.totalTime_ = 0;
+        return this;
+      }
+      
+      public bool HasSingleStepTime {
+        get { return result.hasSingleStepTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public uint SingleStepTime {
+        get { return result.SingleStepTime; }
+        set { SetSingleStepTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetSingleStepTime(uint value) {
+        PrepareBuilder();
+        result.hasSingleStepTime = true;
+        result.singleStepTime_ = value;
+        return this;
+      }
+      public Builder ClearSingleStepTime() {
+        PrepareBuilder();
+        result.hasSingleStepTime = false;
+        result.singleStepTime_ = 0;
+        return this;
+      }
     }
     static GameReadyReq() {
       object.ReferenceEquals(global::MessageStruct.Message.Descriptor, null);
@@ -7926,8 +8680,8 @@ namespace MessageStruct {
   public sealed partial class GameStatusReply : pb::GeneratedMessage<GameStatusReply, GameStatusReply.Builder> {
     private GameStatusReply() { }
     private static readonly GameStatusReply defaultInstance = new GameStatusReply().MakeReadOnly();
-    private static readonly string[] _gameStatusReplyFieldNames = new string[] { "bottom_user_status", "left_user_status", "right_user_status" };
-    private static readonly uint[] _gameStatusReplyFieldTags = new uint[] { 24, 8, 16 };
+    private static readonly string[] _gameStatusReplyFieldNames = new string[] { "bottom_user_status", "left_user_status", "right_user_status", "single_step_time", "token_locate", "total_time" };
+    private static readonly uint[] _gameStatusReplyFieldTags = new uint[] { 24, 8, 16, 48, 32, 40 };
     public static GameStatusReply DefaultInstance {
       get { return defaultInstance; }
     }
@@ -7978,11 +8732,47 @@ namespace MessageStruct {
       get { return bottomUserStatus_; }
     }
     
+    public const int TokenLocateFieldNumber = 4;
+    private bool hasTokenLocate;
+    private uint tokenLocate_;
+    public bool HasTokenLocate {
+      get { return hasTokenLocate; }
+    }
+    [global::System.CLSCompliant(false)]
+    public uint TokenLocate {
+      get { return tokenLocate_; }
+    }
+    
+    public const int TotalTimeFieldNumber = 5;
+    private bool hasTotalTime;
+    private uint totalTime_;
+    public bool HasTotalTime {
+      get { return hasTotalTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public uint TotalTime {
+      get { return totalTime_; }
+    }
+    
+    public const int SingleStepTimeFieldNumber = 6;
+    private bool hasSingleStepTime;
+    private uint singleStepTime_;
+    public bool HasSingleStepTime {
+      get { return hasSingleStepTime; }
+    }
+    [global::System.CLSCompliant(false)]
+    public uint SingleStepTime {
+      get { return singleStepTime_; }
+    }
+    
     public override bool IsInitialized {
       get {
         if (!hasLeftUserStatus) return false;
         if (!hasRightUserStatus) return false;
         if (!hasBottomUserStatus) return false;
+        if (!hasTokenLocate) return false;
+        if (!hasTotalTime) return false;
+        if (!hasSingleStepTime) return false;
         return true;
       }
     }
@@ -7998,6 +8788,15 @@ namespace MessageStruct {
       }
       if (hasBottomUserStatus) {
         output.WriteBool(3, field_names[0], BottomUserStatus);
+      }
+      if (hasTokenLocate) {
+        output.WriteUInt32(4, field_names[4], TokenLocate);
+      }
+      if (hasTotalTime) {
+        output.WriteUInt32(5, field_names[5], TotalTime);
+      }
+      if (hasSingleStepTime) {
+        output.WriteUInt32(6, field_names[3], SingleStepTime);
       }
       UnknownFields.WriteTo(output);
     }
@@ -8024,6 +8823,15 @@ namespace MessageStruct {
       }
       if (hasBottomUserStatus) {
         size += pb::CodedOutputStream.ComputeBoolSize(3, BottomUserStatus);
+      }
+      if (hasTokenLocate) {
+        size += pb::CodedOutputStream.ComputeUInt32Size(4, TokenLocate);
+      }
+      if (hasTotalTime) {
+        size += pb::CodedOutputStream.ComputeUInt32Size(5, TotalTime);
+      }
+      if (hasSingleStepTime) {
+        size += pb::CodedOutputStream.ComputeUInt32Size(6, SingleStepTime);
       }
       size += UnknownFields.SerializedSize;
       memoizedSerializedSize = size;
@@ -8156,6 +8964,15 @@ namespace MessageStruct {
         if (other.HasBottomUserStatus) {
           BottomUserStatus = other.BottomUserStatus;
         }
+        if (other.HasTokenLocate) {
+          TokenLocate = other.TokenLocate;
+        }
+        if (other.HasTotalTime) {
+          TotalTime = other.TotalTime;
+        }
+        if (other.HasSingleStepTime) {
+          SingleStepTime = other.SingleStepTime;
+        }
         this.MergeUnknownFields(other.UnknownFields);
         return this;
       }
@@ -8209,6 +9026,18 @@ namespace MessageStruct {
             }
             case 24: {
               result.hasBottomUserStatus = input.ReadBool(ref result.bottomUserStatus_);
+              break;
+            }
+            case 32: {
+              result.hasTokenLocate = input.ReadUInt32(ref result.tokenLocate_);
+              break;
+            }
+            case 40: {
+              result.hasTotalTime = input.ReadUInt32(ref result.totalTime_);
+              break;
+            }
+            case 48: {
+              result.hasSingleStepTime = input.ReadUInt32(ref result.singleStepTime_);
               break;
             }
           }
@@ -8280,8 +9109,2212 @@ namespace MessageStruct {
         result.bottomUserStatus_ = false;
         return this;
       }
+      
+      public bool HasTokenLocate {
+        get { return result.hasTokenLocate; }
+      }
+      [global::System.CLSCompliant(false)]
+      public uint TokenLocate {
+        get { return result.TokenLocate; }
+        set { SetTokenLocate(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetTokenLocate(uint value) {
+        PrepareBuilder();
+        result.hasTokenLocate = true;
+        result.tokenLocate_ = value;
+        return this;
+      }
+      public Builder ClearTokenLocate() {
+        PrepareBuilder();
+        result.hasTokenLocate = false;
+        result.tokenLocate_ = 0;
+        return this;
+      }
+      
+      public bool HasTotalTime {
+        get { return result.hasTotalTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public uint TotalTime {
+        get { return result.TotalTime; }
+        set { SetTotalTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetTotalTime(uint value) {
+        PrepareBuilder();
+        result.hasTotalTime = true;
+        result.totalTime_ = value;
+        return this;
+      }
+      public Builder ClearTotalTime() {
+        PrepareBuilder();
+        result.hasTotalTime = false;
+        result.totalTime_ = 0;
+        return this;
+      }
+      
+      public bool HasSingleStepTime {
+        get { return result.hasSingleStepTime; }
+      }
+      [global::System.CLSCompliant(false)]
+      public uint SingleStepTime {
+        get { return result.SingleStepTime; }
+        set { SetSingleStepTime(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetSingleStepTime(uint value) {
+        PrepareBuilder();
+        result.hasSingleStepTime = true;
+        result.singleStepTime_ = value;
+        return this;
+      }
+      public Builder ClearSingleStepTime() {
+        PrepareBuilder();
+        result.hasSingleStepTime = false;
+        result.singleStepTime_ = 0;
+        return this;
+      }
     }
     static GameStatusReply() {
+      object.ReferenceEquals(global::MessageStruct.Message.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class FindPassword : pb::GeneratedMessage<FindPassword, FindPassword.Builder> {
+    private FindPassword() { }
+    private static readonly FindPassword defaultInstance = new FindPassword().MakeReadOnly();
+    private static readonly string[] _findPasswordFieldNames = new string[] { "email", "opt" };
+    private static readonly uint[] _findPasswordFieldTags = new uint[] { 10, 18 };
+    public static FindPassword DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override FindPassword DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override FindPassword ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::MessageStruct.Message.internal__static_MessageStruct_FindPassword__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<FindPassword, FindPassword.Builder> InternalFieldAccessors {
+      get { return global::MessageStruct.Message.internal__static_MessageStruct_FindPassword__FieldAccessorTable; }
+    }
+    
+    public const int EmailFieldNumber = 1;
+    private bool hasEmail;
+    private string email_ = "";
+    public bool HasEmail {
+      get { return hasEmail; }
+    }
+    public string Email {
+      get { return email_; }
+    }
+    
+    public const int OptFieldNumber = 2;
+    private bool hasOpt;
+    private string opt_ = "";
+    public bool HasOpt {
+      get { return hasOpt; }
+    }
+    public string Opt {
+      get { return opt_; }
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasEmail) return false;
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      CalcSerializedSize();
+      string[] field_names = _findPasswordFieldNames;
+      if (hasEmail) {
+        output.WriteString(1, field_names[0], Email);
+      }
+      if (hasOpt) {
+        output.WriteString(2, field_names[1], Opt);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        return CalcSerializedSize();
+      }
+    }
+    
+    private int CalcSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+      
+      size = 0;
+      if (hasEmail) {
+        size += pb::CodedOutputStream.ComputeStringSize(1, Email);
+      }
+      if (hasOpt) {
+        size += pb::CodedOutputStream.ComputeStringSize(2, Opt);
+      }
+      size += UnknownFields.SerializedSize;
+      memoizedSerializedSize = size;
+      return size;
+    }
+    public static FindPassword ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static FindPassword ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static FindPassword ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static FindPassword ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static FindPassword ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static FindPassword ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static FindPassword ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static FindPassword ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static FindPassword ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static FindPassword ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private FindPassword MakeReadOnly() {
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(FindPassword prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<FindPassword, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(FindPassword cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private FindPassword result;
+      
+      private FindPassword PrepareBuilder() {
+        if (resultIsReadOnly) {
+          FindPassword original = result;
+          result = new FindPassword();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override FindPassword MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::MessageStruct.FindPassword.Descriptor; }
+      }
+      
+      public override FindPassword DefaultInstanceForType {
+        get { return global::MessageStruct.FindPassword.DefaultInstance; }
+      }
+      
+      public override FindPassword BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is FindPassword) {
+          return MergeFrom((FindPassword) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(FindPassword other) {
+        if (other == global::MessageStruct.FindPassword.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasEmail) {
+          Email = other.Email;
+        }
+        if (other.HasOpt) {
+          Opt = other.Opt;
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_findPasswordFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _findPasswordFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 10: {
+              result.hasEmail = input.ReadString(ref result.email_);
+              break;
+            }
+            case 18: {
+              result.hasOpt = input.ReadString(ref result.opt_);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasEmail {
+        get { return result.hasEmail; }
+      }
+      public string Email {
+        get { return result.Email; }
+        set { SetEmail(value); }
+      }
+      public Builder SetEmail(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasEmail = true;
+        result.email_ = value;
+        return this;
+      }
+      public Builder ClearEmail() {
+        PrepareBuilder();
+        result.hasEmail = false;
+        result.email_ = "";
+        return this;
+      }
+      
+      public bool HasOpt {
+        get { return result.hasOpt; }
+      }
+      public string Opt {
+        get { return result.Opt; }
+        set { SetOpt(value); }
+      }
+      public Builder SetOpt(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasOpt = true;
+        result.opt_ = value;
+        return this;
+      }
+      public Builder ClearOpt() {
+        PrepareBuilder();
+        result.hasOpt = false;
+        result.opt_ = "";
+        return this;
+      }
+    }
+    static FindPassword() {
+      object.ReferenceEquals(global::MessageStruct.Message.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class UpdateUserInfo : pb::GeneratedMessage<UpdateUserInfo, UpdateUserInfo.Builder> {
+    private UpdateUserInfo() { }
+    private static readonly UpdateUserInfo defaultInstance = new UpdateUserInfo().MakeReadOnly();
+    private static readonly string[] _updateUserInfoFieldNames = new string[] { "account", "ex_email", "head_image", "password", "phone", "user_name" };
+    private static readonly uint[] _updateUserInfoFieldTags = new uint[] { 18, 34, 50, 26, 42, 10 };
+    public static UpdateUserInfo DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override UpdateUserInfo DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override UpdateUserInfo ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::MessageStruct.Message.internal__static_MessageStruct_UpdateUserInfo__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<UpdateUserInfo, UpdateUserInfo.Builder> InternalFieldAccessors {
+      get { return global::MessageStruct.Message.internal__static_MessageStruct_UpdateUserInfo__FieldAccessorTable; }
+    }
+    
+    public const int UserNameFieldNumber = 1;
+    private bool hasUserName;
+    private string userName_ = "";
+    public bool HasUserName {
+      get { return hasUserName; }
+    }
+    public string UserName {
+      get { return userName_; }
+    }
+    
+    public const int AccountFieldNumber = 2;
+    private bool hasAccount;
+    private string account_ = "";
+    public bool HasAccount {
+      get { return hasAccount; }
+    }
+    public string Account {
+      get { return account_; }
+    }
+    
+    public const int PasswordFieldNumber = 3;
+    private bool hasPassword;
+    private string password_ = "";
+    public bool HasPassword {
+      get { return hasPassword; }
+    }
+    public string Password {
+      get { return password_; }
+    }
+    
+    public const int ExEmailFieldNumber = 4;
+    private bool hasExEmail;
+    private string exEmail_ = "";
+    public bool HasExEmail {
+      get { return hasExEmail; }
+    }
+    public string ExEmail {
+      get { return exEmail_; }
+    }
+    
+    public const int PhoneFieldNumber = 5;
+    private bool hasPhone;
+    private string phone_ = "";
+    public bool HasPhone {
+      get { return hasPhone; }
+    }
+    public string Phone {
+      get { return phone_; }
+    }
+    
+    public const int HeadImageFieldNumber = 6;
+    private bool hasHeadImage;
+    private pb::ByteString headImage_ = pb::ByteString.Empty;
+    public bool HasHeadImage {
+      get { return hasHeadImage; }
+    }
+    public pb::ByteString HeadImage {
+      get { return headImage_; }
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasUserName) return false;
+        if (!hasAccount) return false;
+        if (!hasPassword) return false;
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      CalcSerializedSize();
+      string[] field_names = _updateUserInfoFieldNames;
+      if (hasUserName) {
+        output.WriteString(1, field_names[5], UserName);
+      }
+      if (hasAccount) {
+        output.WriteString(2, field_names[0], Account);
+      }
+      if (hasPassword) {
+        output.WriteString(3, field_names[3], Password);
+      }
+      if (hasExEmail) {
+        output.WriteString(4, field_names[1], ExEmail);
+      }
+      if (hasPhone) {
+        output.WriteString(5, field_names[4], Phone);
+      }
+      if (hasHeadImage) {
+        output.WriteBytes(6, field_names[2], HeadImage);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        return CalcSerializedSize();
+      }
+    }
+    
+    private int CalcSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+      
+      size = 0;
+      if (hasUserName) {
+        size += pb::CodedOutputStream.ComputeStringSize(1, UserName);
+      }
+      if (hasAccount) {
+        size += pb::CodedOutputStream.ComputeStringSize(2, Account);
+      }
+      if (hasPassword) {
+        size += pb::CodedOutputStream.ComputeStringSize(3, Password);
+      }
+      if (hasExEmail) {
+        size += pb::CodedOutputStream.ComputeStringSize(4, ExEmail);
+      }
+      if (hasPhone) {
+        size += pb::CodedOutputStream.ComputeStringSize(5, Phone);
+      }
+      if (hasHeadImage) {
+        size += pb::CodedOutputStream.ComputeBytesSize(6, HeadImage);
+      }
+      size += UnknownFields.SerializedSize;
+      memoizedSerializedSize = size;
+      return size;
+    }
+    public static UpdateUserInfo ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static UpdateUserInfo ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static UpdateUserInfo ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static UpdateUserInfo ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static UpdateUserInfo ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static UpdateUserInfo ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static UpdateUserInfo ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static UpdateUserInfo ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static UpdateUserInfo ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static UpdateUserInfo ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private UpdateUserInfo MakeReadOnly() {
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(UpdateUserInfo prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<UpdateUserInfo, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(UpdateUserInfo cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private UpdateUserInfo result;
+      
+      private UpdateUserInfo PrepareBuilder() {
+        if (resultIsReadOnly) {
+          UpdateUserInfo original = result;
+          result = new UpdateUserInfo();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override UpdateUserInfo MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::MessageStruct.UpdateUserInfo.Descriptor; }
+      }
+      
+      public override UpdateUserInfo DefaultInstanceForType {
+        get { return global::MessageStruct.UpdateUserInfo.DefaultInstance; }
+      }
+      
+      public override UpdateUserInfo BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is UpdateUserInfo) {
+          return MergeFrom((UpdateUserInfo) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(UpdateUserInfo other) {
+        if (other == global::MessageStruct.UpdateUserInfo.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasUserName) {
+          UserName = other.UserName;
+        }
+        if (other.HasAccount) {
+          Account = other.Account;
+        }
+        if (other.HasPassword) {
+          Password = other.Password;
+        }
+        if (other.HasExEmail) {
+          ExEmail = other.ExEmail;
+        }
+        if (other.HasPhone) {
+          Phone = other.Phone;
+        }
+        if (other.HasHeadImage) {
+          HeadImage = other.HeadImage;
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_updateUserInfoFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _updateUserInfoFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 10: {
+              result.hasUserName = input.ReadString(ref result.userName_);
+              break;
+            }
+            case 18: {
+              result.hasAccount = input.ReadString(ref result.account_);
+              break;
+            }
+            case 26: {
+              result.hasPassword = input.ReadString(ref result.password_);
+              break;
+            }
+            case 34: {
+              result.hasExEmail = input.ReadString(ref result.exEmail_);
+              break;
+            }
+            case 42: {
+              result.hasPhone = input.ReadString(ref result.phone_);
+              break;
+            }
+            case 50: {
+              result.hasHeadImage = input.ReadBytes(ref result.headImage_);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasUserName {
+        get { return result.hasUserName; }
+      }
+      public string UserName {
+        get { return result.UserName; }
+        set { SetUserName(value); }
+      }
+      public Builder SetUserName(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasUserName = true;
+        result.userName_ = value;
+        return this;
+      }
+      public Builder ClearUserName() {
+        PrepareBuilder();
+        result.hasUserName = false;
+        result.userName_ = "";
+        return this;
+      }
+      
+      public bool HasAccount {
+        get { return result.hasAccount; }
+      }
+      public string Account {
+        get { return result.Account; }
+        set { SetAccount(value); }
+      }
+      public Builder SetAccount(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasAccount = true;
+        result.account_ = value;
+        return this;
+      }
+      public Builder ClearAccount() {
+        PrepareBuilder();
+        result.hasAccount = false;
+        result.account_ = "";
+        return this;
+      }
+      
+      public bool HasPassword {
+        get { return result.hasPassword; }
+      }
+      public string Password {
+        get { return result.Password; }
+        set { SetPassword(value); }
+      }
+      public Builder SetPassword(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasPassword = true;
+        result.password_ = value;
+        return this;
+      }
+      public Builder ClearPassword() {
+        PrepareBuilder();
+        result.hasPassword = false;
+        result.password_ = "";
+        return this;
+      }
+      
+      public bool HasExEmail {
+        get { return result.hasExEmail; }
+      }
+      public string ExEmail {
+        get { return result.ExEmail; }
+        set { SetExEmail(value); }
+      }
+      public Builder SetExEmail(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasExEmail = true;
+        result.exEmail_ = value;
+        return this;
+      }
+      public Builder ClearExEmail() {
+        PrepareBuilder();
+        result.hasExEmail = false;
+        result.exEmail_ = "";
+        return this;
+      }
+      
+      public bool HasPhone {
+        get { return result.hasPhone; }
+      }
+      public string Phone {
+        get { return result.Phone; }
+        set { SetPhone(value); }
+      }
+      public Builder SetPhone(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasPhone = true;
+        result.phone_ = value;
+        return this;
+      }
+      public Builder ClearPhone() {
+        PrepareBuilder();
+        result.hasPhone = false;
+        result.phone_ = "";
+        return this;
+      }
+      
+      public bool HasHeadImage {
+        get { return result.hasHeadImage; }
+      }
+      public pb::ByteString HeadImage {
+        get { return result.HeadImage; }
+        set { SetHeadImage(value); }
+      }
+      public Builder SetHeadImage(pb::ByteString value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasHeadImage = true;
+        result.headImage_ = value;
+        return this;
+      }
+      public Builder ClearHeadImage() {
+        PrepareBuilder();
+        result.hasHeadImage = false;
+        result.headImage_ = pb::ByteString.Empty;
+        return this;
+      }
+    }
+    static UpdateUserInfo() {
+      object.ReferenceEquals(global::MessageStruct.Message.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class AdPictureItemReply : pb::GeneratedMessage<AdPictureItemReply, AdPictureItemReply.Builder> {
+    private AdPictureItemReply() { }
+    private static readonly AdPictureItemReply defaultInstance = new AdPictureItemReply().MakeReadOnly();
+    private static readonly string[] _adPictureItemReplyFieldNames = new string[] { "existed", "image_hashcode", "image_id", "image_name", "image_size", "image_type", "url" };
+    private static readonly uint[] _adPictureItemReplyFieldTags = new uint[] { 16, 42, 8, 34, 56, 26, 50 };
+    public static AdPictureItemReply DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override AdPictureItemReply DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override AdPictureItemReply ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::MessageStruct.Message.internal__static_MessageStruct_AdPictureItemReply__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<AdPictureItemReply, AdPictureItemReply.Builder> InternalFieldAccessors {
+      get { return global::MessageStruct.Message.internal__static_MessageStruct_AdPictureItemReply__FieldAccessorTable; }
+    }
+    
+    public const int ImageIdFieldNumber = 1;
+    private bool hasImageId;
+    private uint imageId_;
+    public bool HasImageId {
+      get { return hasImageId; }
+    }
+    [global::System.CLSCompliant(false)]
+    public uint ImageId {
+      get { return imageId_; }
+    }
+    
+    public const int ExistedFieldNumber = 2;
+    private bool hasExisted;
+    private bool existed_;
+    public bool HasExisted {
+      get { return hasExisted; }
+    }
+    public bool Existed {
+      get { return existed_; }
+    }
+    
+    public const int ImageTypeFieldNumber = 3;
+    private bool hasImageType;
+    private string imageType_ = "";
+    public bool HasImageType {
+      get { return hasImageType; }
+    }
+    public string ImageType {
+      get { return imageType_; }
+    }
+    
+    public const int ImageNameFieldNumber = 4;
+    private bool hasImageName;
+    private string imageName_ = "";
+    public bool HasImageName {
+      get { return hasImageName; }
+    }
+    public string ImageName {
+      get { return imageName_; }
+    }
+    
+    public const int ImageHashcodeFieldNumber = 5;
+    private bool hasImageHashcode;
+    private string imageHashcode_ = "";
+    public bool HasImageHashcode {
+      get { return hasImageHashcode; }
+    }
+    public string ImageHashcode {
+      get { return imageHashcode_; }
+    }
+    
+    public const int UrlFieldNumber = 6;
+    private bool hasUrl;
+    private string url_ = "";
+    public bool HasUrl {
+      get { return hasUrl; }
+    }
+    public string Url {
+      get { return url_; }
+    }
+    
+    public const int ImageSizeFieldNumber = 7;
+    private bool hasImageSize;
+    private uint imageSize_;
+    public bool HasImageSize {
+      get { return hasImageSize; }
+    }
+    [global::System.CLSCompliant(false)]
+    public uint ImageSize {
+      get { return imageSize_; }
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasImageId) return false;
+        if (!hasExisted) return false;
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      CalcSerializedSize();
+      string[] field_names = _adPictureItemReplyFieldNames;
+      if (hasImageId) {
+        output.WriteUInt32(1, field_names[2], ImageId);
+      }
+      if (hasExisted) {
+        output.WriteBool(2, field_names[0], Existed);
+      }
+      if (hasImageType) {
+        output.WriteString(3, field_names[5], ImageType);
+      }
+      if (hasImageName) {
+        output.WriteString(4, field_names[3], ImageName);
+      }
+      if (hasImageHashcode) {
+        output.WriteString(5, field_names[1], ImageHashcode);
+      }
+      if (hasUrl) {
+        output.WriteString(6, field_names[6], Url);
+      }
+      if (hasImageSize) {
+        output.WriteUInt32(7, field_names[4], ImageSize);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        return CalcSerializedSize();
+      }
+    }
+    
+    private int CalcSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+      
+      size = 0;
+      if (hasImageId) {
+        size += pb::CodedOutputStream.ComputeUInt32Size(1, ImageId);
+      }
+      if (hasExisted) {
+        size += pb::CodedOutputStream.ComputeBoolSize(2, Existed);
+      }
+      if (hasImageType) {
+        size += pb::CodedOutputStream.ComputeStringSize(3, ImageType);
+      }
+      if (hasImageName) {
+        size += pb::CodedOutputStream.ComputeStringSize(4, ImageName);
+      }
+      if (hasImageHashcode) {
+        size += pb::CodedOutputStream.ComputeStringSize(5, ImageHashcode);
+      }
+      if (hasUrl) {
+        size += pb::CodedOutputStream.ComputeStringSize(6, Url);
+      }
+      if (hasImageSize) {
+        size += pb::CodedOutputStream.ComputeUInt32Size(7, ImageSize);
+      }
+      size += UnknownFields.SerializedSize;
+      memoizedSerializedSize = size;
+      return size;
+    }
+    public static AdPictureItemReply ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static AdPictureItemReply ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static AdPictureItemReply ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static AdPictureItemReply ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static AdPictureItemReply ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static AdPictureItemReply ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static AdPictureItemReply ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static AdPictureItemReply ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static AdPictureItemReply ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static AdPictureItemReply ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private AdPictureItemReply MakeReadOnly() {
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(AdPictureItemReply prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<AdPictureItemReply, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(AdPictureItemReply cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private AdPictureItemReply result;
+      
+      private AdPictureItemReply PrepareBuilder() {
+        if (resultIsReadOnly) {
+          AdPictureItemReply original = result;
+          result = new AdPictureItemReply();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override AdPictureItemReply MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::MessageStruct.AdPictureItemReply.Descriptor; }
+      }
+      
+      public override AdPictureItemReply DefaultInstanceForType {
+        get { return global::MessageStruct.AdPictureItemReply.DefaultInstance; }
+      }
+      
+      public override AdPictureItemReply BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is AdPictureItemReply) {
+          return MergeFrom((AdPictureItemReply) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(AdPictureItemReply other) {
+        if (other == global::MessageStruct.AdPictureItemReply.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasImageId) {
+          ImageId = other.ImageId;
+        }
+        if (other.HasExisted) {
+          Existed = other.Existed;
+        }
+        if (other.HasImageType) {
+          ImageType = other.ImageType;
+        }
+        if (other.HasImageName) {
+          ImageName = other.ImageName;
+        }
+        if (other.HasImageHashcode) {
+          ImageHashcode = other.ImageHashcode;
+        }
+        if (other.HasUrl) {
+          Url = other.Url;
+        }
+        if (other.HasImageSize) {
+          ImageSize = other.ImageSize;
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_adPictureItemReplyFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _adPictureItemReplyFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 8: {
+              result.hasImageId = input.ReadUInt32(ref result.imageId_);
+              break;
+            }
+            case 16: {
+              result.hasExisted = input.ReadBool(ref result.existed_);
+              break;
+            }
+            case 26: {
+              result.hasImageType = input.ReadString(ref result.imageType_);
+              break;
+            }
+            case 34: {
+              result.hasImageName = input.ReadString(ref result.imageName_);
+              break;
+            }
+            case 42: {
+              result.hasImageHashcode = input.ReadString(ref result.imageHashcode_);
+              break;
+            }
+            case 50: {
+              result.hasUrl = input.ReadString(ref result.url_);
+              break;
+            }
+            case 56: {
+              result.hasImageSize = input.ReadUInt32(ref result.imageSize_);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasImageId {
+        get { return result.hasImageId; }
+      }
+      [global::System.CLSCompliant(false)]
+      public uint ImageId {
+        get { return result.ImageId; }
+        set { SetImageId(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetImageId(uint value) {
+        PrepareBuilder();
+        result.hasImageId = true;
+        result.imageId_ = value;
+        return this;
+      }
+      public Builder ClearImageId() {
+        PrepareBuilder();
+        result.hasImageId = false;
+        result.imageId_ = 0;
+        return this;
+      }
+      
+      public bool HasExisted {
+        get { return result.hasExisted; }
+      }
+      public bool Existed {
+        get { return result.Existed; }
+        set { SetExisted(value); }
+      }
+      public Builder SetExisted(bool value) {
+        PrepareBuilder();
+        result.hasExisted = true;
+        result.existed_ = value;
+        return this;
+      }
+      public Builder ClearExisted() {
+        PrepareBuilder();
+        result.hasExisted = false;
+        result.existed_ = false;
+        return this;
+      }
+      
+      public bool HasImageType {
+        get { return result.hasImageType; }
+      }
+      public string ImageType {
+        get { return result.ImageType; }
+        set { SetImageType(value); }
+      }
+      public Builder SetImageType(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasImageType = true;
+        result.imageType_ = value;
+        return this;
+      }
+      public Builder ClearImageType() {
+        PrepareBuilder();
+        result.hasImageType = false;
+        result.imageType_ = "";
+        return this;
+      }
+      
+      public bool HasImageName {
+        get { return result.hasImageName; }
+      }
+      public string ImageName {
+        get { return result.ImageName; }
+        set { SetImageName(value); }
+      }
+      public Builder SetImageName(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasImageName = true;
+        result.imageName_ = value;
+        return this;
+      }
+      public Builder ClearImageName() {
+        PrepareBuilder();
+        result.hasImageName = false;
+        result.imageName_ = "";
+        return this;
+      }
+      
+      public bool HasImageHashcode {
+        get { return result.hasImageHashcode; }
+      }
+      public string ImageHashcode {
+        get { return result.ImageHashcode; }
+        set { SetImageHashcode(value); }
+      }
+      public Builder SetImageHashcode(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasImageHashcode = true;
+        result.imageHashcode_ = value;
+        return this;
+      }
+      public Builder ClearImageHashcode() {
+        PrepareBuilder();
+        result.hasImageHashcode = false;
+        result.imageHashcode_ = "";
+        return this;
+      }
+      
+      public bool HasUrl {
+        get { return result.hasUrl; }
+      }
+      public string Url {
+        get { return result.Url; }
+        set { SetUrl(value); }
+      }
+      public Builder SetUrl(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasUrl = true;
+        result.url_ = value;
+        return this;
+      }
+      public Builder ClearUrl() {
+        PrepareBuilder();
+        result.hasUrl = false;
+        result.url_ = "";
+        return this;
+      }
+      
+      public bool HasImageSize {
+        get { return result.hasImageSize; }
+      }
+      [global::System.CLSCompliant(false)]
+      public uint ImageSize {
+        get { return result.ImageSize; }
+        set { SetImageSize(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetImageSize(uint value) {
+        PrepareBuilder();
+        result.hasImageSize = true;
+        result.imageSize_ = value;
+        return this;
+      }
+      public Builder ClearImageSize() {
+        PrepareBuilder();
+        result.hasImageSize = false;
+        result.imageSize_ = 0;
+        return this;
+      }
+    }
+    static AdPictureItemReply() {
+      object.ReferenceEquals(global::MessageStruct.Message.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class AdPictureReq : pb::GeneratedMessage<AdPictureReq, AdPictureReq.Builder> {
+    private AdPictureReq() { }
+    private static readonly AdPictureReq defaultInstance = new AdPictureReq().MakeReadOnly();
+    private static readonly string[] _adPictureReqFieldNames = new string[] { "image_hashcode", "image_id", "last_one", "url" };
+    private static readonly uint[] _adPictureReqFieldTags = new uint[] { 18, 8, 32, 26 };
+    public static AdPictureReq DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override AdPictureReq DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override AdPictureReq ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::MessageStruct.Message.internal__static_MessageStruct_AdPictureReq__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<AdPictureReq, AdPictureReq.Builder> InternalFieldAccessors {
+      get { return global::MessageStruct.Message.internal__static_MessageStruct_AdPictureReq__FieldAccessorTable; }
+    }
+    
+    public const int ImageIdFieldNumber = 1;
+    private bool hasImageId;
+    private uint imageId_;
+    public bool HasImageId {
+      get { return hasImageId; }
+    }
+    [global::System.CLSCompliant(false)]
+    public uint ImageId {
+      get { return imageId_; }
+    }
+    
+    public const int ImageHashcodeFieldNumber = 2;
+    private bool hasImageHashcode;
+    private string imageHashcode_ = "";
+    public bool HasImageHashcode {
+      get { return hasImageHashcode; }
+    }
+    public string ImageHashcode {
+      get { return imageHashcode_; }
+    }
+    
+    public const int UrlFieldNumber = 3;
+    private bool hasUrl;
+    private string url_ = "";
+    public bool HasUrl {
+      get { return hasUrl; }
+    }
+    public string Url {
+      get { return url_; }
+    }
+    
+    public const int LastOneFieldNumber = 4;
+    private bool hasLastOne;
+    private bool lastOne_;
+    public bool HasLastOne {
+      get { return hasLastOne; }
+    }
+    public bool LastOne {
+      get { return lastOne_; }
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasImageId) return false;
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      CalcSerializedSize();
+      string[] field_names = _adPictureReqFieldNames;
+      if (hasImageId) {
+        output.WriteUInt32(1, field_names[1], ImageId);
+      }
+      if (hasImageHashcode) {
+        output.WriteString(2, field_names[0], ImageHashcode);
+      }
+      if (hasUrl) {
+        output.WriteString(3, field_names[3], Url);
+      }
+      if (hasLastOne) {
+        output.WriteBool(4, field_names[2], LastOne);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        return CalcSerializedSize();
+      }
+    }
+    
+    private int CalcSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+      
+      size = 0;
+      if (hasImageId) {
+        size += pb::CodedOutputStream.ComputeUInt32Size(1, ImageId);
+      }
+      if (hasImageHashcode) {
+        size += pb::CodedOutputStream.ComputeStringSize(2, ImageHashcode);
+      }
+      if (hasUrl) {
+        size += pb::CodedOutputStream.ComputeStringSize(3, Url);
+      }
+      if (hasLastOne) {
+        size += pb::CodedOutputStream.ComputeBoolSize(4, LastOne);
+      }
+      size += UnknownFields.SerializedSize;
+      memoizedSerializedSize = size;
+      return size;
+    }
+    public static AdPictureReq ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static AdPictureReq ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static AdPictureReq ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static AdPictureReq ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static AdPictureReq ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static AdPictureReq ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static AdPictureReq ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static AdPictureReq ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static AdPictureReq ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static AdPictureReq ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private AdPictureReq MakeReadOnly() {
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(AdPictureReq prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<AdPictureReq, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(AdPictureReq cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private AdPictureReq result;
+      
+      private AdPictureReq PrepareBuilder() {
+        if (resultIsReadOnly) {
+          AdPictureReq original = result;
+          result = new AdPictureReq();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override AdPictureReq MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::MessageStruct.AdPictureReq.Descriptor; }
+      }
+      
+      public override AdPictureReq DefaultInstanceForType {
+        get { return global::MessageStruct.AdPictureReq.DefaultInstance; }
+      }
+      
+      public override AdPictureReq BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is AdPictureReq) {
+          return MergeFrom((AdPictureReq) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(AdPictureReq other) {
+        if (other == global::MessageStruct.AdPictureReq.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasImageId) {
+          ImageId = other.ImageId;
+        }
+        if (other.HasImageHashcode) {
+          ImageHashcode = other.ImageHashcode;
+        }
+        if (other.HasUrl) {
+          Url = other.Url;
+        }
+        if (other.HasLastOne) {
+          LastOne = other.LastOne;
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_adPictureReqFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _adPictureReqFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 8: {
+              result.hasImageId = input.ReadUInt32(ref result.imageId_);
+              break;
+            }
+            case 18: {
+              result.hasImageHashcode = input.ReadString(ref result.imageHashcode_);
+              break;
+            }
+            case 26: {
+              result.hasUrl = input.ReadString(ref result.url_);
+              break;
+            }
+            case 32: {
+              result.hasLastOne = input.ReadBool(ref result.lastOne_);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasImageId {
+        get { return result.hasImageId; }
+      }
+      [global::System.CLSCompliant(false)]
+      public uint ImageId {
+        get { return result.ImageId; }
+        set { SetImageId(value); }
+      }
+      [global::System.CLSCompliant(false)]
+      public Builder SetImageId(uint value) {
+        PrepareBuilder();
+        result.hasImageId = true;
+        result.imageId_ = value;
+        return this;
+      }
+      public Builder ClearImageId() {
+        PrepareBuilder();
+        result.hasImageId = false;
+        result.imageId_ = 0;
+        return this;
+      }
+      
+      public bool HasImageHashcode {
+        get { return result.hasImageHashcode; }
+      }
+      public string ImageHashcode {
+        get { return result.ImageHashcode; }
+        set { SetImageHashcode(value); }
+      }
+      public Builder SetImageHashcode(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasImageHashcode = true;
+        result.imageHashcode_ = value;
+        return this;
+      }
+      public Builder ClearImageHashcode() {
+        PrepareBuilder();
+        result.hasImageHashcode = false;
+        result.imageHashcode_ = "";
+        return this;
+      }
+      
+      public bool HasUrl {
+        get { return result.hasUrl; }
+      }
+      public string Url {
+        get { return result.Url; }
+        set { SetUrl(value); }
+      }
+      public Builder SetUrl(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasUrl = true;
+        result.url_ = value;
+        return this;
+      }
+      public Builder ClearUrl() {
+        PrepareBuilder();
+        result.hasUrl = false;
+        result.url_ = "";
+        return this;
+      }
+      
+      public bool HasLastOne {
+        get { return result.hasLastOne; }
+      }
+      public bool LastOne {
+        get { return result.LastOne; }
+        set { SetLastOne(value); }
+      }
+      public Builder SetLastOne(bool value) {
+        PrepareBuilder();
+        result.hasLastOne = true;
+        result.lastOne_ = value;
+        return this;
+      }
+      public Builder ClearLastOne() {
+        PrepareBuilder();
+        result.hasLastOne = false;
+        result.lastOne_ = false;
+        return this;
+      }
+    }
+    static AdPictureReq() {
+      object.ReferenceEquals(global::MessageStruct.Message.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class AdPictureContentReply : pb::GeneratedMessage<AdPictureContentReply, AdPictureContentReply.Builder> {
+    private AdPictureContentReply() { }
+    private static readonly AdPictureContentReply defaultInstance = new AdPictureContentReply().MakeReadOnly();
+    private static readonly string[] _adPictureContentReplyFieldNames = new string[] { "content", "ended", "synced" };
+    private static readonly uint[] _adPictureContentReplyFieldTags = new uint[] { 18, 24, 8 };
+    public static AdPictureContentReply DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override AdPictureContentReply DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override AdPictureContentReply ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::MessageStruct.Message.internal__static_MessageStruct_AdPictureContentReply__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<AdPictureContentReply, AdPictureContentReply.Builder> InternalFieldAccessors {
+      get { return global::MessageStruct.Message.internal__static_MessageStruct_AdPictureContentReply__FieldAccessorTable; }
+    }
+    
+    public const int SyncedFieldNumber = 1;
+    private bool hasSynced;
+    private bool synced_;
+    public bool HasSynced {
+      get { return hasSynced; }
+    }
+    public bool Synced {
+      get { return synced_; }
+    }
+    
+    public const int ContentFieldNumber = 2;
+    private bool hasContent;
+    private pb::ByteString content_ = pb::ByteString.Empty;
+    public bool HasContent {
+      get { return hasContent; }
+    }
+    public pb::ByteString Content {
+      get { return content_; }
+    }
+    
+    public const int EndedFieldNumber = 3;
+    private bool hasEnded;
+    private bool ended_;
+    public bool HasEnded {
+      get { return hasEnded; }
+    }
+    public bool Ended {
+      get { return ended_; }
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasSynced) return false;
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      CalcSerializedSize();
+      string[] field_names = _adPictureContentReplyFieldNames;
+      if (hasSynced) {
+        output.WriteBool(1, field_names[2], Synced);
+      }
+      if (hasContent) {
+        output.WriteBytes(2, field_names[0], Content);
+      }
+      if (hasEnded) {
+        output.WriteBool(3, field_names[1], Ended);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        return CalcSerializedSize();
+      }
+    }
+    
+    private int CalcSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+      
+      size = 0;
+      if (hasSynced) {
+        size += pb::CodedOutputStream.ComputeBoolSize(1, Synced);
+      }
+      if (hasContent) {
+        size += pb::CodedOutputStream.ComputeBytesSize(2, Content);
+      }
+      if (hasEnded) {
+        size += pb::CodedOutputStream.ComputeBoolSize(3, Ended);
+      }
+      size += UnknownFields.SerializedSize;
+      memoizedSerializedSize = size;
+      return size;
+    }
+    public static AdPictureContentReply ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static AdPictureContentReply ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static AdPictureContentReply ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static AdPictureContentReply ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static AdPictureContentReply ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static AdPictureContentReply ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static AdPictureContentReply ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static AdPictureContentReply ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static AdPictureContentReply ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static AdPictureContentReply ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private AdPictureContentReply MakeReadOnly() {
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(AdPictureContentReply prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<AdPictureContentReply, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(AdPictureContentReply cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private AdPictureContentReply result;
+      
+      private AdPictureContentReply PrepareBuilder() {
+        if (resultIsReadOnly) {
+          AdPictureContentReply original = result;
+          result = new AdPictureContentReply();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override AdPictureContentReply MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::MessageStruct.AdPictureContentReply.Descriptor; }
+      }
+      
+      public override AdPictureContentReply DefaultInstanceForType {
+        get { return global::MessageStruct.AdPictureContentReply.DefaultInstance; }
+      }
+      
+      public override AdPictureContentReply BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is AdPictureContentReply) {
+          return MergeFrom((AdPictureContentReply) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(AdPictureContentReply other) {
+        if (other == global::MessageStruct.AdPictureContentReply.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasSynced) {
+          Synced = other.Synced;
+        }
+        if (other.HasContent) {
+          Content = other.Content;
+        }
+        if (other.HasEnded) {
+          Ended = other.Ended;
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_adPictureContentReplyFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _adPictureContentReplyFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 8: {
+              result.hasSynced = input.ReadBool(ref result.synced_);
+              break;
+            }
+            case 18: {
+              result.hasContent = input.ReadBytes(ref result.content_);
+              break;
+            }
+            case 24: {
+              result.hasEnded = input.ReadBool(ref result.ended_);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasSynced {
+        get { return result.hasSynced; }
+      }
+      public bool Synced {
+        get { return result.Synced; }
+        set { SetSynced(value); }
+      }
+      public Builder SetSynced(bool value) {
+        PrepareBuilder();
+        result.hasSynced = true;
+        result.synced_ = value;
+        return this;
+      }
+      public Builder ClearSynced() {
+        PrepareBuilder();
+        result.hasSynced = false;
+        result.synced_ = false;
+        return this;
+      }
+      
+      public bool HasContent {
+        get { return result.hasContent; }
+      }
+      public pb::ByteString Content {
+        get { return result.Content; }
+        set { SetContent(value); }
+      }
+      public Builder SetContent(pb::ByteString value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasContent = true;
+        result.content_ = value;
+        return this;
+      }
+      public Builder ClearContent() {
+        PrepareBuilder();
+        result.hasContent = false;
+        result.content_ = pb::ByteString.Empty;
+        return this;
+      }
+      
+      public bool HasEnded {
+        get { return result.hasEnded; }
+      }
+      public bool Ended {
+        get { return result.Ended; }
+        set { SetEnded(value); }
+      }
+      public Builder SetEnded(bool value) {
+        PrepareBuilder();
+        result.hasEnded = true;
+        result.ended_ = value;
+        return this;
+      }
+      public Builder ClearEnded() {
+        PrepareBuilder();
+        result.hasEnded = false;
+        result.ended_ = false;
+        return this;
+      }
+    }
+    static AdPictureContentReply() {
       object.ReferenceEquals(global::MessageStruct.Message.Descriptor, null);
     }
   }

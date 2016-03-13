@@ -187,4 +187,13 @@
   <data name="tips_niubi" xml:space="preserve">
     <value>你简直太Niubility了！</value>
   </data>
+  <data name="setting" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="nickname" xml:space="preserve">
+    <value>昵称:</value>
+  </data>
+  <data name="score" xml:space="preserve">
+    <value>积分:</value>
+  </data>
 </root>

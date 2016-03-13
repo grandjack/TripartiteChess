@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
+using System.Windows.Threading;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 
@@ -31,6 +31,7 @@ namespace WpfApplication2
         private void Close_Window(object sender, RoutedEventArgs e)
         {
             this.Close();
+            e.Handled = true;
         }
 
         private void Min_window(object sender, RoutedEventArgs e)
@@ -38,6 +39,7 @@ namespace WpfApplication2
             if (this.WindowState != WindowState.Minimized)
             {
                 this.WindowState = WindowState.Minimized;
+                e.Handled = true;
             }
         }
         
@@ -258,23 +260,37 @@ namespace WpfApplication2
 
         private void HidewebChat(object sender, RoutedEventArgs e)
         {
-            this.webChat.Visibility = Visibility.Hidden;
-            chat_btn.Visibility = Visibility.Visible;
+            if (this.webChat.Visibility != Visibility.Hidden)
+            {
+                this.webChat.Visibility = Visibility.Hidden;
+            }
+            if (this.chat_btn.Visibility != Visibility.Visible)
+            {
+                this.chat_btn.Visibility = Visibility.Visible;
+            }
         }
 
         private void Chat_Click(object sender, RoutedEventArgs e)
         {
-            Button btn = sender as Button;
-            this.webChat.Visibility = Visibility.Visible;
-            btn.Visibility = Visibility.Hidden;
+            if (this.webChat.Visibility != Visibility.Visible)
+            {
+                this.webChat.Visibility = Visibility.Visible;
+            }
+
+            if (this.chat_btn.Visibility != Visibility.Hidden)
+            {
+                this.chat_btn.Visibility = Visibility.Hidden;
+            }
         }
         //自定义窗口实现最大化不覆盖任务栏--End
 
-        private void ChessBoardLoaded(object sender, RoutedEventArgs e)
+        public void ChessBoardLoaded(object sender, RoutedEventArgs e)
         {
             gridChessBoard.Children.Clear();
             //ChessMan chess = new Horse;
-            ChessBoard chessBoard = ChessBoard.GetChessBoardObj(Location.bottom, this);
+            Console.WriteLine("GameState.locate = " + GameState.locate);
+            ChessBoard chessBoard = ChessBoard.GetChessBoardObj((Location)GameState.locate, this);
+            //ChessBoard chessBoard = ChessBoard.GetChessBoardObj(Location.bottom, this);
             /*for (int row = 0; row < 14; ++row)
             {
                 for (int column = 0; column < 19; ++column)
@@ -325,7 +341,309 @@ namespace WpfApplication2
         private void ChessBoardMouseMove(object sender, MouseEventArgs e)
         {
             Point p = e.GetPosition((IInputElement)sender);
-            chessBoardPosition.Text = "ChessBoard Point X:" + p.X + "  Y:" + p.Y;
+            string locate = "unknown";
+            string token = "unknown";
+
+            switch (WpfApplication2.GameState.locate)
+            {
+                case 0:
+                    locate = "Left"; break;
+                case 1:
+                    locate = "Right"; break;
+                case 2:
+                    locate = "Bottom"; break;
+                default:
+                    break;
+            }
+            
+            switch ((Location)WpfApplication2.GameState.currentTokenLocate)
+            {
+                case Location.left:
+                    token = "Left"; break;
+                case Location.right:
+                    token = "Right"; break;
+                case Location.bottom:
+                    token = "Bottom"; break;
+                default:
+                    break;
+            }
+
+            chessBoardPosition.Text = locate + " User,should " + token + " go! Point X:" + p.X + "  Y:" + p.Y;
         }
+
+        public bool pressGameReadyBtn = false;
+        private void StartGameReady(object sender, RoutedEventArgs e)
+        {
+            pressGameReadyBtn = true;
+            
+            if (GameState.locate == ChessBoard.firsr_come_user_locate)
+            {
+                TimeSetWin win = new TimeSetWin();
+                win.Owner = this;
+                win.ShowDialog();
+                GamePlayingState state = new GamePlayingState();
+                state.StartGameReadyReq(win.total_sec, win.step_sec);
+            }
+            else
+            {
+                GamePlayingState state = new GamePlayingState();
+                state.StartGameReadyReq();
+            }
+            //ChessBoardLoaded(null, null);
+        }
+
+        private static uint message_count = 0;
+        public void AddMsgToBox(string title, string msgContent)
+        {
+            Border border = new Border();
+            if ((message_count++) % 2 == 0)
+            {//left msg
+                border.CornerRadius = new CornerRadius(15);
+                border.HorizontalAlignment = HorizontalAlignment.Left;
+                //border.Width = 
+                border.Margin = new Thickness(3,3,20,3);
+                border.Padding = new Thickness(1);
+                
+                GradientStopCollection gridCol = new GradientStopCollection();
+                gridCol.Add(new GradientStop(Color.FromRgb(0x42, 0xc9, 0xff), 1));
+                gridCol.Add(new GradientStop(Color.FromRgb(0x01, 0x48, 0xe3), 0));
+                gridCol.Add(new GradientStop(Color.FromRgb(0x9d, 0xd1, 0xed), 0.583));
+
+                LinearGradientBrush brush = new LinearGradientBrush(gridCol, new Point(0, 0), new Point(1, 0));
+                border.Background = brush;
+
+                //添加StackPanel
+                StackPanel stack = new StackPanel();
+                stack.Orientation = Orientation.Vertical;
+                stack.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+                stack.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
+
+                TextBox userName = new TextBox();
+                userName.IsReadOnly = true;
+                userName.BorderThickness = new Thickness(0);
+                userName.Background = Brushes.Transparent;
+                userName.Text = title;
+
+                TextBox content = new TextBox();
+                content.IsReadOnly = true;
+                content.BorderThickness = new Thickness(0);
+                content.Background = Brushes.Transparent;
+                content.Text = msgContent;
+                content.TextWrapping = TextWrapping.Wrap;
+
+                stack.Children.Add(userName);
+                stack.Children.Add(content);
+
+                ((System.Windows.Markup.IAddChild)border).AddChild(stack); 
+            }
+            else
+            {
+                border.CornerRadius = new CornerRadius(15);
+                border.HorizontalAlignment = HorizontalAlignment.Right;
+                //border.Width = 
+                border.Margin = new Thickness(3, 3, 20, 3);
+                border.Padding = new Thickness(1);
+
+                GradientStopCollection gridCol = new GradientStopCollection();
+                gridCol.Add(new GradientStop(Color.FromRgb(0x9f, 0xd9, 0xe5), 0.259));
+                gridCol.Add(new GradientStop(Color.FromRgb(0x42, 0xc9, 0xff), 0.026));
+                gridCol.Add(new GradientStop(Color.FromRgb(0x01, 0x48, 0xe3), 1));
+                gridCol.Add(new GradientStop(Color.FromRgb(0x10, 0x88, 0xe3), 0.959));
+
+                LinearGradientBrush brush = new LinearGradientBrush(gridCol, new Point(0, 0.5), new Point(1, 0.5));
+                border.Background = brush;
+
+                //添加StackPanel
+                StackPanel stack = new StackPanel();
+                stack.Orientation = Orientation.Vertical;
+                stack.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+                stack.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
+
+                TextBox userName = new TextBox();
+                userName.IsReadOnly = true;
+                userName.BorderThickness = new Thickness(0);
+                userName.Background = Brushes.Transparent;
+                userName.Text = title;
+                userName.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+
+                TextBox content = new TextBox();
+                content.IsReadOnly = true;
+                content.BorderThickness = new Thickness(0);
+                content.Background = Brushes.Transparent;
+                content.Text = msgContent;
+                content.TextWrapping = TextWrapping.Wrap;
+
+                stack.Children.Add(userName);
+                stack.Children.Add(content);
+
+                ((System.Windows.Markup.IAddChild)border).AddChild(stack); 
+            }
+
+            messageBoxStackPanel.Children.Add(border);
+
+            messageBoxScro.ScrollToEnd();
+            Chat_Click(null, null);
+        }
+
+        private void SendIMMsgBtn(object sender, RoutedEventArgs e)
+        {
+            ComboBoxItem item = (ComboBoxItem)comboBoxIMMsg.SelectedItem;
+            GamePlayingState state = new GamePlayingState();
+
+            if (ChessBoard.GetChessBoardObj() == null)
+            {
+                return;
+            }
+
+            if (item != null)
+            {
+                AddMsgToBox(ChessBoard.GetChessBoardObj().currentUser.user_name, item.Content.ToString());
+                state.SendIMMessage(item.Content.ToString());
+            }
+            else
+            {
+                if (comboBoxIMMsg.Text.Length > 0)
+                {
+                    AddMsgToBox(ChessBoard.GetChessBoardObj().currentUser.user_name, comboBoxIMMsg.Text.ToString());
+                    state.SendIMMessage(comboBoxIMMsg.Text.ToString());
+                }
+            }
+        }
+
+        public void DisplayTimer(int total, int single_step_time, Location locate)
+        {
+            int t_sec = total % 60;
+            int t_min = total / 60;
+            int s_sec = single_step_time % 60;
+            int s_min = single_step_time / 60;
+
+            switch(locate)
+            {
+                case Location.left:
+                    //DispatchTimerLabLeft.Content = "Total: " + total.ToString() + " step: " + single_step_time.ToString();
+                    DispatchTimerLeftTotalHour.Text = string.Format("{0,-2:D2}", t_min);
+                    DispatchTimerLeftTotalMin.Text = string.Format("{0,-2:D2}", t_sec);
+
+                    DispatchTimerLeftStepMin.Text = string.Format("{0,-2:D2}", s_min);
+                    DispatchTimerLeftStepSec.Text = string.Format("{0,-2:D2}", s_sec);
+                    break;
+                case Location.right:
+                    DispatchTimerRightTotalHour.Text = string.Format("{0,-2:D2}", t_min);
+                    DispatchTimerRightTotalMin.Text = string.Format("{0,-2:D2}", t_sec);
+
+                    DispatchTimerRightStepMin.Text = string.Format("{0,-2:D2}", s_min);
+                    DispatchTimerRightStepSec.Text = string.Format("{0,-2:D2}", s_sec);
+                    //DispatchTimerLabRight.Content = "Total: " + total.ToString() + " step: " + single_step_time.ToString();
+                    break;
+                case Location.bottom:
+                    DispatchTimerBottomTotalHour.Text = string.Format("{0,-2:D2}", t_min);
+                    DispatchTimerBottomTotalMin.Text = string.Format("{0,-2:D2}", t_sec);
+
+                    DispatchTimerBottomStepMin.Text = string.Format("{0,-2:D2}", s_min);
+                    DispatchTimerBottomStepSec.Text = string.Format("{0,-2:D2}", s_sec);
+                    //DispatchTimerLabBottom.Content = "Total: " + total.ToString() + " step: " + single_step_time.ToString();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void TimeoutHandle(Location locate)
+        {
+            MessageBox.Show(locate.ToString() + " user has timeout");
+        }
+
+        private void ChessWindowActivedHand(object sender, EventArgs e)
+        {
+            Console.WriteLine("Chess Window Actived !! IsActive=" + this.IsActive);
+            GameState.SetCurrentWin(this);
+        }
+
+        private void ChessWindowClosingHand(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (GameState.allUsersReady)
+            {
+                MessageBoxResult result = MessageBox.Show(this.Owner, "Getting out from the room, are you sure ?", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    //handle something here, get out the game room!!!
+                    GamePlayingState state = new GamePlayingState();
+                    state.LeaveOutFromRoom();
+                }
+            }
+            else
+            {
+                //handle something here, get out the game room!!!
+                GamePlayingState state = new GamePlayingState();
+                state.LeaveOutFromRoom();
+            }
+        }
+
+        private void ChessBoardLoad(object sender, RoutedEventArgs e)
+        {
+            //gridChessBoard.Background;
+            BitmapImage bit = new BitmapImage();
+            bit.BeginInit();
+            bit.UriSource = new Uri(@"C:\Users\GBX386\Desktop\Qipanxxx\drawable-mdpi\qiqi.png", UriKind.Absolute);
+            bit.EndInit();
+            
+            ImageBrush image = new ImageBrush(bit);
+            gridChessBoard.Background = image;
+        }
+        
+        private void MouseLeftButtonDown_OpenUrl(object sender, MouseButtonEventArgs e)
+        {
+            // 打开一个链接
+            AdvertisementImage image = sender as AdvertisementImage;
+            string url = image.LinkUrl;
+            if ((url != null) && (url.Length > 0))
+            {
+                System.Diagnostics.Process.Start(url);
+            }
+        }
+
+        private void GetAdvertisementImage(int ImageMapIndex, ref Image image)
+        {
+            if (!ImageDownloadState.ImageIDMap[ImageMapIndex].existed)
+            {
+                return;
+            }
+
+            //Image image = null;
+            string image_type = ImageDownloadState.ImageIDMap[ImageMapIndex].type;
+            if (image_type.Equals("*.gif"))
+            {
+                AnimatedGIFControl gif = new AnimatedGIFControl(ImageDownloadState.ImageIDMap[ImageMapIndex].locate_path);
+                gif.MouseLeftButtonDown += new MouseButtonEventHandler(MouseLeftButtonDown_OpenUrl);
+                gif.Cursor = Cursors.Hand;
+                gif.Stretch = Stretch.Uniform;
+                gif.LinkUrl = ImageDownloadState.ImageIDMap[ImageMapIndex].link_url;
+                gif.StartAnimate();
+                image = gif;
+            }
+            else if (image_type.Equals("*.png") ||
+                image_type.Equals("*.jpg") ||
+                image_type.Equals("*.jpeg") ||
+                image_type.Equals("*.bmp"))
+            {
+                BitmapImage myBitmapImage = new BitmapImage();
+                myBitmapImage.BeginInit();
+                myBitmapImage.UriSource = new Uri(ImageDownloadState.ImageIDMap[ImageMapIndex].locate_path, UriKind.Absolute);
+                myBitmapImage.EndInit();
+
+                AdvertisementImage image_in = new AdvertisementImage();
+                image_in.Source = myBitmapImage;
+                image_in.Stretch = Stretch.Uniform;
+                image_in.MouseLeftButtonDown += new MouseButtonEventHandler(MouseLeftButtonDown_OpenUrl);
+                image_in.Cursor = Cursors.Hand;
+                image_in.LinkUrl = ImageDownloadState.ImageIDMap[ImageMapIndex].link_url;
+                image = image_in;
+            }
+        }
+        
     }
 }

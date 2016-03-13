@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:props="clr-namespace:WpfApplication2.Properties"
         Height="600" Width="1275"
-        WindowStartupLocation="CenterScreen" ResizeMode="CanResize" WindowState="Maximized" Topmost="False"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" WindowState="Maximized"
         SourceInitialized="Window_SourceInitialized" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         Icon="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\MyIcon.png"
-        Title="{x:Static props:Resources.game_name}">
+        Title="{x:Static props:Resources.game_name}" Activated="ChessWindowActivedHand" Closing="ChessWindowClosingHand">
 
     <Window.Resources>
         <ControlTemplate x:Key="MaxButtonTemplate" TargetType="{x:Type Button}">
@@ -205,9 +205,12 @@
                     </LinearGradientBrush>
                 </Border.Background>
                 <Grid Background="Transparent">
-                    <TextBlock Text="{x:Static props:Resources.game_name}" Margin="30,0,0,0"/>
+                    <TextBlock Text="{x:Static props:Resources.game_name}" Margin="30,4,0,0" Height="auto" Width="auto" HorizontalAlignment="Left" VerticalAlignment="top"/>
                     <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Height="20" Width="20" HorizontalAlignment="Left" VerticalAlignment="Top"
-                               Opacity="1" Margin="5,2,10,10" Source="C:\Users\GBX386\Desktop\Visual C#\Image\cchess.ico"/>
+                               Opacity="1" Margin="5,2,10,10" Source="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\MyIcon.png">
+                        
+                    </Image>
+                    <TextBlock x:Name="chessBoardPosition" Margin="568,0,0,2" Text="Position" />
                 </Grid>
             </Border>
 
@@ -219,37 +222,64 @@
                 <Button Grid.Column="1" Template="{StaticResource MinButtonTemplate}"  Height="25" HorizontalAlignment="Right" Name="min_win2" VerticalAlignment="Top" Width="25" Click="Min_window" Margin="0,6,66,0" IsTabStop="False" FocusVisualStyle="{x:Null}"/>
             </Grid>
 
-            <!--extern title bar -->
-            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" >
-                <Border Grid.ColumnSpan="2" Opacity="1" 
-                        Height="Auto" Width="auto" VerticalAlignment="Top"
-                        CornerRadius="0" BorderThickness="0" BorderBrush="Blue" PreviewMouseLeftButtonDown="rctHeader_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="rctHeader_PreviewMouseLeftButtonUp" PreviewMouseMove="rctHeader_PreviewMouseMove" >
-                    <Border.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                            <GradientStop Color="#FF0148E3" Offset="0" />
-                            <GradientStop Color="#FF5BE2FB" Offset="0.475" />
-                            <GradientStop Color="#FF42A3FF" Offset="0.974" />
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <Grid Background="Transparent">
-                        <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Height="45" Width="45" HorizontalAlignment="Left" VerticalAlignment="Top"
-                               Opacity="1" Margin="10,0,0,2" Source="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2 - Copy\WpfApplication2\Images\MyIcon.png"/>
-                        <TextBlock x:Name="chessBoardPosition" Margin="568,0,0,2" Text="Position" />
-                    </Grid>
-                </Border>
-            </Grid>
-
             <!--Content-->
             <Grid x:Name="chessContent" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-                <Grid x:Name="gridChessBoard" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Height="700" Width="953"
-                      Loaded="ChessBoardLoaded" MouseMove="ChessBoardMouseMove">
-                    <Grid.Background >
-                        <ImageBrush ImageSource="C:\Users\GBX386\Desktop\Qipanxxx\drawable-mdpi\qiqi.png" Stretch="Uniform" />
-                    </Grid.Background>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <!--Chess board Begin-->
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <!--Chess board end-->
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid x:Name="gridChessBoard" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="19"  Grid.RowSpan="14" MouseMove="ChessBoardMouseMove" Loaded="ChessBoardLoad">
+                    
                 </Grid>
 
-                <Border x:Name="webChat" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="232" Height="300"
-                        BorderThickness="3,0,3,3" Margin="0,0,16,8" CornerRadius="4" Visibility="Hidden">
+                <Border x:Name="webChat"  Grid.Row="10" Grid.Column="24" Grid.RowSpan="7" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        BorderThickness="3,0,3,3" Margin="0,0,10,10" CornerRadius="4" Visibility="Hidden" >
                     <Border.Background>
                         <SolidColorBrush Color="#FF8FABC6" />
                     </Border.Background>
@@ -260,67 +290,111 @@
                         <DropShadowEffect Color="#FF0090FF" BlurRadius="30" ShadowDepth="0" Opacity=".8" />
                     </Border.Effect>
                     <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="86*" />
+                            <ColumnDefinition Width="139*" />
+                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="20" />
                         </Grid.RowDefinitions>
 
-                        <Border Grid.Row="0" Background="#FF0090FF" BorderThickness="0"></Border>
-                        <Button Grid.Row="0" Template="{StaticResource CloseButtonTemplate}" Margin="2" Height="10" Width="10" HorizontalAlignment="Right" 
-                                VerticalAlignment="Top" IsTabStop="False" FocusVisualStyle="{x:Null}" Click="HidewebChat" Cursor="Hand"/>
-                        <TextBlock Text="{x:Static props:Resources.message}" Grid.Row="0" Foreground="White" HorizontalAlignment="Left" Width="auto" Height="auto" Margin="8,0,0,0"/>
-                        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,0,2,2" >
+                        <Border Background="#FF0090FF" BorderThickness="0" Grid.ColumnSpan="2" />
+                        
+                        <Button Template="{StaticResource CloseButtonTemplate}" Height="10" Width="10" HorizontalAlignment="Right" 
+                                VerticalAlignment="Top" IsTabStop="False" FocusVisualStyle="{x:Null}" Click="HidewebChat" Cursor="Hand" Grid.Column="1" />
+                        
+                        <TextBlock Text="{x:Static props:Resources.message}" Foreground="White" HorizontalAlignment="Left" Width="auto" Height="auto" Margin="8,0,0,0"/>
+                        <ScrollViewer x:Name="messageBoxScro" Grid.Row="1" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" Margin="0,0,16,2" MinWidth="0" AllowDrop="False" OverridesDefaultStyle="True" IsDeferredScrollingEnabled="False" IsManipulationEnabled="False" IsTabStop="True" PanningMode="None" Grid.ColumnSpan="2">
                             <TextBlock Height="Auto" Width="auto">
-                                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="220" Margin="3,3,0,0">
-                                    <Border CornerRadius="15" HorizontalAlignment="Left" Width="auto" Margin="3" Padding="1">
-                                        <Border.Background>                                            
-                                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                                                <GradientStop Color="#FF42C9FF" Offset="1" />
-                                                <GradientStop Color="#FF0148E3" Offset="0" />
-                                                <GradientStop Color="#FF9DD1ED" Offset="0.583" />
-                                            </LinearGradientBrush>
-                                        </Border.Background>
-                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                            <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="AA" />
-                                            <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap"  Text="How niubility you are!sdssssssssssssssssssssssssdddddddddd Congatulatons!" />
-                                        </StackPanel>
-                                    </Border>
-                                    
-                                    <Border CornerRadius="15" HorizontalAlignment="Right" Margin="3" Padding="1">
-                                        <Border.Background><LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5"><GradientStop Color="#FF9FD9E5" Offset="0.259" /><GradientStop Color="#FF42C9FF" Offset="0.026000000000000023" /><GradientStop Color="#FF0148E3" Offset="1" /><GradientStop Color="#FF1088E3" Offset="0.959" /></LinearGradientBrush></Border.Background>
-                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                            <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" HorizontalAlignment="Right" Text="BB" />
-                                            <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="Thanks, you too." />
-                                        </StackPanel>
-                                    </Border>
+                                <StackPanel x:Name="messageBoxStackPanel" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="220" Margin="3,3,0,0">
                                 </StackPanel>
                             </TextBlock>
                         </ScrollViewer>
-                            <ComboBox Grid.Row="2" Width="190" HorizontalAlignment="Left" IsEditable="True" Background="White">
-                            <ComboBoxItem>
-                                <TextBlock Text="{x:Static props:Resources.tips_come_on}"/>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <TextBlock Text="{x:Static props:Resources.tips_praise}"/>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <TextBlock Text="{x:Static props:Resources.tips_flaunt}"/>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <TextBlock Text="{x:Static props:Resources.tips_lose_heart}"/>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <TextBlock Text="{x:Static props:Resources.tips_niubi}"/>
-                            </ComboBoxItem>
-                        </ComboBox>
-                        <Button Content="{x:Static props:Resources.send_msg}" Grid.Row="2" Width="35" HorizontalAlignment="Right" Background="#FF00A9FF"/>
-                    </Grid>
+                            <ComboBox x:Name="comboBoxIMMsg" Grid.Row="2" IsEditable="True" Background="White" Margin="0,0,40,0" DataContext="{Binding}" Grid.ColumnSpan="2">
+                                <ComboBoxItem Content="{x:Static props:Resources.tips_come_on}"></ComboBoxItem>
+                                <ComboBoxItem Content="{x:Static props:Resources.tips_praise}"></ComboBoxItem>
+                                <ComboBoxItem Content="{x:Static props:Resources.tips_flaunt}"></ComboBoxItem>
+                                <ComboBoxItem Content="{x:Static props:Resources.tips_lose_heart}"></ComboBoxItem>
+                                <ComboBoxItem Content="{x:Static props:Resources.tips_niubi}"></ComboBoxItem>
+                            </ComboBox>
+                        <Button Content="{x:Static props:Resources.send_msg}" Grid.Row="2" Width="35" HorizontalAlignment="Right" Background="#FF00A9FF" Click="SendIMMsgBtn" Grid.Column="1" />
+                     </Grid>
                 </Border>
-                <Button Height="25" Template="{StaticResource ChatButtonTemplate}" HorizontalAlignment="Right" Margin="0,0,20,8" 
-                        Name="chat_btn" VerticalAlignment="Bottom" Width="32" Click="Chat_Click" Cursor="Hand" IsTabStop="False" 
-                        FocusVisualStyle="{x:Null}" ToolTip="{x:Static props:Resources.chat}">
+                <Button x:Name="chat_btn" Grid.Row="15" Grid.Column="28" Width="35" Height="30"  Margin="0,0,10,10" Template="{StaticResource ChatButtonTemplate}" HorizontalAlignment="Right" 
+                            Click="Chat_Click" Cursor="Hand" IsTabStop="False" FocusVisualStyle="{x:Null}" ToolTip="{x:Static props:Resources.chat}">
                 </Button>
+
+
+                <Button Grid.Row="0" Grid.Column="8" Grid.ColumnSpan="2" Content="Start" HorizontalAlignment="Stretch" Margin="0,5,0,5" x:Name="StartGameBtn" VerticalAlignment="Stretch" Click="StartGameReady" />
+                <Button Grid.Row="0" Grid.Column="11" Grid.ColumnSpan="2" Content="HuiQi" HorizontalAlignment="Stretch" Margin="0,5,0,5" x:Name="HuiQiBtn" VerticalAlignment="Stretch"/>
+                <Button Grid.Row="0" Grid.Column="14" Grid.ColumnSpan="2" Content="HeQi" HorizontalAlignment="Stretch" Margin="0,5,0,5" x:Name="HeQiBtn" VerticalAlignment="Stretch" />
+                <Button Grid.Row="0" Grid.Column="17" Grid.ColumnSpan="2" Content="RenShu" HorizontalAlignment="Stretch" Margin="0,5,0,5" x:Name="RenShuBtn" VerticalAlignment="Stretch" />
+                
+                <Grid Grid.Row="8" Grid.Column="24" Grid.ColumnSpan="2" >
+                    <Grid.Background>
+                        <ImageBrush ImageSource="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\step.png" />
+                    </Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="00" HorizontalAlignment="Center" x:Name="DispatchTimerRightTotalHour" VerticalAlignment="Center" Foreground="Black" FontStretch="ExtraExpanded"  FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="00" HorizontalAlignment="Center" x:Name="DispatchTimerRightStepMin" VerticalAlignment="Center" Foreground="Black" FontStretch="ExtraExpanded"  FontWeight="Bold" Margin="0,0,0,8"/>
+
+                    <TextBlock Grid.Column="2" Grid.Row="0" Text="00" HorizontalAlignment="Center" x:Name="DispatchTimerRightTotalMin" VerticalAlignment="Center" Foreground="Black" FontStretch="ExtraExpanded"  FontWeight="Bold" Margin="0,0,3,0"/>
+                    <TextBlock Grid.Column="2" Grid.Row="1" Text="00" HorizontalAlignment="Center" x:Name="DispatchTimerRightStepSec" VerticalAlignment="Center" Foreground="Black" FontStretch="ExtraExpanded"  FontWeight="Bold" Margin="0,0,3,8"/>
+
+                </Grid>
+
+                <Grid Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" >
+                    <Grid.Background>
+                        <ImageBrush ImageSource="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\step.png" />
+                    </Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="00" HorizontalAlignment="Center" x:Name="DispatchTimerLeftTotalHour" VerticalAlignment="Center" Foreground="Black" FontStretch="ExtraExpanded"  FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="00" HorizontalAlignment="Center" x:Name="DispatchTimerLeftStepMin" VerticalAlignment="Center" Foreground="Black" FontStretch="ExtraExpanded"  FontWeight="Bold" Margin="0,0,0,8"/>
+
+                    <TextBlock Grid.Column="2" Grid.Row="0" Text="00" HorizontalAlignment="Center" x:Name="DispatchTimerLeftTotalMin" VerticalAlignment="Center" Foreground="Black" FontStretch="ExtraExpanded"  FontWeight="Bold" Margin="0,0,3,0"/>
+                    <TextBlock Grid.Column="2" Grid.Row="1" Text="00" HorizontalAlignment="Center" x:Name="DispatchTimerLeftStepSec" VerticalAlignment="Center" Foreground="Black" FontStretch="ExtraExpanded"  FontWeight="Bold" Margin="0,0,3,8"/>
+
+                </Grid>
+
+                <Grid Grid.Row="14" Grid.Column="6" Grid.ColumnSpan="2" >
+                    <Grid.Background>
+                        <ImageBrush ImageSource="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\step.png" />
+                    </Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="00" HorizontalAlignment="Center" x:Name="DispatchTimerBottomTotalHour" VerticalAlignment="Center" Foreground="Black" FontStretch="ExtraExpanded"  FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="00" HorizontalAlignment="Center" x:Name="DispatchTimerBottomStepMin" VerticalAlignment="Center" Foreground="Black" FontStretch="ExtraExpanded"  FontWeight="Bold" Margin="0,0,0,8"/>
+
+                    <TextBlock Grid.Column="2" Grid.Row="0" Text="00" HorizontalAlignment="Center" x:Name="DispatchTimerBottomTotalMin" VerticalAlignment="Center" Foreground="Black" FontStretch="ExtraExpanded"  FontWeight="Bold" Margin="0,0,3,0"/>
+                    <TextBlock Grid.Column="2" Grid.Row="1" Text="00" HorizontalAlignment="Center" x:Name="DispatchTimerBottomStepSec" VerticalAlignment="Center" Foreground="Black" FontStretch="ExtraExpanded"  FontWeight="Bold" Margin="0,0,3,8"/>
+
+                </Grid>
+
             </Grid>
 
         </Grid>

@@ -177,26 +177,40 @@ namespace WpfApplication2
                     return;
                 }
 
+
                 NetworkThread.CreateWorkThread();
                 GameState.SetCurrentWin(this);
+                MD5Hash hash = new MD5Hash(passwordBox.Password);
+                Console.WriteLine(passwordBox.Password +" 's hash code is:" + hash.GetMD5HashCode());
                 LoginState login = new LoginState();
-                login.SendLoginReq(cbUser.Text, passwordBox.Password);
+                login.SendLoginReq(cbUser.Text, hash.GetMD5HashCode());
+                GameState.currentUserPassword = passwordBox.Password;
 
             }
             else if (curState == loggonState.Register)
             {
                 NetworkThread.CreateWorkThread();
                 GameState.SetCurrentWin(this);
+
+                MD5Hash hash = new MD5Hash(passwordBox.Password);
                 LoginState register = new LoginState();
-                register.SendRegist(cbUser.Text, passwordBox.Password);
+                register.SendRegist(cbUser.Text, hash.GetMD5HashCode());
             } else if (curState == loggonState.FindPwd)
             {
-                MessageBox.Show("暂不支持找回密码功能");
+                NetworkThread.CreateWorkThread();
+                GameState.SetCurrentWin(this);
+                LoginState state = new LoginState();
+                state.FindUsrPassword(cbUser.Text);
             }
             else
             {
                 //Error
             }
+        }
+
+        private void ClosingLogWin(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            NetworkThread.DestroryWorkThread();
         }
 
     }

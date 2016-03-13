@@ -12,12 +12,12 @@ using System.Windows.Controls;
 
 namespace WpfApplication2
 {
-    enum Location
+    public enum Location
     {
-        unknown = 0,
         left = 0,
         right = 1,
-        bottom = 2
+        bottom = 2,
+        unknown = 3,
         //middle = 3
     };
 
@@ -27,10 +27,13 @@ namespace WpfApplication2
 
         protected Location location = Location.unknown;
         protected GameState state = GameState.UNKNOWN;
-        protected int score = 100;
-        protected string account = "";
-        protected string password = "";
-        protected string email = "";
+        public int score = 0;
+        public string account = "";
+        public string password = "";
+        public string email = "";
+        public string user_name = "Unknown";
+
+        public ChessTimer timer = null;
 
         protected ChessBoard board = null;
 
@@ -72,7 +75,9 @@ namespace WpfApplication2
         private void chess_MouseMove(object sender, MouseEventArgs e)
         {
             ChessMan chessMan = sender as ChessMan;
-            if (chessMan.GetOwnUser() == board.currentUser)
+            //只有该当前用户走棋的时候才需要显示手型鼠标
+            if ((chessMan.GetOwnUser() == board.currentUser) &&
+                (board.currUserLocation == WpfApplication2.GameState.currentTokenLocate))
             {
                 chessMan.Cursor = Cursors.Hand;
             }
@@ -82,10 +87,25 @@ namespace WpfApplication2
         {
             ChessMan chessMan = sender as ChessMan;
 
+            if ((!WpfApplication2.GameState.allUsersReady) || 
+                (WpfApplication2.GameState.currentTokenLocate != (Location)WpfApplication2.GameState.locate) ||
+                ((chessMan.GetOwnUser().location != (Location)WpfApplication2.GameState.locate) && ((board.currSelectChess == null) || !board.currSelectChess.beSelected)) )
+            {
+                MessageBox.Show("You should NOT go!!");
+                e.Handled = true;
+                return;
+            }
+
             if (board.currSelectChess == null)
             {
-                ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.selectElement);
-                ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.targetElement);
+                if (ChessBoard.selectElement != null)
+                {
+                    ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.selectElement);
+                }
+                if (ChessBoard.targetElement != null)
+                {
+                    ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.targetElement);
+                }
             }
 
             if ((board.currSelectChess != chessMan) && (chessMan.beSelected == false))
@@ -99,9 +119,12 @@ namespace WpfApplication2
                         board.currSelectChess.beSelected = false;
                         board.currSelectChess.Opacity = 1;
 
-                        ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.selectElement);
+                        if (ChessBoard.selectElement != null)
+                        {
+                            ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.selectElement);
+                        }
                     }
-                    else//点击可能无效或者吃棋
+                    else//点击可能无效或者吃棋，吃棋操作将消息路由到gridboard
                     {
                         return;
                     }
@@ -120,30 +143,7 @@ namespace WpfApplication2
                 }
                 else
                 {
-                    Image select_tag = new Image();
-                    select_tag.HorizontalAlignment = HorizontalAlignment.Left;
-                    select_tag.VerticalAlignment = VerticalAlignment.Top;
-                    select_tag.Margin = new Thickness(chessMan.Margin.Left, chessMan.Margin.Top-1, chessMan.Margin.Right, chessMan.Margin.Bottom);
-                    select_tag.Visibility = Visibility.Visible;
-                    select_tag.Width = chessMan.Width-1;
-                    select_tag.Height = chessMan.Width-1;
-
-                    // Create source
-                    BitmapImage myBitmapImage = new BitmapImage();
-
-                    // BitmapImage.UriSource must be in a BeginInit/EndInit block
-                    myBitmapImage.BeginInit();
-                    myBitmapImage.UriSource = new Uri(@"C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\selected.png", UriKind.Absolute);
-
-                    myBitmapImage.DecodePixelWidth = (int)chessMan.Width;
-                    myBitmapImage.EndInit();
-                    //set image source
-                    select_tag.Source = myBitmapImage;
-
-                    select_tag.Opacity = 1;
-                    select_tag.Cursor = Cursors.Hand;
-
-                    ChessBoard.selectElement = select_tag;
+                    ChessBoard.selectElement = ChessBoard.SetSelectTagImg(new Thickness(chessMan.Margin.Left, chessMan.Margin.Top - 1, chessMan.Margin.Right, chessMan.Margin.Bottom), (int)chessMan.Width);
                     ChessBoard.chessWindow.gridChessBoard.Children.Add(ChessBoard.selectElement);
                 }
 
@@ -197,6 +197,7 @@ namespace WpfApplication2
             this.board = board;
             this.state = GameState.PLAYING;
             this.InitialOwnChessBoard();
+            this.timer = new ChessTimer(ChessBoard.total_time, ChessBoard.single_step_time, ChessBoard.chessWindow, this.location);
         }
 
         public override bool InitialOwnChessBoard()
@@ -283,6 +284,7 @@ namespace WpfApplication2
             this.board = board;
             this.state = GameState.PLAYING;
             this.InitialOwnChessBoard();
+            this.timer = new ChessTimer(ChessBoard.total_time, ChessBoard.single_step_time, ChessBoard.chessWindow, this.location);
         }
 
         public override bool InitialOwnChessBoard()
@@ -368,6 +370,7 @@ namespace WpfApplication2
             this.state = GameState.PLAYING;
             this.board = board;
             this.InitialOwnChessBoard();
+            this.timer = new ChessTimer(ChessBoard.total_time, ChessBoard.single_step_time, ChessBoard.chessWindow, this.location);
         }
 
         public override bool InitialOwnChessBoard()
@@ -451,6 +454,65 @@ namespace WpfApplication2
                 return true;
 
             return false;
+        }
+    }
+
+
+    class ChessTimer
+    {
+        public int total_time = 0;
+        public int single_step_time = 0;
+        public int curr_total_time = 0;
+        public int curr_single_time = 0;
+        public Location locate = Location.unknown;
+
+        public Chess chessWin = null;
+        System.Windows.Threading.DispatcherTimer dispatcherTimer = null;
+
+        public ChessTimer(int total, int single, Window win, Location locate)
+        {
+            total_time = total;
+            single_step_time = single;
+            chessWin = (Chess)win;
+            this.locate = locate;
+            //  DispatcherTimer setup
+            dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+        }
+
+        public void Start()
+        {
+            dispatcherTimer.Start();
+        }
+        public void Stop()
+        {
+            dispatcherTimer.Stop();
+            curr_single_time = 0;
+        }
+
+        //  System.Windows.Threading.DispatcherTimer.Tick handler
+        //
+        //  Updates the current seconds display and calls
+        //  InvalidateRequerySuggested on the CommandManager to force 
+        //  the Command to raise the CanExecuteChanged event.
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            ++curr_total_time;
+            ++curr_single_time;
+
+            chessWin.DisplayTimer(curr_total_time, curr_single_time, locate);
+
+            if (curr_total_time >= ChessBoard.total_time || curr_single_time >= ChessBoard.single_step_time)
+            {
+                chessWin.TimeoutHandle(locate);
+                // Forcing the CommandManager to raise the RequerySuggested event
+                CommandManager.InvalidateRequerySuggested();
+                this.Stop();
+                return;
+            }
+            // Forcing the CommandManager to raise the RequerySuggested event
+            CommandManager.InvalidateRequerySuggested();
         }
     }
 }

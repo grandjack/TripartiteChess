@@ -17,6 +17,7 @@ namespace WpfApplication2
         static private Socket tcpClient = null;
         static private int port = 8888;
         static private string host = "123.57.180.67";
+        //static private string host = "10.193.90.79";
         private const int HEAD_SIZE = 2 * sizeof(uint);
         static private GameState state = null;
         private const int MAX_RECONNECT_NUM = 10;
@@ -72,6 +73,7 @@ namespace WpfApplication2
                 Console.WriteLine("Conneting server....");
                 tcpClient.Connect(ipe);//连接到服务器
                 tcpClient.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
+                tcpClient.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.KeepAlive, true);
                 ++currentReconNum;
             }
             catch (Exception e)
@@ -117,9 +119,8 @@ namespace WpfApplication2
 
             while (true)
             {
-
                 int bytes = 0;
-                int total_size = recvBytes.Length;
+                int total_size = HEAD_SIZE;
                 int has_recv = 0;
                 byte[] left_msg;
                 bool gotHead = false;
@@ -133,6 +134,7 @@ namespace WpfApplication2
                         if (bytes > 0)
                         {
                             has_recv += bytes;
+                            Console.WriteLine("current receive {0} bytes", bytes);
 
                             if (!gotHead)
                             {
@@ -142,11 +144,16 @@ namespace WpfApplication2
                                     msg_type = System.BitConverter.ToInt32(recvBytes, 4);
                                     Console.WriteLine("Got Message size {0} type {1}", total_size, msg_type);
 
-                                    if (total_size > recvBytes.Length)
+                                    if ((total_size > recvBytes.Length) && (total_size <= 1024*1024*2))
                                     {
                                         left_msg = new byte[total_size];
                                         BytesCopy(left_msg, recvBytes, (uint)has_recv);
                                         recvBytes = left_msg;
+                                    }
+                                    else if ((total_size > 1024 * 1024 * 2) || (total_size < 0) || (msg_type > (int) MessageType.MSG_TYPE_MAX))
+                                    {
+                                        Console.WriteLine("Receive Invalid data!!!!");
+                                        continue;
                                     }
                                     gotHead = true;
                                 }
@@ -155,7 +162,7 @@ namespace WpfApplication2
                         else
                         {
                             Console.WriteLine("Receive failed. " + bytes);
-                            if (!ReConnectServer())
+                            //if (!ReConnectServer())
                                 return;
                         }
                     }
@@ -203,8 +210,8 @@ namespace WpfApplication2
                             Console.WriteLine("Send failed. send_bytes=" + total_size);
                             if (reTry)
                             {
-                                if (!ReConnectServer())
-                                    return;
+                                //if (!ReConnectServer())
+                                   // return;
                             }
                             break;
                         }
@@ -216,8 +223,8 @@ namespace WpfApplication2
                     Console.WriteLine("send failed for {0}", e.Message);
                     if (reTry)
                     {
-                        if (!ReConnectServer())
-                            return;
+                        //if (!ReConnectServer())
+                       //     return;
                     }
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using MessageStruct;
+using System.Windows.Threading;
 
 namespace WpfApplication2
 {
@@ -20,11 +22,6 @@ namespace WpfApplication2
     /// Interaction logic for Window1.xaml
     /// </summary>
     /// 
-    public class ChessBoardImg : Image
-    {
-        public int id;
-    }
-
     public partial class Window1 : Window
     {
         private bool mRestoreIfMove = false;
@@ -207,7 +204,15 @@ namespace WpfApplication2
                 Left = lMousePosition.X - targetHorizontal;
                 Top = lMousePosition.Y - targetVertical;
 
-                DragMove();
+                try
+                {
+                    DragMove();
+                }
+                catch (InvalidOperationException ee)
+                {
+                    Console.WriteLine("DragMove failed for " + ee.Message);
+                }
+
                 e.Handled = true;
             }
         }
@@ -416,21 +421,29 @@ namespace WpfApplication2
             }
            
             int locate = 0;
-            ChessBoardInfo chessBoard = GameState.hallInfo.GetChessBoard((int)(current_mouse_over_image.id - 1));
-            if (chessBoard != null)
+            if (GameState.hallInfo != null)
             {
-                if (chessBoard.LeftUser.ChessBoardEmpty)
+                ChessBoardInfo chessBoard = GameState.hallInfo.GetChessBoard((int)(current_mouse_over_image.id - 1));
+                if (chessBoard != null)
                 {
-                    locate = (int)Location.left;
+                    if (chessBoard.LeftUser.ChessBoardEmpty)
+                    {
+                        locate = (int)Location.left;
+                    }
+                    else if (chessBoard.RightUser.ChessBoardEmpty)
+                    {
+                        locate = (int)Location.right;
+                    }
+                    else if (chessBoard.BottomUser.ChessBoardEmpty)
+                    {
+                        locate = (int)Location.bottom;
+                    }
                 }
-                else if (chessBoard.RightUser.ChessBoardEmpty)
-                {
-                    locate = (int)Location.right;
-                }
-                else if (chessBoard.BottomUser.ChessBoardEmpty)
-                {
-                    locate = (int)Location.bottom;
-                }
+            }
+            else
+            {
+                MessageBox.Show("GameState.hallInfo is NULL.");
+                return;
             }
 
             GameReadyState state = new GameReadyState();
@@ -438,19 +451,19 @@ namespace WpfApplication2
 
         }
         //private void icon_loaded(object sender, RoutedEventArgs e)
-        private void icon_Initialized(object sender, EventArgs e)
+       /* private void icon_Initialized(object sender, EventArgs e)
         {
             // ... Create a new BitmapImage.
             BitmapImage b = new BitmapImage();
             b.BeginInit();
-            b.UriSource = new Uri(@"Images/MyIcon.png",UriKind.Relative);
+            b.UriSource = new Uri(@"C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\MyIcon.png", UriKind.Absolute);
             b.EndInit();
 
             // ... Get Image reference from sender.
             var image = sender as Image;
             // ... Assign Source.
             image.Source = b;
-        }
+        }*/
 
         //private void game_qipan_loaded(object sender, RoutedEventArgs e)
         private void game_qipan_loaded(object sender, EventArgs e)
@@ -530,10 +543,126 @@ namespace WpfApplication2
             }
         }
 
-        private void rec_ad_open(object sender, MouseButtonEventArgs e)
+        private UIElement headElement = null;
+        public void DisplayHeadImage()
+        {
+            BitmapImage b = null;
+            try
+            {
+                b = new BitmapImage();
+                b.BeginInit();
+                b.StreamSource = new MemoryStream(GameState.currentUserHeadImage);
+                b.EndInit();
+            }
+            catch 
+            {
+                b = null;
+                b = new BitmapImage();
+                b.BeginInit();
+                //b.StreamSource = new MemoryStream(GameState.currentUserHeadImage);
+                b.UriSource = new Uri(@"C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\MyIcon.png", UriKind.Absolute);
+                b.EndInit();
+                GameState.currentUserHeadImage = null;
+            }
+
+            try
+            {
+                if (headElement != null)
+                {
+                    toobarGrid.Children.Remove(headElement);
+                }
+
+                Image image = new Image();
+                // ... Assign Source.
+                image.Source = b;
+
+                //image.Height = 45;
+                //image.Width = 45;
+                image.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                image.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                //image.Margin = new Thickness(10, 0, 0, 2);
+                //image.MouseLeftButtonDown += new MouseButtonEventHandler(UpdateUserInfoClick);
+
+                //image.Cursor = Cursors.Hand;
+
+
+                Border select_tag = new Border();
+                select_tag.HorizontalAlignment = HorizontalAlignment.Left;
+                select_tag.VerticalAlignment = VerticalAlignment.Top;
+                select_tag.Margin = new Thickness(10, 0, 0, 2);
+                select_tag.Width = 45;
+                select_tag.Height = 45;
+                //select_tag.Background = Brushes.Brown;
+                select_tag.CornerRadius = new CornerRadius(3);
+                select_tag.Opacity = 1;
+                select_tag.Cursor = Cursors.Hand;
+                select_tag.MouseLeftButtonDown += new MouseButtonEventHandler(UpdateUserInfoClickDown);
+                select_tag.MouseLeftButtonUp += new MouseButtonEventHandler(UpdateUserInfoClickUp);
+                select_tag.MouseEnter += new MouseEventHandler(HeadImage_MouseEnter);
+                select_tag.MouseLeave += new MouseEventHandler(HeadImage_MouseLeave);
+
+                select_tag.Background = new ImageBrush(image.Source);
+                select_tag.BorderThickness = new Thickness(2);
+                select_tag.BorderBrush = new SolidColorBrush(Color.FromRgb(0x42,0xa3,0xff));//Brushes.Blue;FF42A3FF
+
+                headElement = select_tag;
+
+                //toobarGrid.Children.Add(image);
+                toobarGrid.Children.Add(headElement);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Draw head image faile for " + e.Message);
+            }
+        }
+
+        private void HallBottomLeftAd_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // 打开一个链接
-            System.Diagnostics.Process.Start("http://www.baidu.com/");
+            AdvertisementImage image = sender as AdvertisementImage;
+            string url = image.LinkUrl;
+            //string url = ImageDownloadState.ImageIDMap[(int)ImageID.IMAGE_ID_AD_HALL_BOTTOM_LEFT].link_url;
+            if ((url != null) && (url.Length > 0))
+            {
+                System.Diagnostics.Process.Start(url);
+            }
+        }
+        private void DisplayHallBottomLeftAd()
+        {
+            if (!ImageDownloadState.ImageIDMap[(int)ImageID.IMAGE_ID_AD_HALL_BOTTOM_LEFT].existed)
+                return;
+
+            string image_type = ImageDownloadState.ImageIDMap[(int)ImageID.IMAGE_ID_AD_HALL_BOTTOM_LEFT].type;
+            if (image_type.Equals("*.gif"))
+            {
+                AnimatedGIFControl gif = new AnimatedGIFControl(ImageDownloadState.ImageIDMap[(int)ImageID.IMAGE_ID_AD_HALL_BOTTOM_LEFT].locate_path);
+                gif.MouseLeftButtonDown += new MouseButtonEventHandler(HallBottomLeftAd_MouseLeftButtonDown);
+                gif.Cursor = Cursors.Hand;
+                gif.Stretch = Stretch.Uniform;
+                gif.LinkUrl = ImageDownloadState.ImageIDMap[(int)ImageID.IMAGE_ID_AD_HALL_BOTTOM_LEFT].link_url;
+
+                hallBottomLeft.Children.Add(gif);
+                gif.StartAnimate();
+            }
+            else if (image_type.Equals("*.png") || 
+                image_type.Equals("*.jpg") || 
+                image_type.Equals("*.jpeg") ||
+                image_type.Equals("*.bmp"))
+            {
+                BitmapImage myBitmapImage = new BitmapImage();
+                myBitmapImage.BeginInit();
+                myBitmapImage.UriSource = new Uri(ImageDownloadState.ImageIDMap[(int)ImageID.IMAGE_ID_AD_HALL_BOTTOM_LEFT].locate_path, UriKind.Absolute);
+                myBitmapImage.EndInit();
+
+                AdvertisementImage image = new AdvertisementImage();
+                image.Source = myBitmapImage;
+                image.Stretch = Stretch.Uniform;
+                image.MouseLeftButtonDown += new MouseButtonEventHandler(HallBottomLeftAd_MouseLeftButtonDown);
+                image.Cursor = Cursors.Hand;
+                image.LinkUrl = ImageDownloadState.ImageIDMap[(int)ImageID.IMAGE_ID_AD_HALL_BOTTOM_LEFT].link_url;
+
+                hallBottomLeft.Children.Add(image);
+            }
         }
 
         public void HallListBoxLoaded(object sender, RoutedEventArgs e)
@@ -542,6 +671,16 @@ namespace WpfApplication2
             {
                 return;
             }
+
+            //Display head image
+            DisplayHeadImage();
+
+            //Initial the Advertisement display
+            DisplayHallBottomLeftAd();
+
+            //Display user nick name and score
+            nick_name_lab.Content = GameState.currentUserName;
+            score_lab.Content = GameState.currentUserScore;
 
             uint hallNum = GameState.sumary.HallNum;
             ListBox listBox = listBox1;// sender as ListBox;
@@ -583,5 +722,67 @@ namespace WpfApplication2
             }
         }
 
+        private void GameHallWindowActiveHand(object sender, EventArgs e)
+        {
+            Console.WriteLine("GameHall Window Actived !! IsActive=" + this.IsActive);
+            GameState.SetCurrentWin(this);
+        }
+
+        private void GameHallWindowClosingHand(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (GameState.allUsersReady)
+            {
+                MessageBoxResult result = MessageBox.Show(this.Owner, "Getting out from the gamehall, are you sure ?", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    //handle something here, get out the game room!!!
+                }
+            }
+        }
+
+        private bool headImagePressDown = false;
+        private void UpdateUserInfoClickDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            headImagePressDown = true;
+        }
+        private void UpdateUserInfoClickUp(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            if (headImagePressDown)
+            {
+                UserInfoWin win = new UserInfoWin();
+                win.Owner = this;
+                win.ShowDialog();
+                headImagePressDown = false;
+            }
+        }
+
+        private void HeadImage_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (headElement != null)
+            {
+                Border headImage = headElement as Border;
+                headImage.Opacity = 0.7;
+            }
+        }
+
+        private void HeadImage_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (headElement != null)
+            {
+                Border headImage = headElement as Border;
+                headImage.Opacity = 1;
+            }
+        }
+    }
+
+    public class ChessBoardImg : Image
+    {
+        public int id;
     }
 }

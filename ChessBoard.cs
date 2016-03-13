@@ -37,13 +37,17 @@ namespace WpfApplication2
         public User bottomUser = null;
         public User currentUser = null;
 
-        private Location currUserLocation = Location.unknown;
-        private Location currPriority = Location.bottom;
+        public Location currUserLocation = Location.unknown;
+        public Location currPriority = Location.bottom;
 
         public static Chess chessWindow = null;
         public ChessMan currSelectChess = null;
         public static UIElement selectElement = null;
         public static UIElement targetElement = null;
+
+        public static int total_time = 0;
+        public static int single_step_time = 0;
+        public static int firsr_come_user_locate = (int)Location.unknown;
 
         public Location CurrentPriority
         {
@@ -51,11 +55,62 @@ namespace WpfApplication2
             set { this.currPriority = value; }
         }
 
+        public static void handler_chess_move(int fromX, int fromY, int desX, int desY)
+        {
+            //必须先要释放之前的选择标识
+            if (ChessBoard.selectElement != null)
+            {
+                ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.selectElement);
+                ChessBoard.selectElement = null;
+            }
+            if (ChessBoard.targetElement != null)
+            {
+                ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.targetElement);
+                ChessBoard.targetElement = null;
+            }
+
+            GetChessBoardObj().currSelectChess = null;
+
+            ChessMan chessMan = chessBoard.g_chess_board[fromX, fromY].chess;
+            if (chessMan != null)
+            {
+                Thickness srcThinc = new Thickness(chessMan.Margin.Left, chessMan.Margin.Top - 1, chessMan.Margin.Right, chessMan.Margin.Bottom);
+                chessMan.beSelected = true;
+                if (chessMan.MoveChess((byte)desX, (byte)desY, false))
+                {
+
+                    Thickness desThinc = new Thickness(chessMan.Margin.Left, chessMan.Margin.Top - 1, chessMan.Margin.Right, chessMan.Margin.Bottom);
+
+                    //添加两个选择标识
+                    ChessBoard.selectElement = SetSelectTagImg(srcThinc, (int)chessMan.Width);
+                    ChessBoard.chessWindow.gridChessBoard.Children.Add(ChessBoard.selectElement);
+
+                    ChessBoard.targetElement = SetSelectTagImg(desThinc, (int)chessMan.Width);
+                    ChessBoard.chessWindow.gridChessBoard.Children.Add(ChessBoard.targetElement);
+                }
+                else
+                {
+                    Console.WriteLine("MoveChess failed!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Can NOT get the original chess!");
+            }
+        }
+
         public static void gridChessBoard_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Point p = e.GetPosition((IInputElement)sender);
             GridPoint point = GetGridPointByPoint(p);
             chessWindow.chessBoardPosition.Text = "Click Down X:" + point.row + "  Y:" + point.colomn;
+
+            if (!WpfApplication2.GameState.allUsersReady || (WpfApplication2.GameState.currentTokenLocate != (Location)WpfApplication2.GameState.locate))
+            {
+                MessageBox.Show("You should NOT go!!");
+                //play the invalid tone
+                return;
+            }
 
             ChessMan chessMan = chessBoard.currSelectChess;
 
@@ -66,6 +121,7 @@ namespace WpfApplication2
                     chessBoard.currSelectChess.beSelected = false;
                     chessBoard.currSelectChess.Opacity = 1;
                     chessBoard.currSelectChess = null;
+                    GameState.currentTokenLocate = Location.unknown;
 
                     if (ChessBoard.targetElement != null)
                     {
@@ -76,33 +132,51 @@ namespace WpfApplication2
                     }
                     else
                     {
-                        Image select_tag = new Image();
-                        select_tag.HorizontalAlignment = HorizontalAlignment.Left;
-                        select_tag.VerticalAlignment = VerticalAlignment.Top;
-                        select_tag.Margin = new Thickness(chessMan.Margin.Left, chessMan.Margin.Top - 1, chessMan.Margin.Right, chessMan.Margin.Bottom);
-                        select_tag.Visibility = Visibility.Visible;
-                        select_tag.Width = chessMan.Width - 1;
-                        select_tag.Height = chessMan.Width - 1;
-
-                        // Create source
-                        BitmapImage myBitmapImage = new BitmapImage();
-
-                        // BitmapImage.UriSource must be in a BeginInit/EndInit block
-                        myBitmapImage.BeginInit();
-                        myBitmapImage.UriSource = new Uri(@"C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\selected.png", UriKind.Absolute);
-
-                        myBitmapImage.DecodePixelWidth = (int)chessMan.Width;
-                        myBitmapImage.EndInit();
-                        //set image source
-                        select_tag.Source = myBitmapImage;
-
-                        select_tag.Opacity = 1;
-
-                        ChessBoard.targetElement = select_tag;
+                        ChessBoard.targetElement = SetSelectTagImg(new Thickness(chessMan.Margin.Left, chessMan.Margin.Top - 1, chessMan.Margin.Right, chessMan.Margin.Bottom), (int)chessMan.Width);
                         ChessBoard.chessWindow.gridChessBoard.Children.Add(ChessBoard.targetElement);
                     }
                 }
             }
+            else
+            {
+                if (ChessBoard.selectElement != null)
+                {
+                    ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.selectElement);
+                }
+                if (ChessBoard.targetElement != null)
+                {
+                    ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.targetElement);
+                }
+            }
+        }
+
+        public static Image SetSelectTagImg(Thickness thick, int width)
+        {
+            Image select_tag = new Image();
+            select_tag.HorizontalAlignment = HorizontalAlignment.Left;
+            select_tag.VerticalAlignment = VerticalAlignment.Top;
+            select_tag.Margin = thick;
+            select_tag.Visibility = Visibility.Visible;
+            select_tag.Width = width - 1;
+            select_tag.Height = width - 1;
+
+            // Create source
+            BitmapImage myBitmapImage = new BitmapImage();
+
+            // BitmapImage.UriSource must be in a BeginInit/EndInit block
+            myBitmapImage.BeginInit();
+            myBitmapImage.UriSource = new Uri(@"C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\selected.png", UriKind.Absolute);
+
+            myBitmapImage.DecodePixelWidth = width;
+            myBitmapImage.EndInit();
+            //set image source
+            select_tag.Source = myBitmapImage;
+
+            select_tag.Opacity = 1;
+
+            //ChessBoard.chessWindow.gridChessBoard.Children.Add(select_tag);
+
+            return select_tag;
         }
 
         public static Point GetPointByGrid(byte row, byte column)

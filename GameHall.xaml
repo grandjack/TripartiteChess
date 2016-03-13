@@ -1,12 +1,13 @@
 ﻿<Window x:Class="WpfApplication2.Window1"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:WpfApplication2"
         xmlns:props="clr-namespace:WpfApplication2.Properties"
         Height="600" Width="875"
-        WindowStartupLocation="CenterScreen" ResizeMode="CanResize" WindowState="Maximized" Topmost="False" SizeChanged="Window_size_changed"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanResize" WindowState="Maximized" SizeChanged="Window_size_changed"
         SourceInitialized="Window_SourceInitialized" WindowStyle="None" AllowsTransparency="True" Background="Transparent"        
         Icon="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\MyIcon.png"
-        Title="{x:Static props:Resources.game_name}">
+        Title="{x:Static props:Resources.game_name}" Activated="GameHallWindowActiveHand" Closing="GameHallWindowClosingHand">
 
     <Window.Resources>
         <ControlTemplate x:Key="MaxButtonTemplate" TargetType="{x:Type Button}">
@@ -158,10 +159,10 @@
             </Border.Background>
         </Border>
 
-        <Grid>
+        <Grid x:Name="frameGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="50" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -170,7 +171,7 @@
             </Grid.ColumnDefinitions>
 
             <!--标题栏框-->
-            <Border Name="toolBar" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Opacity="1" 
+            <Border Name="toolBar" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Opacity="1" Grid.RowSpan="2"
                         Height="Auto" Width="auto" Padding="0" 
                         CornerRadius="2,2,0,0" BorderThickness="0" BorderBrush="Blue" PreviewMouseLeftButtonDown="rctHeader_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="rctHeader_PreviewMouseLeftButtonUp" PreviewMouseMove="rctHeader_PreviewMouseMove" >
                 <Border.Background>
@@ -181,12 +182,11 @@
                     </LinearGradientBrush>
                 </Border.Background>
                 <Grid Background="Transparent">
-                    <TextBlock Text="{x:Static props:Resources.game_name}" Margin="30,0,0,0"/>
+                    <TextBlock Text="{x:Static props:Resources.game_name}" Margin="30,5,0,0" Width="auto" Height="auto" HorizontalAlignment="Left"/>
                     <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Height="20" Width="20" HorizontalAlignment="Left" VerticalAlignment="Top"
-                               Opacity="1" Margin="5,2,10,10" Source="C:\Users\GBX386\Desktop\Visual C#\Image\cchess.ico"/>
+                               Opacity="1" Margin="5,3,10,10" Source="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\MyIcon.png"/>
                 </Grid>
             </Border>
-
             <!-- System Button-->
             <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
                 <Button Grid.Column="1" Template="{StaticResource CloseButtonTemplate}" Height="25" HorizontalAlignment="Right" Name="close_win" VerticalAlignment="Top" Width="25" Click="Close_Window" Margin="0,6,6,0" IsTabStop="False" FocusVisualStyle="{x:Null}"/>
@@ -196,9 +196,9 @@
             </Grid>
 
             <!--extern title bar -->
-            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" >
+            <Grid Grid.Row="1" Grid.Column="0" Margin="0,0,0,0" Grid.ColumnSpan="2">
                 <Border Grid.ColumnSpan="2" Opacity="1" 
-                        Height="Auto" Width="auto" VerticalAlignment="Top"
+                        Height="50" Width="auto" VerticalAlignment="Top"
                         CornerRadius="0" BorderThickness="0,0,0,1" BorderBrush="#FF00A3FF" PreviewMouseLeftButtonDown="rctHeader_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="rctHeader_PreviewMouseLeftButtonUp" PreviewMouseMove="rctHeader_PreviewMouseMove" >
                     <Border.Background>
                         <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
@@ -207,15 +207,19 @@
                             <GradientStop Color="#FF42A3FF" Offset="0.974" />
                         </LinearGradientBrush>
                     </Border.Background>
-                    <Grid Background="Transparent">
-                        <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Height="45" Width="45" HorizontalAlignment="Left" VerticalAlignment="Top"
-                               Opacity="1" Margin="10,0,0,2" Source="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2 - Copy\WpfApplication2\Images\MyIcon.png"/>
-                    </Grid>
                 </Border>
+
+                <Grid x:Name="toobarGrid" Background="Transparent" Height="auto" Width="auto" HorizontalAlignment="Left">
+                    <Label Content="{x:Static props:Resources.nickname}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="67,-2,0,0" />
+                    <Label Content="{x:Static props:Resources.score}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="67,22,0,0"   />
+                    <Label x:Name="nick_name_lab" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,-2,0,0" Foreground="White"/>
+                    <Label x:Name="score_lab" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,22,0,0" Foreground="White"/>
+                </Grid>
+                
             </Grid>
 
             <!--IMPORTANT Content-->
-            <Grid x:Name="gridContent" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid x:Name="gridContent" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="White">
                 <Grid>
                     <Border CornerRadius="2" BorderThickness="0">
                         <Grid>
@@ -229,16 +233,26 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Opacity="1" Background="#FF9FC5E4" Margin="2,0,2,0">
-                                <Label Width="85" Content="{x:Static props:Resources.game_name}" HorizontalAlignment="Left" Margin="50,0,0,0" />
+                                <Label  Content="{x:Static props:Resources.game_name}" HorizontalAlignment="Left" Margin="50,0,0,0" />
                             </StackPanel>
 
-                            <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Vertical" HorizontalAlignment="Stretch" 
-                                    Background="White" Margin="2,0,2,2">
-                                <Button Name="quick_startBtn" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Width="150" Content="{x:Static props:Resources.quick_start}" Margin="10,10,3,10" Background="#FF00A9FF" >
-                                </Button>
-                                <ListBox Name="listBox1" HorizontalAlignment="Left" ItemsSource="{Binding}" Background="Transparent" Margin="3,0,0,0" BorderThickness="0" VerticalAlignment="Top" SelectionChanged ="GameHallSelectionChanged" Loaded="HallListBoxLoaded">
-                                </ListBox>
-                            </StackPanel>
+                            <Grid Grid.Row="3" Grid.ColumnSpan="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30*" />
+                                    <RowDefinition Height="30*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                
+                                <StackPanel  Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" 
+                                    Margin="2,0,2,2">
+                                    <Button Name="quick_startBtn" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Width="150" Content="{x:Static props:Resources.quick_start}" Margin="13,10,3,10" Background="#FF00A9FF" >
+                                    </Button>
+                                    <ListBox Name="listBox1" HorizontalAlignment="Left" ItemsSource="{Binding}" Background="Transparent" Margin="3,0,0,0" BorderThickness="0" VerticalAlignment="Top" SelectionChanged ="GameHallSelectionChanged">
+                                    </ListBox>                                    
+                                </StackPanel>
+                                <Grid  x:Name="hallBottomLeft" Grid.Row="1" Height="130" Width="130" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
+                                </Grid>
+                            </Grid>
 
                             <TabControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" HorizontalAlignment="Stretch" Margin="0,0,2,2" Name="tabControl1" VerticalAlignment="Stretch" Background="White">
                                 <TabItem Header="{x:Static props:Resources.game_describe}" Name="tab_game_describe" FocusVisualStyle="{x:Null}">

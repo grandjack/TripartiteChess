@@ -95,6 +95,7 @@ namespace WpfApplication2
                 chessMan.beSelected = true;
                 if (chessMan.MoveChess((byte)desX, (byte)desY, false))
                 {
+                    chessMan.beSelected = false;
                     //添加两个选择标识
                     ChessBoard.SetSelectGrid(true, ChessBoard.GetChessBoardObj().g_chess_board[fromX, fromY].chessGrid);
 
@@ -210,7 +211,6 @@ namespace WpfApplication2
                 if (true == chessBoard.currSelectChess.MoveChess(des_row, des_colomn))
                 {
                     chessBoard.currSelectChess.beSelected = false;
-                    chessBoard.currSelectChess.Opacity = 1;
                     chessBoard.currSelectChess = null;
                     GameState.currentTokenLocate = Location.unknown;
                     GameState.currentAgreeHeQiNum = 0;
@@ -264,6 +264,11 @@ namespace WpfApplication2
 
             return chessBoard;
         }
+
+       public static void DestroryChessBoard()
+       {
+           chessBoard = null;
+       }
 
         private ChessBoard(Location currUserLocation)
         {

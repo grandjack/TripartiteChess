@@ -329,6 +329,9 @@ namespace WpfApplication2
                 board_index = 0;
             }
 
+            if (GameState.sumary == null)
+                return;
+
             grid_game_hall.Children.Clear();
             Console.WriteLine("grid_game_hall.Children.Clear() for loading hall info");
             int total_seats_num = (int)GameState.sumary.GetHallInfo(board_index).TotalChessboard;

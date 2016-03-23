@@ -474,18 +474,21 @@ namespace WpfApplication2
 
         public void TimeoutHandle(Location locate)
         {
+            ChessBoard.GetChessBoardObj().gGameStatus = ChessBoard.GameSatus.END;
+            GameState.allUsersReady = false;
+
             if ((int)locate == GameState.locate)
             {
                 MediaPlayer player = new MediaPlayer();
                 player.Open(new Uri(GameState.gWorkPath + @"\res\voice\gameover.wav", UriKind.Absolute));
                 player.Play();
-
-                ChessBoard.GetChessBoardObj().gGameStatus = ChessBoard.GameSatus.END;
+                
                 ChessBoard.GetChessBoardObj().currentUser.State = User.GameState.LOSE;
-                MessageBox.Show("走棋超时,本轮游戏结束！", "警告");
 
                 GamePlayingState state = new GamePlayingState();
                 state.LeaveOutFromRoom();
+
+                MessageBox.Show("走棋超时,本轮游戏结束！", "警告");
             }
         }
 
@@ -508,11 +511,6 @@ namespace WpfApplication2
                         e.Cancel = true;
                     }
                 }
-                else//用户游戏已经结束，则直接退出
-                {
-                    GamePlayingState state = new GamePlayingState();
-                    state.LeaveOutFromRoom("exit");
-                }
             }
 
             if (!e.Cancel)
@@ -527,6 +525,8 @@ namespace WpfApplication2
                 }
                 GameState.allUsersReady = false;
                 GameState.gCurrUserGameStatus = UserStatus.STATUS_EXITED;
+                ChessBoard.DestroryChessBoard();
+
                 GamePlayingState state = new GamePlayingState();
                 state.LeaveOutFromRoom("exit");
             }
@@ -938,6 +938,12 @@ namespace WpfApplication2
             bt.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\time_panel.png", UriKind.Absolute);
             bt.EndInit();
             bottomTimepanel.Background = new ImageBrush(bt);
+
+            bt = new BitmapImage();
+            bt.BeginInit();
+            bt.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\background.png", UriKind.Absolute);
+            bt.EndInit();
+            chessContent.Background = new ImageBrush(bt);
         }
 
     }

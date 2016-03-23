@@ -98,6 +98,7 @@
             <Label Content="{x:Static props:Resources.forget_pwd}" Height="24" Foreground="White" HorizontalAlignment="Left" Margin="111,192,0,0" Name="forget" VerticalAlignment="Top" Width="55" FontSize="10" Cursor="Hand" MouseDown="FindPwd"/>
             <Label Content="{x:Static props:Resources.register}" Height="24" Foreground="White" HorizontalAlignment="Left" Margin="233,192,0,0" Name="register" VerticalAlignment="Top" Width="50" FontSize="10" Cursor="Hand" MouseDown="Register"/>
             <Button Content="{x:Static props:Resources.cancelBtn}" Visibility="Hidden" Height="21" HorizontalAlignment="Left" Margin="302,156,0,0" Name="cancelBtn" VerticalAlignment="Top" Width="42" FontSize="10" Background="#FF00A9FF" Click="CancelBtn"/>
+            <CheckBox Content="{x:Static props:Resources.record_pwd}" Height="auto"  FontSize="11" Foreground="White" HorizontalAlignment="Left" Margin="288,108,0,0" Name="record_pwd" VerticalAlignment="Top" Click="RecordClick"/>
         </Grid>
     </Border>
 </Window>

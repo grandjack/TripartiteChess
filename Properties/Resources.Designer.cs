@@ -340,6 +340,15 @@ namespace WpfApplication2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 记住密码.
+        /// </summary>
+        public static string record_pwd {
+            get {
+                return ResourceManager.GetString("record_pwd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 立即注册.
         /// </summary>
         public static string register {

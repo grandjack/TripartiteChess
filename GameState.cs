@@ -426,13 +426,13 @@ namespace WpfApplication2
                         }
                         else
                         {
+                            //NetworkThread.DestroryWorkThread();
                             currentWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                 (ThreadStart)delegate()
                                 {
                                     MessageBox.Show("注册失败，该账号可能已经被注册");
                                 }
                             );
-                            NetworkThread.DestroryWorkThread();
                         }
                     }
                     catch (InvalidProtocolBufferException e)
@@ -475,6 +475,13 @@ namespace WpfApplication2
                                 Console.WriteLine("Write the config account:" + GameState.currentUserAccount);
                             }
 
+                            logginWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                                 (ThreadStart)delegate()
+                                 {
+                                     logginWin.SavePassword();
+                                 }
+                             );                            
+
                             ImageDownloadState state = new ImageDownloadState();
                             NetworkThread.SetGameState(state);
                             state.SendImageInfo();
@@ -483,13 +490,13 @@ namespace WpfApplication2
                         }
                         else
                         {
+                            //NetworkThread.DestroryWorkThread();
                             logginWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                 (ThreadStart)delegate()
                                 {
                                     MessageBox.Show("用户名或密码错误");
                                 }
                             );
-                            NetworkThread.DestroryWorkThread();
                         }
                     }
                     catch (InvalidProtocolBufferException e)
@@ -531,6 +538,7 @@ namespace WpfApplication2
 
             GameState.currentUserName = user;
             GameState.currentUserAccount = user;
+            GameState.currentUserPassword = pasd;
 
             LogOnorOut login = builder.Build();
 
@@ -629,6 +637,7 @@ namespace WpfApplication2
             builder.SetPassword(pwd);
 
             GameState.currentUserName = name;
+            GameState.currentUserPassword = pwd;
             //Display user nick name and score
             GameState.gameHallWin.nick_name_lab.Content = GameState.currentUserName;
 

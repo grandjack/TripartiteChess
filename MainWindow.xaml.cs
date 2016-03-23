@@ -26,6 +26,8 @@ namespace WpfApplication2
             FindPwd = 2,
         }
         private loggonState curState = loggonState.Loggin;
+        private int actual_pwd_len = 0;
+        private string record_pwd_md5 = "";
 
         public MainWindow()
         {
@@ -42,6 +44,29 @@ namespace WpfApplication2
             {
                 this.cbUser.Text = tmp_account;
                 Console.WriteLine("Got the config account:" + tmp_account);
+            }
+
+            string tmp = IniFileHand.ReadIniData("User", "RecordPwdEn", "0", GameState.gWorkPath + @"\res\files\info.ini");
+            if ((tmp != String.Empty) && (!tmp_account.Equals("0")) && (tmp_account.Length > 0))
+            {
+                if (int.Parse(tmp) == 1)
+                {
+                    record_pwd.IsChecked = true;
+                    need_record_pwd = true;
+
+                    tmp = IniFileHand.ReadIniData("User", "ActualPwdLen", "0", GameState.gWorkPath + @"\res\files\info.ini");
+                    if ((tmp != String.Empty) && (!tmp.Equals("0")))
+                    {
+                        actual_pwd_len = int.Parse(tmp);
+                        tmp = IniFileHand.ReadIniData("User", "Pwdmd5", "None", GameState.gWorkPath + @"\res\files\info.ini");
+                        if ((tmp != String.Empty) && (!tmp.Equals("None")) && (tmp.Length > 0))
+                        {
+                            record_pwd_md5 = tmp;
+                            passwordBox.Password = new String('$', actual_pwd_len);
+                            Console.WriteLine("Got config pwd:" + record_pwd_md5 + " display pwd:" + passwordBox.Password);
+                        }
+                    }
+                }
             }
         }
 
@@ -134,6 +159,7 @@ namespace WpfApplication2
             register.Visibility = Visibility.Hidden; 
             forget.Visibility = Visibility.Hidden;
             cancelBtn.Visibility = Visibility.Visible;
+            record_pwd.Visibility = System.Windows.Visibility.Hidden;
 
             logginBtn.Content = (string)Properties.Resources.register;
             labelUser.Content = (string)Properties.Resources.email_input;
@@ -149,6 +175,7 @@ namespace WpfApplication2
             cancelBtn.Visibility = Visibility.Visible;
             labelPwd.Visibility = Visibility.Hidden;
             passwordBox.Visibility = Visibility.Hidden;
+            record_pwd.Visibility = System.Windows.Visibility.Hidden;
 
             labelUser.Content = (string)Properties.Resources.email_input;
             logginBtn.Content = (string)Properties.Resources.find_pwd; 
@@ -163,6 +190,7 @@ namespace WpfApplication2
             {
                 passwordBox.Visibility = Visibility.Visible;
             }
+            record_pwd.Visibility = System.Windows.Visibility.Visible;
             register.Visibility = Visibility.Visible;
             forget.Visibility = Visibility.Visible;
             logginBtn.Content = (string)Properties.Resources.Login_name;
@@ -201,11 +229,28 @@ namespace WpfApplication2
                 NetworkThread.CreateWorkThread();
                 GameState.SetCurrentWin(this);
                 GameState.SetLogWin(this);
-                MD5Hash hash = new MD5Hash(passwordBox.Password);
-                Console.WriteLine(passwordBox.Password +" 's hash code is:" + hash.GetMD5HashCode());
-                LoginState login = new LoginState();
-                login.SendLoginReq(cbUser.Text, hash.GetMD5HashCode());
-                GameState.currentUserPassword = passwordBox.Password;
+
+
+                bool use_record = false;
+                if ((actual_pwd_len > 0) && 
+                    (record_pwd_md5.Length == 32))
+                {
+                    string tmp_pwd = new String('$', actual_pwd_len);
+                    if (passwordBox.Password.Equals(tmp_pwd))
+                    {
+                        LoginState login = new LoginState();
+                        login.SendLoginReq(cbUser.Text, record_pwd_md5);
+                        use_record = true;
+                    }
+                }
+
+                if (!use_record)
+                {
+                    actual_pwd_len = passwordBox.Password.Length;
+                    MD5Hash hash = new MD5Hash(passwordBox.Password);
+                    LoginState login = new LoginState();
+                    login.SendLoginReq(cbUser.Text, hash.GetMD5HashCode());
+                }
 
             }
             else if (curState == loggonState.Register)
@@ -248,6 +293,35 @@ namespace WpfApplication2
             bt.EndInit();
 
             loggin_border.Background = new ImageBrush(bt);
+        }
+
+        public bool need_record_pwd = false;
+        private void RecordClick(object sender, RoutedEventArgs e)
+        {
+            if (record_pwd.IsChecked == true)
+            {
+                need_record_pwd = true;
+            }
+            else
+            {
+                need_record_pwd = false;
+            }
+        }
+
+        public void SavePassword()
+        {
+            if (need_record_pwd)
+            {
+                IniFileHand.WriteIniData("User", "RecordPwdEn", "1", GameState.gWorkPath + @"\res\files\info.ini");
+                IniFileHand.WriteIniData("User", "ActualPwdLen", actual_pwd_len.ToString(), GameState.gWorkPath + @"\res\files\info.ini");
+                IniFileHand.WriteIniData("User", "Pwdmd5", GameState.currentUserPassword, GameState.gWorkPath + @"\res\files\info.ini");
+            }
+            else
+            {
+                IniFileHand.WriteIniData("User", "RecordPwdEn", "0", GameState.gWorkPath + @"\res\files\info.ini");
+                IniFileHand.WriteIniData("User", "ActualPwdLen", "0", GameState.gWorkPath + @"\res\files\info.ini");
+                IniFileHand.WriteIniData("User", "Pwdmd5", "None", GameState.gWorkPath + @"\res\files\info.ini");
+            }
         }
 
     }

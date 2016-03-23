@@ -55,8 +55,9 @@ namespace WpfApplication2
             }
             if (connectThread != null)
             {
-                connectThread.Abort();
+                Thread tmp = connectThread;
                 connectThread = null;
+                tmp.Abort();
             }
         }
 

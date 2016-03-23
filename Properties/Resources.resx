@@ -259,4 +259,7 @@
   <data name="second" xml:space="preserve">
     <value>秒</value>
   </data>
+  <data name="record_pwd" xml:space="preserve">
+    <value>记住密码</value>
+  </data>
 </root>

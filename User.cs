@@ -82,7 +82,7 @@ namespace WpfApplication2
             //(ChessBoard.GetChessBoardObj().GetUserByUsrLocation((Location)WpfApplication2.GameState.locate).State != User.GameState.PLAYING)
             if ((board.currUserLocation == WpfApplication2.GameState.currentTokenLocate)&&
                 (board.currentUser.State == User.GameState.PLAYING) &&
-                (ChessBoard.GetChessBoardObj().gGameStatus != ChessBoard.GameSatus.PLAYING) &&
+                (ChessBoard.GetChessBoardObj().gGameStatus == ChessBoard.GameSatus.PLAYING) &&
                 ((chessMan.GetOwnUser() == board.currentUser) || (board.currSelectChess != null)))
             {
                 chessMan.Cursor = Cursors.Hand;
@@ -98,6 +98,7 @@ namespace WpfApplication2
         private void chessMan_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ChessMan chessMan = sender as ChessMan;
+            Console.WriteLine("Click Chess: " + chessMan.GetChessName() + " ,and it belong to " + chessMan.GetOwnUser().account);
 
             if ((!WpfApplication2.GameState.allUsersReady) || 
                 (WpfApplication2.GameState.currentTokenLocate != (Location)WpfApplication2.GameState.locate) ||

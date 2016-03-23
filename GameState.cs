@@ -10,6 +10,9 @@ using System.Net.Sockets;
 using System.IO;
 using System.Windows;
 using System.Windows.Threading;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Composition;
 
 namespace WpfApplication2
 {
@@ -66,6 +69,15 @@ namespace WpfApplication2
         IMAGE_ID_MAX
     }
 
+    public enum UserStatus
+    {
+        STATUS_NOT_START = 0,
+        STATUS_EXITED = STATUS_NOT_START,
+        STATUS_READY,
+        STATUS_PLAYING,
+        STATUS_ENDED 
+    }
+
     abstract class GameState
     {
         static public int gameHallID = 0;
@@ -91,9 +103,26 @@ namespace WpfApplication2
         static public HallInfo hallInfo = null;
         static public ChessBoardInfo chessBoard = null;
 
+        static public ChessBoardUser gLeftUser = null;
+        static public ChessBoardUser gRightUser = null;
+        static public ChessBoardUser gBottomUser = null;
+        static public ChessBoardUser gCurrentUser = null;
+
+        static public UserStatus gCurrUserGameStatus = UserStatus.STATUS_NOT_START;
+
+        static public string gWorkPath = AppDomain.CurrentDomain.BaseDirectory;
+
+        static public int currentAgreeHeQiNum = 0;
+
+        static public string defaultHeadImagePath = gWorkPath + @"\res\Images\MyIcon.png";
+
         static public void SetCurrentWin(Window win)
         {
             currentWin = win;
+        }
+        static public void SetLogWin(Window win)
+        {
+            logginWin = (MainWindow)win;
         }
         static public void SetGameHallWin(Window win)
         {
@@ -105,6 +134,93 @@ namespace WpfApplication2
         }
 
         abstract public bool MessageHandle(MessageType msg_type, byte[] msg);
+
+        public static ChessBoardUser GetCurrentUser()
+        {
+             switch((Location)locate)
+            {
+                 case Location.left:
+                    gCurrentUser = gLeftUser;    break;
+                 case Location.right:
+                     gCurrentUser = gRightUser; break;
+                 case Location.bottom:
+                     gCurrentUser = gBottomUser; break;
+            }
+
+            return gCurrentUser;
+        }
+
+        public static int GetActiveUserNum()
+        {
+            int num = 0;
+            if ((gLeftUser != null) && 
+                (!gLeftUser.ChessBoardEmpty) &&
+                (gLeftUser.HasStatus) &&
+                (gLeftUser.Status == (uint)UserStatus.STATUS_PLAYING))
+            {
+                ++num;
+            }
+
+            if ((gRightUser != null) &&
+                (!gRightUser.ChessBoardEmpty) &&
+                (gRightUser.HasStatus) &&
+                (gRightUser.Status == (uint)UserStatus.STATUS_PLAYING))
+            {
+                ++num;
+            }
+
+            if ((gBottomUser != null) &&
+                (!gBottomUser.ChessBoardEmpty) &&
+                (gBottomUser.HasStatus) &&
+                (gBottomUser.Status == (uint)UserStatus.STATUS_PLAYING))
+            {
+                ++num;
+            }
+
+            return num;
+        }
+
+        public static ChessBoardUser GetSpeciUserFromHall(int chessBoadrIndex, Location locate)
+        {
+            ChessBoardUser user = null;
+            if (GameState.hallInfo != null)
+            {
+                ChessBoardInfo info = GameState.hallInfo.GetChessBoard((int)(chessBoadrIndex - 1));
+                if (info != null)
+                {
+                    switch (locate)
+                    {
+                        case Location.left:
+                            user = info.LeftUser;break;
+                        case Location.right:
+                            user = info.RightUser;break;
+                        case Location.bottom:
+                            user = info.BottomUser;break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            return user;
+        }
+
+        public static ChessBoardUser GetChessBoardtUserByLocate(uint location)
+        {
+            ChessBoardUser usr = null;
+
+            switch ((Location)location)
+            {
+                case Location.left:
+                    usr = gLeftUser; break;
+                case Location.right:
+                    usr = gRightUser; break;
+                case Location.bottom:
+                    usr = gBottomUser; break;
+            }
+
+            return usr;
+        }
 
         protected bool HandleEcho(byte[] msg)
         {
@@ -203,6 +319,10 @@ namespace WpfApplication2
                gameHallWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
                     {
                         gameHallWin.game_hall_loaded(null, null);
+                        if (gameHallWin.send_quick_start)
+                        {
+                            gameHallWin.QuickStart(null, null);
+                        }
                     }
                 );
             }
@@ -212,6 +332,67 @@ namespace WpfApplication2
             }
 
             return true;
+        }
+
+        public bool GameRequestPlayReplyHandle(byte[] msg)
+        {
+            bool ret = false;
+            RequestPlayReply reply = RequestPlayReply.ParseFrom(msg);
+            Console.WriteLine("status = " + reply.Status);
+            Console.WriteLine("first come user locate : " + reply.FirstComeUserLocate);
+            ChessBoard.firsr_come_user_locate = (int)reply.FirstComeUserLocate;
+
+            if (reply.HasChessBoard)
+            {
+                chessBoardID = (int)reply.ChessBoard.Id;
+                Console.WriteLine("chessBoard.id = " + reply.ChessBoard.Id);
+                Console.WriteLine("chessBoard.people_num = " + reply.ChessBoard.PeopleNum);
+                Console.WriteLine("chessBoard.left_user.chess_board_empty = " + reply.ChessBoard.LeftUser.ChessBoardEmpty);
+                Console.WriteLine("chessBoard.right_user.chess_board_empty = " + reply.ChessBoard.RightUser.ChessBoardEmpty);
+                Console.WriteLine("chessBoard.bottom_user.chess_board_empty = " + reply.ChessBoard.BottomUser.ChessBoardEmpty);
+
+                if (!reply.ChessBoard.LeftUser.ChessBoardEmpty)
+                {
+                    gLeftUser = reply.ChessBoard.LeftUser;
+                }
+
+                if (!reply.ChessBoard.RightUser.ChessBoardEmpty)
+                {
+                    gRightUser = reply.ChessBoard.RightUser;
+                }
+
+                if (!reply.ChessBoard.BottomUser.ChessBoardEmpty)
+                {
+                    gBottomUser = reply.ChessBoard.BottomUser;
+                }
+            }
+
+            if (reply.Status == 1)
+            {
+                gameHallWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                                (ThreadStart)delegate()
+                                {
+                                    Chess chess = new Chess();
+                                    //chess.Owner = currentWin;
+                                    GameState.SetCurrentWin(chess);
+                                    gameWin = chess;
+                                    chess.Show();
+                                }
+                            );
+
+                ret = true;
+            }
+            else if (reply.Status == 2)
+            {
+                gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                                (ThreadStart)delegate()
+                                {
+                                    gameWin.UsersInfoLoadAndUpdate();
+                                }
+                            );
+            }
+
+            return ret;
         }
     }
 
@@ -225,6 +406,13 @@ namespace WpfApplication2
                     //反序列化
                     try
                     {
+                        logginWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                                 (ThreadStart)delegate()
+                                 {
+                                     logginWin.click_count = 0;
+                                 }
+                        );
+
                         ReplyStatus reply = ReplyStatus.ParseFrom(msg);
                         Console.WriteLine("Register reply.Status " + reply.Status);
                         if (reply.Status == 1)
@@ -244,6 +432,7 @@ namespace WpfApplication2
                                     MessageBox.Show("注册失败，该账号可能已经被注册");
                                 }
                             );
+                            NetworkThread.DestroryWorkThread();
                         }
                     }
                     catch (InvalidProtocolBufferException e)
@@ -261,6 +450,12 @@ namespace WpfApplication2
                     {
                         ReplyStatus reply = ReplyStatus.ParseFrom(msg);
                         Console.WriteLine("reply.Status " + reply.Status);
+                        logginWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                                 (ThreadStart)delegate()
+                                 {
+                                     logginWin.click_count = 0;
+                                 }
+                             );
                         if (reply.Status == 1)
                         {
                             if (reply.HasUser)
@@ -274,6 +469,12 @@ namespace WpfApplication2
                                 reply.User.HeadImage.CopyTo(GameState.currentUserHeadImage, 0);
                             }
 
+                            bool ret = IniFileHand.WriteIniData("User", "Account", GameState.currentUserAccount, GameState.gWorkPath + @"\res\files\info.ini");
+                            if (ret)
+                            {
+                                Console.WriteLine("Write the config account:" + GameState.currentUserAccount);
+                            }
+
                             ImageDownloadState state = new ImageDownloadState();
                             NetworkThread.SetGameState(state);
                             state.SendImageInfo();
@@ -282,12 +483,13 @@ namespace WpfApplication2
                         }
                         else
                         {
-                            currentWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                            logginWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                 (ThreadStart)delegate()
                                 {
                                     MessageBox.Show("用户名或密码错误");
                                 }
                             );
+                            NetworkThread.DestroryWorkThread();
                         }
                     }
                     catch (InvalidProtocolBufferException e)
@@ -371,6 +573,7 @@ namespace WpfApplication2
                     if (GameRequestPlayReplyHandle(msg))
                     {
                         NetworkThread.SetGameState(new GamePlayingState());
+                        GameState.gCurrUserGameStatus = UserStatus.STATUS_READY;
                     }
                     break;
 
@@ -416,43 +619,6 @@ namespace WpfApplication2
             RequestPlay req = builder.Build();
             byte[] buf = req.ToByteArray();
             NetworkThread.SendMessage(MessageType.MSG_REQUEST_PLAY, buf);
-        }
-
-        public bool GameRequestPlayReplyHandle(byte[] msg)
-        {
-            bool ret = false;
-            RequestPlayReply reply = RequestPlayReply.ParseFrom(msg);
-            Console.WriteLine("status = "+ reply.Status);
-            Console.WriteLine("first come user locate : " + reply.FirstComeUserLocate);
-            ChessBoard.firsr_come_user_locate = (int)reply.FirstComeUserLocate;
-
-            if (reply.Status == 1)
-            {
-                gameHallWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                                (ThreadStart)delegate()
-                                {
-                                    Chess chess = new Chess();
-                                    //chess.Owner = currentWin;
-                                    GameState.SetCurrentWin(chess);
-                                    gameWin = chess;
-                                    chess.Show();
-                                }
-                            );
-
-                ret = true;
-            }
-
-            if (reply.HasChessBoard)
-            {
-                chessBoardID = (int)reply.ChessBoard.Id;
-                Console.WriteLine("chessBoard.id = " + reply.ChessBoard.Id);
-                Console.WriteLine("chessBoard.people_num = " + reply.ChessBoard.PeopleNum);
-                Console.WriteLine("chessBoard.left_user.chess_board_empty = " + reply.ChessBoard.LeftUser.ChessBoardEmpty);
-                Console.WriteLine("chessBoard.right_user.chess_board_empty = " + reply.ChessBoard.RightUser.ChessBoardEmpty);
-                Console.WriteLine("chessBoard.bottom_user.chess_board_empty = " + reply.ChessBoard.BottomUser.ChessBoardEmpty);
-            }
-
-            return ret;
         }
 
         public void UpdateUserInfos(string account, string name, string pwd, string email="", string phone = "", byte[] headImage = null)
@@ -504,6 +670,8 @@ namespace WpfApplication2
 
     class GamePlayingState : GameState
     {
+        static public Undo gUndo_msg = null;
+
         public override bool MessageHandle(MessageType msg_type, byte[] msg)
         {
             bool ret = true;
@@ -537,6 +705,19 @@ namespace WpfApplication2
                 case MessageType.MSG_CHESS_BOARD:
                     ParseChessBoard(msg);
                     break;
+                case MessageType.MSG_REQUEST_PLAY_REPLY:
+                    GameRequestPlayReplyHandle(msg);
+                    break;
+
+                case MessageType.MSG_UNDO_REPS:
+                case MessageType.MSG_UNDO_REQ:
+                    UndoParseReply(msg);
+                    break;
+
+                case MessageType.MSG_RECONCILED_REQ:
+                case MessageType.MSG_RECONCILED_RESP:
+                    HeQiParse(msg);
+                    break;
 
                 default:
                     break;
@@ -552,12 +733,48 @@ namespace WpfApplication2
             Console.WriteLine("ChessBoardID: " + chessBoard.Id);
             Console.WriteLine("PeopleNum: " + chessBoard.PeopleNum);
             Console.WriteLine("LeftUser.ChessBoardEmpty: " + chessBoard.LeftUser.ChessBoardEmpty);
+
+            if (chessBoard.HasLeftUser)
+            {
+                gLeftUser = chessBoard.LeftUser;
+            } else {
+                gLeftUser = null;
+            }
+            if (chessBoard.HasRightUser)
+                gRightUser = chessBoard.RightUser;
+            else
+                gRightUser = null;
+
+            if (chessBoard.HasBottomUser)
+                gBottomUser = chessBoard.BottomUser;
+            else
+                gBottomUser = null;
+
+            gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+            (ThreadStart)delegate()
+                                {
+                                    gameWin.UsersInfoLoadAndUpdate();
+                                }
+            );
+
+
+            if (GameState.currentUserScore != GetCurrentUser().Score)
+            {
+                GameState.currentUserScore = GetCurrentUser().Score;
+                gameHallWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                (ThreadStart)delegate()
+                {
+                    gameHallWin.score_lab.Content = GameState.currentUserScore;
+                }
+                );
+            }
+
             if (!chessBoard.LeftUser.ChessBoardEmpty)
             {
                 Console.WriteLine("LeftUser.Account: " + chessBoard.LeftUser.Account);
                 Console.WriteLine("LeftUser.UserName: " + chessBoard.LeftUser.UserName);
                 Console.WriteLine("LeftUser.Score: " + chessBoard.LeftUser.Score);
-                Console.WriteLine("LeftUser.Status: " + chessBoard.LeftUser.Status);
+                Console.WriteLine("LeftUser.Status: " + chessBoard.LeftUser.Status);                
             }
 
             Console.WriteLine("RightUser.ChessBoardEmpty: " + chessBoard.RightUser.ChessBoardEmpty);
@@ -583,13 +800,6 @@ namespace WpfApplication2
                 gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                 (ThreadStart)delegate()
                                 {
-                                    gameWin.ChessBoardLoaded(null, null);
-                                    User user = ChessBoard.GetChessBoardObj().GetUserByUsrLocation((Location)currentTokenLocate);
-                                    if (user != null)
-                                    {
-                                        user.timer.Start();
-                                    }
-
                                     ChessBoard.GetChessBoardObj().leftUser.account = chessBoard.LeftUser.Account;
                                     ChessBoard.GetChessBoardObj().leftUser.user_name = chessBoard.LeftUser.UserName;
                                     ChessBoard.GetChessBoardObj().leftUser.score = chessBoard.LeftUser.Score;
@@ -622,18 +832,23 @@ namespace WpfApplication2
             NetworkThread.SendMessage(MessageType.MSG_CHESS_BOARD_REQ, bytes);
         }
 
-        public void LeaveOutFromRoom()
+        public void LeaveOutFromRoom(string opt=null)
         {
             GiveUp giveUp;
             GiveUp.Builder builder = new GiveUp.Builder();
             builder.SetSrcUserLocate((uint)locate);
+
+            if ((opt != null ) && (opt.Length>0)) 
+            {
+                builder.SetOpt(opt);
+                NetworkThread.SetGameState(new GameReadyState());
+            }
 
             giveUp = builder.Build();
 
             byte[] bytes = giveUp.ToByteArray();
 
             NetworkThread.SendMessage(MessageType.MSG_GIVE_UP, bytes);
-            NetworkThread.SetGameState(new GameReadyState());
         }
 
         private bool ParseLeaveOutRoomMsg(byte[] msg)
@@ -648,13 +863,23 @@ namespace WpfApplication2
             }
             catch (Exception e)
             {
-                MessageBox.Show("Get The User object failed! " + e.Message);
+                Console.WriteLine("Get The User object failed! " + e.Message);
                 return false;
             }
 
+            ChessBoardUser give_up_usr = GameState.GetChessBoardtUserByLocate(giveUp.SrcUserLocate);
             gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
             {
-                MessageBox.Show(usr.user_name +" left out the game room, the game will end!");
+                ChessBoard.GetChessBoardObj().gGameStatus = ChessBoard.GameSatus.END;
+                MessageBox.Show(give_up_usr.UserName + " 退出游戏，本轮游戏结束！", "提示");
+                try{
+                    ChessBoard.GetChessBoardObj().leftUser.timer.Stop();
+                    ChessBoard.GetChessBoardObj().righttUser.timer.Stop();
+                    ChessBoard.GetChessBoardObj().bottomUser.timer.Stop();
+                } catch(Exception e)
+                {
+                    Console.WriteLine("Game over! Stop timer failed.");
+                }
             }
             );
             return true;
@@ -679,10 +904,31 @@ namespace WpfApplication2
             gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                 (ThreadStart)delegate()
                 {
+                    GameState.currentTokenLocate = (Location)(reply.TokenLocate);
                     if (reply.SrcUserLocate != locate)
                     {
                         ChessBoard.handler_chess_move(reply.Movechess.FromPointX, reply.Movechess.FromPointY,
                             reply.Movechess.DesPointX, reply.Movechess.DesPointY);
+                    }
+                    else
+                    {
+                        //设置可以悔棋状态
+                        Console.WriteLine("Could set HuiQi button enable ! currentTokenLocate=" + currentTokenLocate.ToString());
+                        ChessBoard.justGo = true;
+                        gameWin.SetHuiQiButtonStatus(true);
+                    }
+
+                    if (GameState.currentTokenLocate == (Location)GameState.locate)
+                    {
+                        if (gameWin.HeQiBtn.IsEnabled == false)
+                        {
+                            gameWin.SetQiuHeButtonStatus(true);
+                        }
+
+                        if (!gameWin.RenShuBtn.IsEnabled && (GameState.GetActiveUserNum() == 2))
+                        {
+                            gameWin.SetRenShuButtonStatus(true);
+                        }
                     }
                     //注意，该条消息时该棋盘广播的消息，三方都可以接受消息，但只有另外两方需要走子
                     //暂停当前走棋用户的定时器，并开启下一个应该走子用户的定时器
@@ -788,10 +1034,26 @@ namespace WpfApplication2
                 allUsersReady = true;
                 ChessBoard.total_time = (int)reply.TotalTime;
                 ChessBoard.single_step_time = (int)reply.SingleStepTime;
+                GameState.gCurrUserGameStatus = UserStatus.STATUS_PLAYING;
 
-                GamePlayingState state = new GamePlayingState();
-                state.SendChessBoardReq();
+                gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
+                {
+                    gameWin.ReMoveMiddleAd();
+                    gameWin.ChessBoardLoaded(null, null);
+                    User user = ChessBoard.GetChessBoardObj().GetUserByUsrLocation((Location)currentTokenLocate);
+                    if (user != null)
+                    {
+                        user.timer.Start();
+                    }
+                    MediaPlayer player = new MediaPlayer();
+                    player.Open(new Uri(GameState.gWorkPath + @"\res\voice\Begin.wav", UriKind.Absolute));
+                    player.Play();
 
+                }
+                );
+
+                SendChessBoardReq();
+                
                 ret = true;
             }
             else
@@ -804,12 +1066,235 @@ namespace WpfApplication2
                                 {
                                     if (gameWin.pressGameReadyBtn && gameWin.StartGameBtn.IsEnabled)
                                     {
-                                        gameWin.StartGameBtn.IsEnabled = false;
+                                        gameWin.SetStartButtonStatus(false);
                                     }
                                 }
                             );
             
             return ret;
+        }
+
+        //请求悔棋
+        public void UndoRequest()
+        {
+            if (currentTokenLocate == Location.unknown)
+            {
+                Console.WriteLine("Current token locate is unknown, can NOT request HuiQi");
+                return;
+            }
+            Undo.Builder builder = new Undo.Builder();
+            builder.SetRepOrRespon(0);
+            builder.SetSrcUserLocate((uint)GameState.locate);
+            builder.SetTarUserLocate((uint)currentTokenLocate);
+
+            Undo msg = builder.Build();
+            byte[] bytes = msg.ToByteArray();
+
+            NetworkThread.SendMessage(MessageType.MSG_UNDO_REQ, bytes);
+        }
+
+        //回复悔棋请求
+        public void UndoRequestReply(bool agree)
+        {
+            Undo.Builder builder = new Undo.Builder();
+            builder.SetRepOrRespon(1);
+            builder.SetSrcUserLocate(undo_req_src_locate);
+            builder.SetTarUserLocate(undo_req_tar_locate);
+            builder.SetStatus(agree);
+
+            Undo msg = builder.Build();
+            byte[] bytes = msg.ToByteArray();
+
+            NetworkThread.SendMessage(MessageType.MSG_UNDO_REPS, bytes);
+        }
+
+        static private uint undo_req_src_locate = 3;
+        static private uint undo_req_tar_locate = 3;
+        public bool UndoParseReply(byte []msg)
+        {
+            gUndo_msg = Undo.ParseFrom(msg);
+            Console.WriteLine("Receive Undo data!");
+            Console.WriteLine("RepOrRespon=" + gUndo_msg.RepOrRespon);
+            Console.WriteLine("TarUserLocate=" + gUndo_msg.TarUserLocate);
+            Console.WriteLine("SrcUserLocate=" + gUndo_msg.SrcUserLocate);
+            if (gUndo_msg.HasStatus)
+            {
+                Console.WriteLine("Status=" + gUndo_msg.Status);
+            }
+
+            if (gUndo_msg.RepOrRespon == 0)//这是一个请求报文
+            {
+                undo_req_src_locate = gUndo_msg.SrcUserLocate;
+                undo_req_tar_locate = gUndo_msg.TarUserLocate;
+                if (gUndo_msg.TarUserLocate == (uint)GameState.locate)//need give tip and select whether approve
+                {
+                    if (ChessBoard.justGo == false)//当前用户还没走子，则给用户提示是否同意悔棋
+                    {
+                        gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
+                        {
+                            MessageBoxResult result = MessageBox.Show(GameState.GetChessBoardtUserByLocate(gUndo_msg.SrcUserLocate).UserName.ToString()
+                                +" request to Hui Qi, Do you agree?", "Warnig", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            if (result == MessageBoxResult.Yes)
+                            {
+                                gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
+                                {
+                                    ChessBoard.HuiQi_chess_move();
+                                }
+                                );
+                                //回复同意悔棋
+                                GamePlayingState state = new GamePlayingState();
+                                state.UndoRequestReply(true);
+                            }
+                            else
+                            {
+                                GamePlayingState state = new GamePlayingState();
+                                state.UndoRequestReply(false);
+                            }
+                        }
+                        );
+                    } 
+                    else//否则，系统默认拒绝悔棋
+                    {
+                        UndoRequestReply(false);
+                    }
+                }
+            }
+            else if (gUndo_msg.RepOrRespon == 1)//这是一个回复报文
+            {
+                if (gUndo_msg.SrcUserLocate == (uint)GameState.locate)//是我自己发送的请求回复报文
+                {
+                    if (gUndo_msg.HasStatus && gUndo_msg.Status)//允许悔棋
+                    {
+                        //HuiQi
+                        gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
+                        {
+                            ChessBoard.HuiQi_chess_move();
+                        }
+                        );
+                        
+                    }
+                    else//对方拒绝悔棋
+                    {
+                        gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
+                        {
+                            MessageBox.Show(GameState.GetChessBoardtUserByLocate(gUndo_msg.TarUserLocate).UserName.ToString()
+                                + " reject HuiQi", "TiShi", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        );
+                    }
+                }
+                else//是其他用户的请求回复报文，只需根据回复状态决定是否需要悔棋操作
+                {
+                    if (gUndo_msg.HasStatus && gUndo_msg.Status)//允许悔棋
+                    {
+                        //HuiQi
+                        gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
+                        {
+                            ChessBoard.HuiQi_chess_move();
+                        }
+                        );
+                    }
+                    else
+                    {
+                        //Do nothing!!!
+                    }
+                }
+            }
+            return true;
+        }
+
+        private static uint HeQiReqLocate = 3;
+        //请求和棋
+        public void QiuHeSendReq()
+        {
+            Reconciled.Builder builder = new Reconciled.Builder();
+            builder.SetSrcUserLocate((uint)locate);
+            builder.SetTarUserLocate((uint)currentTokenLocate);
+            builder.SetApplyOrReply(0);
+
+            Reconciled msg = builder.Build();
+            byte[] bytes = msg.ToByteArray();
+            NetworkThread.SendMessage(MessageType.MSG_RECONCILED_REQ, bytes);
+        }
+        //回复和棋请求
+        public void QiuHeSendResponse(bool agree)
+        {
+            Reconciled.Builder builder = new Reconciled.Builder();
+            builder.SetSrcUserLocate((uint)locate);
+            builder.SetTarUserLocate((uint)HeQiReqLocate);
+            builder.SetApplyOrReply(1);
+            builder.SetStatus(agree.ToString());
+
+            Reconciled msg = builder.Build();
+            byte[] bytes = msg.ToByteArray();
+            NetworkThread.SendMessage(MessageType.MSG_RECONCILED_RESP, bytes);
+        }
+
+        public bool HeQiParse(byte[] msg)
+        {
+            Reconciled qiuhe = Reconciled.ParseFrom(msg);
+            Console.WriteLine("receive a He Qi request/reply");
+            Console.WriteLine("qiuhe.ApplyOrReply:" + qiuhe.ApplyOrReply);
+            Console.WriteLine("Src locate:" + qiuhe.SrcUserLocate);
+            Console.WriteLine("Tar locate:" + qiuhe.TarUserLocate);
+
+            if (qiuhe.ApplyOrReply == 0)//请求报文
+            {
+                HeQiReqLocate = qiuhe.SrcUserLocate; 
+                
+                gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                                 (ThreadStart)delegate()
+                                 {
+                                     GamePlayingState.HeQiReqLocate = qiuhe.SrcUserLocate; 
+                                     MessageBoxResult result= MessageBox.Show(GameState.GetChessBoardtUserByLocate(qiuhe.SrcUserLocate).UserName.ToString() + " 请求和棋","提示",MessageBoxButton.YesNo);
+                                     if (result == MessageBoxResult.Yes)
+                                     {
+                                         GamePlayingState s = new GamePlayingState();
+                                         s.QiuHeSendResponse(true);
+                                     }
+                                     else
+                                     {
+                                         GamePlayingState s = new GamePlayingState();
+                                         s.QiuHeSendResponse(false);
+                                     }
+                                 }
+                             );
+            }
+            else//回复报文
+            {
+                Console.WriteLine("qiuhe.Status:" + qiuhe.Status);
+                if (qiuhe.Status.Equals("False"))
+                {
+                    gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                                (ThreadStart)delegate()
+                                {
+                                    MessageBox.Show(GameState.GetChessBoardtUserByLocate(qiuhe.SrcUserLocate).UserName.ToString() + " 拒绝了您的请求！");
+                                }
+                            );
+                }
+                else
+                {
+                    gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                                (ThreadStart)delegate()
+                                {
+                                    Console.WriteLine("GameState.currentAgreeHeQiNum:" + GameState.currentAgreeHeQiNum);
+                                    Console.WriteLine("GameState.GetActiveUserNum()" + GameState.GetActiveUserNum());
+                                    if (GameState.currentTokenLocate == (Location)locate)
+                                    {
+                                        GameState.currentAgreeHeQiNum++;
+                                        MessageBox.Show(GameState.GetChessBoardtUserByLocate(qiuhe.SrcUserLocate).UserName.ToString() + " 同意了您的请求！");
+                                        if (GameState.currentAgreeHeQiNum == GameState.GetActiveUserNum() - 1)
+                                        {
+                                            MessageBox.Show("和棋，本轮游戏结束！");
+                                            ChessBoard.GetChessBoardObj().currentUser.timer.Stop();
+                                        }
+                                    }
+                                }
+                            );
+                }
+            }
+
+            return true;
         }
     }
 
@@ -839,7 +1324,7 @@ namespace WpfApplication2
     class ImageDownloadState : GameState
     {
         private string currentFilePath = "";
-        private const string PathPrefix = @"C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\AdPictures\";
+        private static string PathPrefix = GameState.gWorkPath + @"\res\Images\AdPictures\";
         private FileStream fs = null;
         private int currentImageID = (int)ImageID.IMAGE_ID_AD_HALL_TOP_LEFT - 1;
 

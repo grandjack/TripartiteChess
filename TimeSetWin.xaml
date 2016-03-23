@@ -4,8 +4,7 @@
         xmlns:props="clr-namespace:WpfApplication2.Properties"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         Title="TimeSetWin" Height="191" Width="321" AllowsTransparency="True" WindowStyle="None" Background="Transparent"
-        WindowStartupLocation="CenterScreen" ShowInTaskbar="True"
-        Icon="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\MyIcon.png">
+        WindowStartupLocation="CenterScreen" ShowInTaskbar="True">
     
     <Window.Resources>
         <ControlTemplate x:Key="CloseButtonTemplate" TargetType="{x:Type Button}">
@@ -49,27 +48,27 @@
         <Grid>
             <Button Height="25" Width="25" Template="{StaticResource CloseButtonTemplate}" HorizontalAlignment="Right" Name="close" VerticalAlignment="Top" DataContext="{Binding}" Click="Close_Window" IsTabStop="False" FocusVisualStyle="{x:Null}"/>
 
-            <ComboBox x:Name="comboBoxTotalHour" HorizontalAlignment="Left" VerticalAlignment="Top" IsEditable="True" Background="White" Margin="107,43,0,0" DataContext="{Binding}" Height="25" Width="43" SelectedIndex="1">
+            <ComboBox x:Name="comboBoxTotalHour" HorizontalAlignment="Left" VerticalAlignment="Top" IsEditable="True" Background="White" Margin="96,43,0,0" DataContext="{Binding}" Height="25" Width="43" SelectedIndex="1">
                 <ComboBoxItem Content="01"></ComboBoxItem>
                 <ComboBoxItem Content="02"></ComboBoxItem>
                 <ComboBoxItem Content="03"></ComboBoxItem>
                 <ComboBoxItem Content="05"></ComboBoxItem>
             </ComboBox>
-            <ComboBox x:Name="comboBoxTotalMin" HorizontalAlignment="Left" VerticalAlignment="Top" IsEditable="True" Background="White" Margin="179,43,0,0" DataContext="{Binding}" Height="25" Width="43" SelectedIndex="0">
+            <ComboBox x:Name="comboBoxTotalMin" HorizontalAlignment="Left" VerticalAlignment="Top" IsEditable="True" Background="White" Margin="173,43,0,0" DataContext="{Binding}" Height="25" Width="43" SelectedIndex="0">
                 <ComboBoxItem Content="00"></ComboBoxItem>
                 <ComboBoxItem Content="10"></ComboBoxItem>
                 <ComboBoxItem Content="20"></ComboBoxItem>
                 <ComboBoxItem Content="30"></ComboBoxItem>
                 <ComboBoxItem Content="45"></ComboBoxItem>
             </ComboBox>
-            <ComboBox x:Name="comboBoxStepMin" HorizontalAlignment="Left" VerticalAlignment="Top" IsEditable="True" Background="White" Margin="107,80,0,0" DataContext="{Binding}" Height="25" Width="43" SelectedIndex="2">
+            <ComboBox x:Name="comboBoxStepMin" HorizontalAlignment="Left" VerticalAlignment="Top" IsEditable="True" Background="White" Margin="96,80,0,0" DataContext="{Binding}" Height="25" Width="43" SelectedIndex="2">
                 <ComboBoxItem Content="00"></ComboBoxItem>
                 <ComboBoxItem Content="01"></ComboBoxItem>
                 <ComboBoxItem Content="02"></ComboBoxItem>
                 <ComboBoxItem Content="03"></ComboBoxItem>
                 <ComboBoxItem Content="05"></ComboBoxItem>
             </ComboBox>
-            <ComboBox x:Name="comboBoxStepSec" HorizontalAlignment="Left" VerticalAlignment="Top" IsEditable="True" Background="White" Margin="179,80,0,0" DataContext="{Binding}" Height="25" Width="43" SelectedIndex="0">
+            <ComboBox x:Name="comboBoxStepSec" HorizontalAlignment="Left" VerticalAlignment="Top" IsEditable="True" Background="White" Margin="173,80,0,0" DataContext="{Binding}" Height="25" Width="43" SelectedIndex="0">
                 <ComboBoxItem Content="00"></ComboBoxItem>
                 <ComboBoxItem Content="10"></ComboBoxItem>
                 <ComboBoxItem Content="20"></ComboBoxItem>
@@ -77,10 +76,15 @@
                 <ComboBoxItem Content="45"></ComboBoxItem>
             </ComboBox>
 
-            <Button Content="OK" Height="23" HorizontalAlignment="Left" Margin="53,127,0,0" Name="okBtn" VerticalAlignment="Top" Width="75" Click="Click_OK_Btn" />
-            <Button Content="Cancel" Height="23" HorizontalAlignment="Left" Margin="172,127,0,0" Name="cancelBtn" VerticalAlignment="Top" Width="75" Click="Click_Cancel_Btn"/>
-            <Label Content="JuShi" Height="27" HorizontalAlignment="Left" Margin="29,44,0,0" Name="label11" VerticalAlignment="Top" Width="53" />
-            <Label Content="BuShi" Height="27" HorizontalAlignment="Left" Margin="29,81,0,0" Name="label12" VerticalAlignment="Top" Width="53" />
+            <Button Content="{x:Static props:Resources.btn_ok}" Height="23" HorizontalAlignment="Left" Margin="53,127,0,0" Name="okBtn" VerticalAlignment="Top" Width="75" Click="Click_OK_Btn" />
+            <Button Content="{x:Static props:Resources.btn_cancel}" Height="23" HorizontalAlignment="Left" Margin="172,127,0,0" Name="cancelBtn" VerticalAlignment="Top" Width="75" Click="Click_Cancel_Btn"/>
+            <Label Content="{x:Static props:Resources.total_time}" Height="27" HorizontalAlignment="Left" Margin="37,44,0,0" Name="label11" VerticalAlignment="Top" Width="auto" />
+            <Label Content="{x:Static props:Resources.hour}" Height="27" HorizontalAlignment="Left" Margin="139,44,0,0" VerticalAlignment="Top" Width="auto" />
+            <Label Content="{x:Static props:Resources.minute}" Height="27" HorizontalAlignment="Left" Margin="218,44,0,0" VerticalAlignment="Top" Width="auto" />
+            <Label Content="{x:Static props:Resources.minute}" Height="27" HorizontalAlignment="Left" Margin="139,80,0,0" VerticalAlignment="Top" Width="auto" />
+            <Label Content="{x:Static props:Resources.second}" Height="27" HorizontalAlignment="Left" Margin="218,80,0,0" VerticalAlignment="Top" Width="auto" />
+
+            <Label Content="{x:Static props:Resources.single_time}" Height="27" HorizontalAlignment="Left" Margin="37,80,0,0" Name="label12" VerticalAlignment="Top" Width="auto" />
         </Grid>
         <Border.Background>
             <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">

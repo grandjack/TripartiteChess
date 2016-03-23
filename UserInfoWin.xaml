@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:props="clr-namespace:WpfApplication2.Properties"
-        Title="{x:Static props:Resources.setting}" Height="425" Width="689"
+        Title="{x:Static props:Resources.setting}" Height="535" Width="505"
         
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowState="Normal"
         SourceInitialized="Window_SourceInitialized" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
@@ -88,7 +88,7 @@
     <Grid>
         <Border CornerRadius="2" BorderThickness="2" BorderBrush="#FF00A3FF">
             <Border.Background>
-                <SolidColorBrush Color="Gray" Opacity="1" />
+                <SolidColorBrush Color="White" Opacity="1" />
             </Border.Background>
         </Border>
 
@@ -143,33 +143,77 @@
             </Grid>
 
             <!--Content-->
-            <Grid x:Name="chessContent" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-                <Grid x:Name="settingBoard" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Loaded="SettingBoardLoad">
-                    <Button Content="UploadImag" Height="23" HorizontalAlignment="Left" Margin="41,126,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="UploadHeadImage"/>
-                    <TextBox Height="30" x:Name ="tx_account" HorizontalAlignment="Left" Margin="103,174,0,0"  VerticalAlignment="Top" Width="168" MaxLength="30" 
-                        TabIndex="0" BorderThickness="1" TextChanged="textChanged" Background="White" FontSize="16" FontStretch="Normal" IsEnabled="False"/>
-                    <PasswordBox Height="30" x:Name ="tx_password" HorizontalAlignment="Left" Margin="358,174,0,0" VerticalAlignment="Top" Width="168" MaxLength="30" 
-                        TabIndex="1" BorderThickness="1" PasswordChanged="PwdTextChanged" Background="White" FontSize="16" FontStretch="Normal" IsEnabled="False"/>
-                    <PasswordBox Height="30" x:Name ="tx_passwordRe" HorizontalAlignment="Left" Margin="358,228,0,0" VerticalAlignment="Top" Width="168" MaxLength="30" 
-                        TabIndex="1" BorderThickness="1" PasswordChanged="PwdTextChanged" Background="White" FontSize="16" FontStretch="Normal" IsEnabled="False" Visibility="Hidden"/>
+            <Grid x:Name="chessContent" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="#94808080">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="1.5*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="0.5*" />
+                </Grid.RowDefinitions>
+                
+                <Border Grid.Row="0" BorderThickness="0" CornerRadius="7,7,0,0" Background="Gray" Width="100" Margin="10,5,0,0" HorizontalAlignment="Left">
+                    <Label Content="{x:Static props:Resources.private_info}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
 
-                    <TextBox Height="30" x:Name ="tx_email" HorizontalAlignment="Left" Margin="103,279,0,0"  VerticalAlignment="Top" Width="168" MaxLength="30" 
-                        TabIndex="2" BorderThickness="1" TextChanged="textChanged" Background="White" FontSize="16" FontStretch="Normal" IsEnabled="False"/>
-                    <TextBox Height="30" x:Name ="tx_phone" HorizontalAlignment="Left" Margin="358,279,0,0"  VerticalAlignment="Top" Width="168" MaxLength="30" 
-                        TabIndex="3" BorderThickness="1" TextChanged="textChanged" Background="White" FontSize="16" FontStretch="Normal" IsEnabled="False"/>
-                    <TextBox Height="30" x:Name ="tx_nickname" HorizontalAlignment="Left" Margin="103,228,0,0"  VerticalAlignment="Top" Width="168" MaxLength="30" 
-                        TabIndex="4" BorderThickness="1" TextChanged="textChanged" Background="White" FontSize="16" FontStretch="Normal" IsEnabled="False"/>
-                    <Button Content="Edit" Height="23" HorizontalAlignment="Left" Margin="560,140,0,0" Name="button2" VerticalAlignment="Top" Width="75" Click="EditUserInfoClick"/>
-                    <Button Content="Save" Height="23" HorizontalAlignment="Left" Margin="560,324,0,0" Name="button3" VerticalAlignment="Top" Width="75" Click="SaveUserInfoClick"/>
-                    <Label Content="Account" Height="28" HorizontalAlignment="Left" Margin="30,176,0,0" Name="label1" VerticalAlignment="Top" Width="67" />
-                    <Label Content="Name" Height="28" HorizontalAlignment="Left" Margin="30,228,0,0" Name="label2" VerticalAlignment="Top" Width="67" />
-                    <Label Content="Email" Height="28" HorizontalAlignment="Left" Margin="30,279,0,0" Name="label3" VerticalAlignment="Top" Width="67" />
-                    <Label Content="Passowrd" Height="28" HorizontalAlignment="Left" Margin="285,176,0,0" Name="label4" VerticalAlignment="Top" Width="67" />
-                    <Label Content="RePwd" Height="28" HorizontalAlignment="Left" Margin="285,228,0,0" x:Name="lbpwdRetry" VerticalAlignment="Top" Width="67" Visibility="Hidden"/>
-                    <Label Content="Phone" Height="28" HorizontalAlignment="Left" Margin="285,281,0,0" x:Name="phoneNolab" VerticalAlignment="Top" Width="67" />
-                </Grid>
+                <Button Grid.Row="0" Content="{x:Static props:Resources.save}" Height="23" HorizontalAlignment="Right" Margin="0,0,10,0" Name="button3" VerticalAlignment="Center" Background="Transparent" Width="75" Click="SaveUserInfoClick"/>
+                
+                <Border Grid.Row="1" VerticalAlignment="Stretch" BorderThickness="0,1,0,0" BorderBrush="Gray" Margin="10,0,10,0">
+                    <Grid>
+                        <Border Grid.Row="1" BorderThickness="0" BorderBrush="Black" CornerRadius="7,7,0,0" Background="Gray" Width="100" Height="auto" Margin="0,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                            <Label Content="{x:Static props:Resources.score_level}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
 
-                </Grid>
+                        <Border x:Name="head_image_board" BorderThickness="2" CornerRadius="3" BorderBrush="#42a3ff" HorizontalAlignment="Left" VerticalAlignment="Top" Height="45" Width="45" Margin="10,10,0,0" ToolTip="{x:Static props:Resources.chang_head}"
+                                Cursor="Hand" MouseLeftButtonDown="UploadHeadImage" Loaded="SettingBoardLoad">                            
+                        </Border>
+
+                        <Label Content="{x:Static props:Resources.nickname}" Height="30" HorizontalAlignment="Left" Margin="61,27,0,0" Name="label2" VerticalAlignment="Top" Width="auto" />
+                        <TextBox Height="30" x:Name ="tx_nickname" HorizontalAlignment="Left" Margin="110,27,0,0"  VerticalAlignment="Top" Width="168" MaxLength="30" 
+                            TabIndex="0" BorderThickness="0" TextChanged="textChanged" Background="Transparent" FontSize="16" FontStretch="Normal" IsEnabled="True" GotFocus="NickNameGotFocus" LostFocus="NickNameLostFocus"/>
+
+                        <Label Content="{x:Static props:Resources.account}" Height="30" HorizontalAlignment="Left" Margin="10,71,0,0" Name="label1" VerticalAlignment="Top" Width="auto" />
+                        <TextBox Height="30" x:Name ="tx_account" HorizontalAlignment="Left" Margin="60,71,0,0"  VerticalAlignment="Top" Width="168" MaxLength="30" 
+                             BorderThickness="0" Background="Transparent" FontSize="16" FontStretch="Normal" IsReadOnly="True"/>
+
+                        <Label Content="{x:Static props:Resources.password}" Height="30" HorizontalAlignment="Left" Margin="10,117,0,0" Name="label4" VerticalAlignment="Top" Width="auto" />
+                        <PasswordBox Height="30" x:Name ="tx_password" HorizontalAlignment="Left" Margin="60,116,0,0" VerticalAlignment="Top" Width="168" MaxLength="30" 
+                            TabIndex="2" BorderThickness="0" PasswordChanged="PwdTextChanged" Background="Transparent" FontSize="16" FontStretch="Normal" IsEnabled="True" GotFocus="PwdGotFocus" LostFocus="PwdLostFocus"/>
+
+
+                        <Label Content="{x:Static props:Resources.email}" Height="30" HorizontalAlignment="Right" Margin="0,71,200,0" Name="label3" VerticalAlignment="Top" Width="auto" />
+                        <TextBox Height="30" x:Name ="tx_email" HorizontalAlignment="Right" Margin="0,71,22,0"  VerticalAlignment="Top" Width="168" MaxLength="30" 
+                            TabIndex="1" TextChanged="textChanged" BorderThickness="0"  Background="Transparent" FontSize="16" FontStretch="Normal" IsEnabled="True" GotFocus="EmailGotFocus" LostFocus="EmailLostFocus"/>
+
+                        <Label Content="{x:Static props:Resources.phone}" Height="30" HorizontalAlignment="Right" Margin="0,116,200,0" x:Name="phoneNolab" VerticalAlignment="Top" Width="auto" />
+                        <TextBox Height="30" x:Name ="tx_phone" HorizontalAlignment="Right" Margin="0,116,22,0"  VerticalAlignment="Top" Width="168" MaxLength="30" 
+                            TabIndex="3" TextChanged="textChanged" BorderThickness="0"  Background="Transparent" FontSize="16" FontStretch="Normal" IsEnabled="True" GotFocus="PhoneGotFocus" LostFocus="PhoneLostFocus"/>
+
+                        <Label Content="{x:Static props:Resources.confirm}" Height="30" HorizontalAlignment="Left" Margin="10,153,0,0" x:Name="lbpwdRetry" VerticalAlignment="Top" Width="auto" Visibility="Hidden"/>
+                        <PasswordBox Height="30" x:Name ="tx_passwordRe" HorizontalAlignment="Left" Margin="60,153,0,0" VerticalAlignment="Top" Width="168" MaxLength="30" 
+                            TabIndex="4" BorderThickness="0" Background="White" FontSize="16" FontStretch="Normal" Visibility="Hidden" GotFocus="RePwdGotFocus" LostFocus="RePwdLostFocus"/>
+
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="2" VerticalAlignment="Stretch" BorderThickness="0,1,0,0" BorderBrush="Gray" Margin="10,0,10,0">
+                    <Grid>
+                        <Border Grid.Row="2" BorderThickness="0" BorderBrush="Black" CornerRadius="7,7,0,0" Background="Gray" Width="100" Height="auto" Margin="0,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                            <Label Content="{x:Static props:Resources.notify}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <Label Content="{x:Static props:Resources.history}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="Hand"/>
+
+                        <Label Content="{x:Static props:Resources.score}" Height="30" HorizontalAlignment="Left" Margin="10,15,194,0" VerticalAlignment="Top" Width="auto" />
+                        <TextBox Height="30" x:Name ="tx_score" HorizontalAlignment="Left" Margin="74,15,0,0"  VerticalAlignment="Top" Width="168" MaxLength="30" 
+                            BorderThickness="0" Background="Transparent" FontSize="16" FontStretch="Normal" IsReadOnly="True"/>
+                        <Label Content="{x:Static props:Resources.score_note}" Height="30" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Width="auto"  />
+                        <Label Content="退赛（断线）-30积分" Height="30" HorizontalAlignment="Left" Margin="71,76,0,36"/>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="3" VerticalAlignment="Stretch" BorderThickness="0,1,0,0" BorderBrush="Gray" Margin="10,0,10,0">
+                    <Label Content="{x:Static props:Resources.notify_msg}" Height="30" HorizontalAlignment="Left" Margin="10,10,194,0" Foreground="Gray" VerticalAlignment="Top" Width="auto" />
+                </Border>
+            </Grid>
 
         </Grid>
     </Grid>

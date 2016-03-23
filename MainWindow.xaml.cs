@@ -30,6 +30,19 @@ namespace WpfApplication2
         public MainWindow()
         {
             InitializeComponent();
+            //MessageBox.Show("System.Environment.CurrentDirectory:\r\n" +AppDomain.CurrentDomain.BaseDirectory);
+            BitmapImage bt = new BitmapImage();
+            bt.BeginInit();
+            bt.UriSource = new Uri(GameState.gWorkPath + @"res\Images\MyIcon.png", UriKind.Absolute);
+            bt.EndInit();
+            this.Icon = bt;
+
+            string tmp_account = IniFileHand.ReadIniData("User", "Account", "None", GameState.gWorkPath + @"\res\files\info.ini");
+            if ((tmp_account != String.Empty) && (!tmp_account.Equals("None")) && (tmp_account.Length > 0))
+            {
+                this.cbUser.Text = tmp_account;
+                Console.WriteLine("Got the config account:" + tmp_account);
+            }
         }
 
         private void button3_Click(object sender, RoutedEventArgs e)
@@ -161,8 +174,14 @@ namespace WpfApplication2
             curState = loggonState.Loggin;
         }
 
+        public int click_count = 0;
         private void LogginGame(object sender, RoutedEventArgs e)
         {
+            if (click_count > 0)
+            {
+                return;
+            }
+
             if (curState == loggonState.Loggin)
             {
                 //verify the User's account whether match the password,if OK, then show the MainWindow
@@ -177,9 +196,11 @@ namespace WpfApplication2
                     return;
                 }
 
+                ++click_count;
 
                 NetworkThread.CreateWorkThread();
                 GameState.SetCurrentWin(this);
+                GameState.SetLogWin(this);
                 MD5Hash hash = new MD5Hash(passwordBox.Password);
                 Console.WriteLine(passwordBox.Password +" 's hash code is:" + hash.GetMD5HashCode());
                 LoginState login = new LoginState();
@@ -189,16 +210,21 @@ namespace WpfApplication2
             }
             else if (curState == loggonState.Register)
             {
+                ++click_count;
+
                 NetworkThread.CreateWorkThread();
                 GameState.SetCurrentWin(this);
+                GameState.SetLogWin(this);
 
                 MD5Hash hash = new MD5Hash(passwordBox.Password);
                 LoginState register = new LoginState();
                 register.SendRegist(cbUser.Text, hash.GetMD5HashCode());
             } else if (curState == loggonState.FindPwd)
             {
+                ++click_count;
                 NetworkThread.CreateWorkThread();
                 GameState.SetCurrentWin(this);
+                GameState.SetLogWin(this);
                 LoginState state = new LoginState();
                 state.FindUsrPassword(cbUser.Text);
             }
@@ -211,6 +237,17 @@ namespace WpfApplication2
         private void ClosingLogWin(object sender, System.ComponentModel.CancelEventArgs e)
         {
             NetworkThread.DestroryWorkThread();
+        }
+
+        private void LogBorderLoad(object sender, RoutedEventArgs e)
+        {
+            BitmapImage bt = new BitmapImage();
+            bt.BeginInit();
+
+            bt.UriSource = new Uri(GameState.gWorkPath + @"res\Images\logon\logon.jpg", UriKind.Absolute);
+            bt.EndInit();
+
+            loggin_border.Background = new ImageBrush(bt);
         }
 
     }

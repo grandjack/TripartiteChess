@@ -39,7 +39,7 @@ namespace WpfApplication2
 
         public void CreateChessImage(ChessMan chessMan, byte row, byte column)
         {
-            int wide = 45;
+            //int wide = 45;
             board.g_chess_board[row, column].status = ChessBoard.BoardStatus.occupied;
             board.g_chess_board[row, column].chess = chessMan;
             board.g_chess_board[row, column].chess.Row = row;
@@ -50,7 +50,7 @@ namespace WpfApplication2
             board.g_chess_board[row, column].chess.XPoint = p.X;
             board.g_chess_board[row, column].chess.YPoint = p.Y;
 
-            chessMan.Width = wide;
+            //chessMan.Width = wide;
 
             // Create source
             BitmapImage myBitmapImage = new BitmapImage();
@@ -59,28 +59,40 @@ namespace WpfApplication2
             myBitmapImage.BeginInit();
             myBitmapImage.UriSource = new Uri(chessMan.imageUriSource, UriKind.Absolute);
 
-            myBitmapImage.DecodePixelWidth = wide;
+            //myBitmapImage.DecodePixelWidth = wide;
             myBitmapImage.EndInit();
             //set image source
             chessMan.Source = myBitmapImage;
-            chessMan.HorizontalAlignment = HorizontalAlignment.Left;
-            chessMan.VerticalAlignment = VerticalAlignment.Top;
-            chessMan.Margin = new Thickness(chessMan.XPoint, chessMan.YPoint, 0, 0);
-            chessMan.MouseMove += new MouseEventHandler(this.chess_MouseMove);
+            chessMan.HorizontalAlignment = HorizontalAlignment.Center;
+            chessMan.VerticalAlignment = VerticalAlignment.Center;
+            //chessMan.Margin = new Thickness(5);//new Thickness(chessMan.XPoint, chessMan.YPoint, 0, 0);
+            //chessMan.MouseMove += new MouseEventHandler(this.chess_MouseMove);
+            chessMan.MouseEnter += new MouseEventHandler(chessMan_MouseEnter);
+            chessMan.MouseLeave += new MouseEventHandler(chessMan_MouseLeave);
             chessMan.MouseLeftButtonDown += new MouseButtonEventHandler(this.chessMan_MouseLeftButtonDown);
 
-            ChessBoard.chessWindow.gridChessBoard.Children.Add(chessMan);
+            //ChessBoard.chessWindow.gridChessBoard.Children.Add(chessMan);
+            board.g_chess_board[row, column].chessGrid.Children.Add(chessMan);
         }
 
-        private void chess_MouseMove(object sender, MouseEventArgs e)
+        private void chessMan_MouseEnter(object sender, MouseEventArgs e)
         {
             ChessMan chessMan = sender as ChessMan;
             //只有该当前用户走棋的时候才需要显示手型鼠标
-            if ((chessMan.GetOwnUser() == board.currentUser) &&
-                (board.currUserLocation == WpfApplication2.GameState.currentTokenLocate))
+            //(ChessBoard.GetChessBoardObj().GetUserByUsrLocation((Location)WpfApplication2.GameState.locate).State != User.GameState.PLAYING)
+            if ((board.currUserLocation == WpfApplication2.GameState.currentTokenLocate)&&
+                (board.currentUser.State == User.GameState.PLAYING) &&
+                (ChessBoard.GetChessBoardObj().gGameStatus != ChessBoard.GameSatus.PLAYING) &&
+                ((chessMan.GetOwnUser() == board.currentUser) || (board.currSelectChess != null)))
             {
                 chessMan.Cursor = Cursors.Hand;
             }
+        }
+
+        private void chessMan_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ChessMan chessMan = sender as ChessMan;
+            chessMan.Cursor = Cursors.Arrow;
         }
 
         private void chessMan_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -91,20 +103,33 @@ namespace WpfApplication2
                 (WpfApplication2.GameState.currentTokenLocate != (Location)WpfApplication2.GameState.locate) ||
                 ((chessMan.GetOwnUser().location != (Location)WpfApplication2.GameState.locate) && ((board.currSelectChess == null) || !board.currSelectChess.beSelected)) )
             {
-                MessageBox.Show("You should NOT go!!");
+                //MessageBox.Show("You should NOT go!!");
                 e.Handled = true;
+                return;
+            }
+
+            if (ChessBoard.GetChessBoardObj().GetUserByUsrLocation((Location)WpfApplication2.GameState.locate).State != User.GameState.PLAYING)
+            {
+                return;
+            }
+
+            if (ChessBoard.GetChessBoardObj().gGameStatus != ChessBoard.GameSatus.PLAYING)
+            {
                 return;
             }
 
             if (board.currSelectChess == null)
             {
-                if (ChessBoard.selectElement != null)
+                //if (ChessBoard.selectElement != null)
+                if (ChessBoard.IsSelected())
                 {
-                    ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.selectElement);
+                    //ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.selectElement);
+                    ChessBoard.SetSelectGrid(false);
                 }
-                if (ChessBoard.targetElement != null)
+                if (ChessBoard.IsTargeted())
                 {
-                    ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.targetElement);
+                    //ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.targetElement);
+                    ChessBoard.SetTargetGrid(false);
                 }
             }
 
@@ -119,9 +144,11 @@ namespace WpfApplication2
                         board.currSelectChess.beSelected = false;
                         board.currSelectChess.Opacity = 1;
 
-                        if (ChessBoard.selectElement != null)
+                        //if (ChessBoard.selectElement != null)
+                        if (ChessBoard.IsSelected())
                         {
-                            ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.selectElement);
+                            //ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.selectElement);
+                            ChessBoard.SetSelectGrid(false);
                         }
                     }
                     else//点击可能无效或者吃棋，吃棋操作将消息路由到gridboard
@@ -133,22 +160,11 @@ namespace WpfApplication2
                 chessMan.beSelected = true;
                 chessMan.Opacity = 1;
                 board.currSelectChess = chessMan;
-
-                if (ChessBoard.selectElement != null)
-                {
-                    Image select_tag = ChessBoard.selectElement as Image;
-                    select_tag.Margin = new Thickness(chessMan.Margin.Left, chessMan.Margin.Top - 1, chessMan.Margin.Right, chessMan.Margin.Bottom);
-
-                    ChessBoard.chessWindow.gridChessBoard.Children.Add(ChessBoard.selectElement);
-                }
-                else
-                {
-                    ChessBoard.selectElement = ChessBoard.SetSelectTagImg(new Thickness(chessMan.Margin.Left, chessMan.Margin.Top - 1, chessMan.Margin.Right, chessMan.Margin.Bottom), (int)chessMan.Width);
-                    ChessBoard.chessWindow.gridChessBoard.Children.Add(ChessBoard.selectElement);
-                }
+                
+                ChessBoard.SetSelectGrid(true, ChessBoard.GetChessBoardObj().g_chess_board[chessMan.Row, chessMan.Column].chessGrid);
 
                 MediaPlayer player = new MediaPlayer();
-                player.Open(new Uri(@"D:\My Software\QQGame\CChess\res\select.wav", UriKind.Absolute));
+                player.Open(new Uri(WpfApplication2.GameState.gWorkPath + @"\res\voice\select.wav", UriKind.Absolute));
                 player.Play();
 
                 //消息终止，不再路由到上层

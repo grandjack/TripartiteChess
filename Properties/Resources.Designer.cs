@@ -61,11 +61,38 @@ namespace WpfApplication2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 账号.
+        /// </summary>
+        public static string account {
+            get {
+                return ResourceManager.GetString("account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 请输入用户名.
         /// </summary>
         public static string account_info {
             get {
                 return ResourceManager.GetString("account_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 取消.
+        /// </summary>
+        public static string btn_cancel {
+            get {
+                return ResourceManager.GetString("btn_cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 确定.
+        /// </summary>
+        public static string btn_ok {
+            get {
+                return ResourceManager.GetString("btn_ok", resourceCulture);
             }
         }
         
@@ -79,11 +106,38 @@ namespace WpfApplication2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 点击更换头像.
+        /// </summary>
+        public static string chang_head {
+            get {
+                return ResourceManager.GetString("chang_head", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 聊天.
         /// </summary>
         public static string chat {
             get {
                 return ResourceManager.GetString("chat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 确认.
+        /// </summary>
+        public static string confirm {
+            get {
+                return ResourceManager.GetString("confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 邮箱.
+        /// </summary>
+        public static string email {
+            get {
+                return ResourceManager.GetString("email", resourceCulture);
             }
         }
         
@@ -169,6 +223,24 @@ namespace WpfApplication2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 历史消息(0).
+        /// </summary>
+        public static string history {
+            get {
+                return ResourceManager.GetString("history", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 时.
+        /// </summary>
+        public static string hour {
+            get {
+                return ResourceManager.GetString("hour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 登 录.
         /// </summary>
         public static string Login_name {
@@ -187,6 +259,15 @@ namespace WpfApplication2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 分.
+        /// </summary>
+        public static string minute {
+            get {
+                return ResourceManager.GetString("minute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 昵称:.
         /// </summary>
         public static string nickname {
@@ -196,11 +277,56 @@ namespace WpfApplication2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 通知.
+        /// </summary>
+        public static string notify {
+            get {
+                return ResourceManager.GetString("notify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 呼~~ 暂时没有新消息哦~·~.
+        /// </summary>
+        public static string notify_msg {
+            get {
+                return ResourceManager.GetString("notify_msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 密码.
+        /// </summary>
+        public static string password {
+            get {
+                return ResourceManager.GetString("password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 请输入密码.
         /// </summary>
         public static string paswd_info {
             get {
                 return ResourceManager.GetString("paswd_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 电话.
+        /// </summary>
+        public static string phone {
+            get {
+                return ResourceManager.GetString("phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 个人资料.
+        /// </summary>
+        public static string private_info {
+            get {
+                return ResourceManager.GetString("private_info", resourceCulture);
             }
         }
         
@@ -223,11 +349,47 @@ namespace WpfApplication2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 保存.
+        /// </summary>
+        public static string save {
+            get {
+                return ResourceManager.GetString("save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 积分:.
         /// </summary>
         public static string score {
             get {
                 return ResourceManager.GetString("score", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 积分等级.
+        /// </summary>
+        public static string score_level {
+            get {
+                return ResourceManager.GetString("score_level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 积分说明：注册送100积分；赢一局10积分；输一局-10积分；和棋不扣分；.
+        /// </summary>
+        public static string score_note {
+            get {
+                return ResourceManager.GetString("score_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 秒.
+        /// </summary>
+        public static string second {
+            get {
+                return ResourceManager.GetString("second", resourceCulture);
             }
         }
         
@@ -246,6 +408,15 @@ namespace WpfApplication2.Properties {
         public static string setting {
             get {
                 return ResourceManager.GetString("setting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 步时.
+        /// </summary>
+        public static string single_time {
+            get {
+                return ResourceManager.GetString("single_time", resourceCulture);
             }
         }
         
@@ -291,6 +462,24 @@ namespace WpfApplication2.Properties {
         public static string tips_praise {
             get {
                 return ResourceManager.GetString("tips_praise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 局时.
+        /// </summary>
+        public static string total_time {
+            get {
+                return ResourceManager.GetString("total_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 未绑定.
+        /// </summary>
+        public static string unbind {
+            get {
+                return ResourceManager.GetString("unbind", resourceCulture);
             }
         }
     }

@@ -5,8 +5,7 @@
         xmlns:props="clr-namespace:WpfApplication2.Properties"
         Height="600" Width="875"
         WindowStartupLocation="CenterScreen" ResizeMode="CanResize" WindowState="Maximized" SizeChanged="Window_size_changed"
-        SourceInitialized="Window_SourceInitialized" WindowStyle="None" AllowsTransparency="True" Background="Transparent"        
-        Icon="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\MyIcon.png"
+        SourceInitialized="Window_SourceInitialized" WindowStyle="None" AllowsTransparency="True" Background="Transparent"    
         Title="{x:Static props:Resources.game_name}" Activated="GameHallWindowActiveHand" Closing="GameHallWindowClosingHand">
 
     <Window.Resources>
@@ -181,10 +180,8 @@
                         <GradientStop Color="#FF42A3FF" Offset="0.974" />
                     </LinearGradientBrush>
                 </Border.Background>
-                <Grid Background="Transparent">
-                    <TextBlock Text="{x:Static props:Resources.game_name}" Margin="30,5,0,0" Width="auto" Height="auto" HorizontalAlignment="Left"/>
-                    <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Height="20" Width="20" HorizontalAlignment="Left" VerticalAlignment="Top"
-                               Opacity="1" Margin="5,3,10,10" Source="C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\MyIcon.png"/>
+                <Grid x:Name="toobar_grid" Background="Transparent" Loaded="toobar_grid_loaded">
+                    <TextBlock Text="{x:Static props:Resources.game_name}" Margin="30,5,0,0" Width="auto" Height="auto" HorizontalAlignment="Left" />
                 </Grid>
             </Border>
             <!-- System Button-->
@@ -245,7 +242,7 @@
                                 
                                 <StackPanel  Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" 
                                     Margin="2,0,2,2">
-                                    <Button Name="quick_startBtn" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Width="150" Content="{x:Static props:Resources.quick_start}" Margin="13,10,3,10" Background="#FF00A9FF" >
+                                    <Button Name="quick_startBtn" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Width="150" Content="{x:Static props:Resources.quick_start}" Margin="13,10,3,10" Background="#FF00A9FF" Click="QuickStart">
                                     </Button>
                                     <ListBox Name="listBox1" HorizontalAlignment="Left" ItemsSource="{Binding}" Background="Transparent" Margin="3,0,0,0" BorderThickness="0" VerticalAlignment="Top" SelectionChanged ="GameHallSelectionChanged">
                                     </ListBox>                                    
@@ -257,35 +254,19 @@
                             <TabControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" HorizontalAlignment="Stretch" Margin="0,0,2,2" Name="tabControl1" VerticalAlignment="Stretch" Background="White">
                                 <TabItem Header="{x:Static props:Resources.game_describe}" Name="tab_game_describe" FocusVisualStyle="{x:Null}">
                                     <Grid x:Name="tab1" Background="#94808080">
+                                        
                                         <ScrollViewer Grid.Column="1" Name="scrollViewer1" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible" Margin="0,0,2,2">
 
-                                            <TextBlock  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,2,2">
-                                                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,2,2">
+                                            <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="500" Margin="0,0,2,2">
+                                                <StackPanel Orientation="Vertical"  VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="0,0,2,2">
                                                     <Label Content="【游戏界面】" Height="28" HorizontalAlignment="Left" Margin="10,27,0,0" Name="label1" VerticalAlignment="Top" Width="71" />
                                                     <Image Margin="10,10,0,0" Name="image1" Stretch="Fill" Initialized="game_qipan_loaded"/>
                                                     <Label Content="一．游戏简介" Height="28" HorizontalAlignment="Left" Margin="10,27,0,0" Name="label2" VerticalAlignment="Top" Width="93" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="着象征性的军事战斗。" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="着象征性的军事战斗。" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="着象征性的军事战斗。" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="着象征性的军事战斗。" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="着象征性的军事战斗。" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="着象征性的军事战斗。" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="   中国象棋是中国一种流传十分广泛的游戏。下棋双方根据自己对棋局形式的理解和对" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="棋艺规律的掌握，调动车马，组织兵力，协调作战在棋盘－－这块特定的战场上进行" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" Text="着象征性的军事战斗。" />
-                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent">可以选择拷贝</TextBox> 
+                                                    <TextBox IsReadOnly="True" HorizontalAlignment="Left" BorderThickness="0" Background="Transparent" Width="auto" TextWrapping="Wrap" Text="   众游三人中国象棋类似普通中国象棋游戏，只是由三个玩家一起游戏，并且棋盘也跟普通的稍有区别。"
+                                                             AutoWordSelection="True" />
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent"  AutoWordSelection="True" Width="auto" TextWrapping="Wrap" Text="    开始游戏后下方先走，然后是右方，最后是左方，依次循环。车马炮象士帅与普通中国象棋走法完全相同，且左方和右方将帅之间不能为空子。三方棋子使用颜色作为区分，首负方棋子需要转换成首胜方棋子。2、	除了卒(兵)的走法与普通象棋稍有不同外，其他棋子走法跟传统中国象棋走法基本一样。左方卒在左方自己区域内只能向右走一步。在交战区域内可以向上，向下，向右走，不能向左走。进入右方区域只能向向上，向下，向右走，不能向左走。进入下方区域只能向下，向左，向右走，不能向上走。右方卒在右方自己区域内只能向左走一步。在交战区域内可以向上，向下，向左走，不能向右走。进入左方区域只能向向上，向下，向左走，不能向右走。进入下方区域只能向下，向左，向右走，不能向上走。下方卒在下方自己区域内只能向上走，进入交战区后只能向上，向左，向右走，不能向下走。进入左方区域与右方卒走法相同，进入右方区域与左方卒走法相同。" />
+                                                    
+                                                    <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent" AutoWordSelection="True" Width="auto" TextWrapping="Wrap"  Text="    三方各以保护自己的将帅不被其它两方吃掉，且设法吃掉其它两方将帅为游戏目的。首负方将帅被吃掉后余下棋子归首胜方所有，颜色与首胜方保持一致，首胜方继续与第三方游戏，直到分出胜负。此时首负方可以退出游戏也可以不退出游戏而观看其它两方游戏。因为是三方联网游戏，在三方都没有胜负之前，如果有一方网络断线，游戏结束。断线方扣30分作为惩罚。其它两方不加分不扣分。还剩两方游戏时如果有一方断线，也是断线方扣30分作为惩罚，另一方不加分不扣分。游戏过程中玩家在下家走棋之前允许悔棋一步，下家已经走棋上家不能悔棋。三人未分胜负时任何一方不允许认输（此时认输方棋子无法归属）。三方都没有进攻棋子时系统判和棋，三方不加分不扣分，游戏结束。如果某一方游戏时间超时，则这一方输棋。"></TextBox> 
                                                 </StackPanel>
                                             </TextBlock>
                                             
@@ -295,9 +276,11 @@
                                 <TabItem Header="{x:Static props:Resources.gamehall_no}" Name="tab_game_hall" Visibility="Hidden" FocusVisualStyle="{x:Null}">
                                     <Grid Background="#942C5F88" FocusVisualStyle="{x:Null}">
                                         <ScrollViewer Grid.Column="1" Name="scrollViewer2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">
+                                            
                                             <Grid x:Name="grid_game_hall" Background="#942C5F88" FocusVisualStyle="{x:Null}" Loaded="game_hall_loaded" >
                                                 
                                             </Grid>
+                                            
                                         </ScrollViewer>
                                     </Grid>
                                 </TabItem>

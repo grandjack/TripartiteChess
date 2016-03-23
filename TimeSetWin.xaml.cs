@@ -53,10 +53,20 @@ namespace WpfApplication2
                 Console.WriteLine("Convert failed.");
             }
 
+            if (((total_hour == 0) && (total_min == 0)) ||
+                ((step_min == 0) && (step_sec == 0)))
+            {
+                MessageBox.Show("不能同时设置为0", "警告", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             this.total_sec = (total_hour*60 + total_min)*60;
             this.step_sec = step_min * 60 + step_sec;
 
             Console.WriteLine("total_sec " + total_sec + " step_sec" + this.step_sec);
+
+            GamePlayingState state = new GamePlayingState();
+            state.StartGameReadyReq(this.total_sec, this.step_sec);
 
             this.Close();
         }

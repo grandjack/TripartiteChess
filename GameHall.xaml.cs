@@ -28,7 +28,13 @@ namespace WpfApplication2
 
         public Window1()
         {
-            InitializeComponent();
+            InitializeComponent(); 
+            
+            BitmapImage bt = new BitmapImage();
+            bt.BeginInit();
+            bt.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\MyIcon.png", UriKind.Absolute);
+            bt.EndInit();
+            this.Icon = bt;
         }
 
         private void Close_Window(object sender, RoutedEventArgs e)
@@ -316,13 +322,16 @@ namespace WpfApplication2
 
         public void game_hall_loaded(object sender, RoutedEventArgs e)
         {
+            int board_index = listBox1.SelectedIndex;
             if (listBox1.SelectedIndex == -1)
             {
-                return;
+                //return;
+                board_index = 0;
             }
 
             grid_game_hall.Children.Clear();
-            int total_seats_num = (int)GameState.sumary.GetHallInfo((int)(listBox1.SelectedIndex)).TotalChessboard;
+            Console.WriteLine("grid_game_hall.Children.Clear() for loading hall info");
+            int total_seats_num = (int)GameState.sumary.GetHallInfo(board_index).TotalChessboard;
             int total_row = 0;
             int total_column = 0;
 
@@ -343,11 +352,359 @@ namespace WpfApplication2
                 for (int column = 0; column < total_column; ++column)
                 {
                     Thickness margin = new Thickness(15 + column * 131, 15 + row * 131, 0, 0);
-                    draw_seat_image(margin, ++index);
+                    //draw_seat_image(margin, ++index);
+                    DrawSeat(margin, ++index);
                 }
             }
         }
 
+        private void chessBoard_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ChessBoardImg board = sender as ChessBoardImg;
+            if (GameState.hallInfo != null)
+            {
+                ChessBoardInfo chessBoard = GameState.hallInfo.GetChessBoard((int)(board.id - 1));
+                if ((chessBoard != null) &&
+                    (chessBoard.PeopleNum != 3))
+                {
+                    board.Opacity = 0.7;
+                    board.Cursor = Cursors.Hand;
+                }
+            }
+        }
+        private void chessBoard_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ChessBoardImg board = sender as ChessBoardImg; 
+            if (GameState.hallInfo != null)
+            {
+                ChessBoardInfo chessBoard = GameState.hallInfo.GetChessBoard((int)(board.id - 1));
+                if ((chessBoard != null) &&
+                    (chessBoard.PeopleNum != 3))
+                {
+                    board.Opacity = 1;
+                    board.Cursor = Cursors.Arrow;
+                }
+            }
+        }
+
+        private void chessBoard_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (CheckGameStarted())
+                return;
+
+            ChessBoardImg board = sender as ChessBoardImg;
+            if (GameState.hallInfo != null)
+            {
+                ChessBoardInfo chessBoard = GameState.hallInfo.GetChessBoard((int)(board.id - 1));
+                int locate = 3;
+                if ((chessBoard != null) &&
+                    (chessBoard.PeopleNum != 3))
+                {
+                    if (chessBoard.LeftUser.ChessBoardEmpty)
+                    {
+                        locate = (int)Location.left;
+                    }
+                    else if (chessBoard.RightUser.ChessBoardEmpty)
+                    {
+                        locate = (int)Location.right;
+                    }
+                    else if (chessBoard.BottomUser.ChessBoardEmpty)
+                    {
+                        locate = (int)Location.bottom;
+                    }
+
+                    GameReadyState state = new GameReadyState();
+                    int hall_id = 1 + listBox1.SelectedIndex;
+                    if (listBox1.SelectedIndex == -1)
+                    {
+                        hall_id = 1;
+                    }
+                    state.RequestGamePlay(hall_id, board.id, locate);
+                }
+            }
+        }
+
+        private void Seat_MouseEnter(object sender, MouseEventArgs e)
+        {
+            SeatImg img = sender as SeatImg;
+            if (GameState.hallInfo != null)
+            {
+                ChessBoardInfo chessBoard = GameState.hallInfo.GetChessBoard((int)(img.id - 1));
+                if ((chessBoard != null) &&
+                    (chessBoard.PeopleNum != 3))
+                {
+                    switch (img.locate)
+                    {
+                        case Location.left:
+                            if (chessBoard.LeftUser.ChessBoardEmpty)
+                            {
+                                img.Cursor = Cursors.Hand;
+                            }
+                            break;
+                        case Location.right:
+                            if (chessBoard.RightUser.ChessBoardEmpty)
+                            {
+                                img.Cursor = Cursors.Hand;
+                            }
+                            break;
+                        case Location.bottom:
+                            if (chessBoard.BottomUser.ChessBoardEmpty)
+                            {
+                                img.Cursor = Cursors.Hand;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+        private void Seat_MouseLeave(object sender, MouseEventArgs e)
+        {
+            SeatImg img = sender as SeatImg;
+            if (GameState.hallInfo != null)
+            {
+                ChessBoardInfo chessBoard = GameState.hallInfo.GetChessBoard((int)(img.id - 1));
+                if ((chessBoard != null) &&
+                    (chessBoard.PeopleNum != 3))
+                {
+                    switch (img.locate)
+                    {
+                        case Location.left:
+                            if (chessBoard.LeftUser.ChessBoardEmpty)
+                            {
+                                img.Cursor = Cursors.Arrow;
+                            }
+                            break;
+                        case Location.right:
+                            if (chessBoard.RightUser.ChessBoardEmpty)
+                            {
+                                img.Cursor = Cursors.Arrow;
+                            }
+                            break;
+                        case Location.bottom:
+                            if (chessBoard.BottomUser.ChessBoardEmpty)
+                            {
+                                img.Cursor = Cursors.Arrow;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+        private void Seat_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (CheckGameStarted())
+                return;
+
+            SeatImg img = sender as SeatImg;
+            if (GameState.hallInfo != null)
+            {
+                ChessBoardInfo chessBoard = GameState.hallInfo.GetChessBoard((int)(img.id - 1));
+                if ((chessBoard != null) &&
+                    (chessBoard.PeopleNum != 3))
+                {
+                    int hall_id = 1 + listBox1.SelectedIndex;
+                    if (listBox1.SelectedIndex == -1)
+                    {
+                        hall_id = 1;
+                    }
+
+                    switch (img.locate)
+                    {
+                        case Location.left:
+                            if (chessBoard.LeftUser.ChessBoardEmpty)
+                            {
+                                GameReadyState state = new GameReadyState();
+                                state.RequestGamePlay(hall_id, img.id, (int)img.locate);
+                            }
+                            else
+                            {
+                                MessageBox.Show("该作为已经被占领！");
+                            }
+                            break;
+                        case Location.right:
+                            if (chessBoard.RightUser.ChessBoardEmpty)
+                            {
+                                GameReadyState state = new GameReadyState();
+                                state.RequestGamePlay(hall_id, img.id, (int)img.locate);
+                            }
+                            else
+                            {
+                                MessageBox.Show("该作为已经被占领！");
+                            }
+                            break;
+                        case Location.bottom:
+                            if (chessBoard.BottomUser.ChessBoardEmpty)
+                            {
+                                GameReadyState state = new GameReadyState();
+                                state.RequestGamePlay(hall_id, img.id, (int)img.locate);
+                            }
+                            else
+                            {
+                                MessageBox.Show("该作为已经被占领！");
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void DrawSeat(Thickness margin, int index)
+        {
+            ChessBoardUser userinfo = null;
+            ChessBoardGrid grid = new ChessBoardGrid(index);
+            grid.Height = 115;
+            grid.Width = 115;
+            grid.Background = new SolidColorBrush(Color.FromRgb(0x2C, 0x59, 0x85));
+            grid.Margin = margin;
+            
+            grid.HorizontalAlignment = HorizontalAlignment.Left;
+            grid.VerticalAlignment = VerticalAlignment.Top;
+
+            for (int i = 0; i < 3; i++)
+            {
+                RowDefinition rd = new RowDefinition();
+                rd.Height = new GridLength(1,GridUnitType.Star);
+                grid.RowDefinitions.Add(rd);
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                ColumnDefinition rd = new ColumnDefinition();
+                if (i == 1)
+                    rd.Width = new GridLength(1, GridUnitType.Auto);
+                else
+                    rd.Width = new GridLength(1, GridUnitType.Star);
+
+                grid.ColumnDefinitions.Add(rd);
+            }
+
+            ChessBoardImg chessBoard = new ChessBoardImg(index, grid);
+            BitmapImage myBitmapImage = new BitmapImage();
+            myBitmapImage.BeginInit();
+            myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\little_board.png", UriKind.Absolute);
+            myBitmapImage.EndInit();
+            chessBoard.Source = myBitmapImage;
+            chessBoard.Stretch = Stretch.Uniform;
+            chessBoard.MouseEnter += new MouseEventHandler(chessBoard_MouseEnter);
+            chessBoard.MouseLeave += new MouseEventHandler(chessBoard_MouseLeave);
+            chessBoard.MouseLeftButtonDown += new MouseButtonEventHandler(chessBoard_MouseLeftButtonDown);
+
+            Grid.SetRow(chessBoard, 1);
+            Grid.SetColumn(chessBoard, 1);
+            grid.Children.Add(chessBoard);
+
+            SeatImg left = new SeatImg(index, grid, Location.left);
+            myBitmapImage = new BitmapImage();
+            myBitmapImage.BeginInit();
+
+            userinfo = GameState.GetSpeciUserFromHall(index, Location.left);
+            if (userinfo!=null)
+            {
+                if (userinfo.ChessBoardEmpty)
+                {
+                    myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\user.png", UriKind.Absolute);
+                }
+                else
+                {
+                    myBitmapImage.StreamSource = new MemoryStream(userinfo.HeadImage.ToByteArray());
+                }
+            }
+            else
+            {
+                myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\user.png", UriKind.Absolute);
+            }            
+            myBitmapImage.EndInit();
+            left.Source = myBitmapImage;
+            left.Stretch = Stretch.Uniform;
+            left.Margin = new Thickness(5);
+            left.MouseEnter += new MouseEventHandler(Seat_MouseEnter);
+            left.MouseLeave += new MouseEventHandler(Seat_MouseLeave);
+            left.MouseLeftButtonDown += new MouseButtonEventHandler(Seat_MouseLeftButtonDown);
+            Grid.SetRow(left, 1);
+            Grid.SetColumn(left, 0);
+            grid.Children.Add(left);
+            
+
+            SeatImg right = new SeatImg(index, grid, Location.right);
+            myBitmapImage = new BitmapImage();
+            myBitmapImage.BeginInit();
+            userinfo = GameState.GetSpeciUserFromHall(index, Location.right);
+            if (userinfo != null)
+            {
+                if (userinfo.ChessBoardEmpty)
+                {
+                    myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\user.png", UriKind.Absolute);
+                }
+                else
+                {
+                    myBitmapImage.StreamSource = new MemoryStream(userinfo.HeadImage.ToByteArray());
+                }
+            }
+            else
+            {
+                myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\user.png", UriKind.Absolute);
+            }
+            myBitmapImage.EndInit();
+            right.Source = myBitmapImage;
+            right.Stretch = Stretch.Uniform;
+            right.Margin = new Thickness(5);
+            right.MouseEnter += new MouseEventHandler(Seat_MouseEnter);
+            right.MouseLeave += new MouseEventHandler(Seat_MouseLeave);
+            right.MouseLeftButtonDown += new MouseButtonEventHandler(Seat_MouseLeftButtonDown);
+            Grid.SetRow(right, 1);
+            Grid.SetColumn(right, 2);
+            grid.Children.Add(right);
+
+            SeatImg bottom = new SeatImg(index, grid, Location.bottom);
+            myBitmapImage = new BitmapImage();
+            myBitmapImage.BeginInit();
+            userinfo = GameState.GetSpeciUserFromHall(index, Location.bottom);
+            if (userinfo != null)
+            {
+                if (userinfo.ChessBoardEmpty)
+                {
+                    myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\user.png", UriKind.Absolute);
+                }
+                else
+                {
+                    myBitmapImage.StreamSource = new MemoryStream(userinfo.HeadImage.ToByteArray());
+                }
+            }
+            else
+            {
+                myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\user.png", UriKind.Absolute);
+            }
+            myBitmapImage.EndInit();
+            bottom.Source = myBitmapImage;
+            bottom.Stretch = Stretch.Uniform;
+            bottom.Margin = new Thickness(5);
+            bottom.MouseEnter += new MouseEventHandler(Seat_MouseEnter);
+            bottom.MouseLeave += new MouseEventHandler(Seat_MouseLeave);
+            bottom.MouseLeftButtonDown += new MouseButtonEventHandler(Seat_MouseLeftButtonDown);
+            Grid.SetRow(bottom, 2);
+            Grid.SetColumn(bottom, 1);
+            grid.Children.Add(bottom);
+
+            Label No = new Label();
+            No.Content = index.ToString();
+            No.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            No.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            No.Foreground = Brushes.White;
+            No.FontSize = 10;
+            Grid.SetRow(No, 0);
+            Grid.SetColumn(No, 1); 
+            grid.Children.Add(No);
+
+            grid_game_hall.Children.Add(grid);
+        }
+        /*
         private void draw_seat_image(Thickness margin, int index)
         {
             ChessBoardImg myImage = new ChessBoardImg();
@@ -391,6 +748,7 @@ namespace WpfApplication2
             grid_game_hall.Children.Add(chessBoardNo);
             grid_game_hall.Children.Add(myImage);
         }
+        */
 
         private Border g_select_display_border = null;
         private Brush g_select_background = null;
@@ -450,28 +808,13 @@ namespace WpfApplication2
             state.RequestGamePlay(listBox1.SelectedIndex + 1, current_mouse_over_image.id, locate);
 
         }
-        //private void icon_loaded(object sender, RoutedEventArgs e)
-       /* private void icon_Initialized(object sender, EventArgs e)
-        {
-            // ... Create a new BitmapImage.
-            BitmapImage b = new BitmapImage();
-            b.BeginInit();
-            b.UriSource = new Uri(@"C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\MyIcon.png", UriKind.Absolute);
-            b.EndInit();
 
-            // ... Get Image reference from sender.
-            var image = sender as Image;
-            // ... Assign Source.
-            image.Source = b;
-        }*/
-
-        //private void game_qipan_loaded(object sender, RoutedEventArgs e)
         private void game_qipan_loaded(object sender, EventArgs e)
         {
                         // ... Create a new BitmapImage.
             BitmapImage b = new BitmapImage();
             b.BeginInit();
-            b.UriSource = new Uri(@"Images\QQiPan.png", UriKind.Relative);
+            b.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\chessBoard.png", UriKind.Absolute);
             b.EndInit();
 
             // ... Get Image reference from sender.
@@ -560,7 +903,7 @@ namespace WpfApplication2
                 b = new BitmapImage();
                 b.BeginInit();
                 //b.StreamSource = new MemoryStream(GameState.currentUserHeadImage);
-                b.UriSource = new Uri(@"C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\MyIcon.png", UriKind.Absolute);
+                b.UriSource = new Uri(GameState.defaultHeadImagePath, UriKind.Absolute);
                 b.EndInit();
                 GameState.currentUserHeadImage = null;
             }
@@ -701,7 +1044,7 @@ namespace WpfApplication2
 
                 // BitmapImage.UriSource must be in a BeginInit/EndInit block
                 myBitmapImage.BeginInit();
-                myBitmapImage.UriSource = new Uri(@"C:\Users\GBX386\Desktop\Visual C#\Image\APPTopn.png", UriKind.Absolute);
+                myBitmapImage.UriSource = new Uri(GameState.gWorkPath+ @"\res\Images\list.png", UriKind.Absolute);
 
                 myBitmapImage.DecodePixelWidth = 20;
                 myBitmapImage.EndInit();
@@ -730,18 +1073,53 @@ namespace WpfApplication2
 
         private void GameHallWindowClosingHand(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (GameState.allUsersReady)
+            if ((GameState.gCurrUserGameStatus == UserStatus.STATUS_PLAYING) &&
+                (ChessBoard.GetChessBoardObj().currentUser.State == User.GameState.PLAYING))
             {
-                MessageBoxResult result = MessageBox.Show(this.Owner, "Getting out from the gamehall, are you sure ?", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.Cancel)
+                if (ChessBoard.GetChessBoardObj().gGameStatus != ChessBoard.GameSatus.END)
                 {
-                    e.Cancel = true;
+                    MessageBoxResult result = MessageBox.Show(this.Owner, "确定要退出游戏吗(将被扣掉30分)?", "警告", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.Cancel)
+                    {
+                        e.Cancel = true;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            //handle something here, get out the game room!!!
+                            GameState.gameWin.Close();
+                        }
+                        catch (Exception ee) { }
+                    }
                 }
                 else
                 {
-                    //handle something here, get out the game room!!!
+                    try
+                    {
+                        //handle something here, get out the game room!!!
+                        GameState.gameWin.Close();
+                    }
+                    catch (Exception ee) { }
                 }
             }
+            else if ((GameState.gCurrUserGameStatus == UserStatus.STATUS_READY) ||
+                ((ChessBoard.GetChessBoardObj() != null) && (ChessBoard.GetChessBoardObj().gGameStatus != ChessBoard.GameSatus.PLAYING)))
+            {
+                try
+                {
+                    GameState.gameWin.Close();
+                }
+                catch (Exception ee)
+                {
+                    Console.WriteLine("gameWin.Close() failed");
+                }
+            }
+
+            if (!e.Cancel && (GameState.gCurrUserGameStatus == UserStatus.STATUS_EXITED))
+                NetworkThread.DestroryWorkThread();
+            else
+                e.Cancel = true;
         }
 
         private bool headImagePressDown = false;
@@ -779,10 +1157,142 @@ namespace WpfApplication2
                 headImage.Opacity = 1;
             }
         }
+
+        private bool CheckGameStarted()
+        {
+            bool ret = false;
+            if (UserStatus.STATUS_NOT_START != GameState.gCurrUserGameStatus)
+            {
+                ret = true;
+            }
+
+            return ret;
+        }
+
+        public bool send_quick_start = false;
+        public void QuickStart(object sender, RoutedEventArgs e)
+        {
+            int empty_people_id = -1;
+            int one_people_id = -1;
+            int two_people_id = -1;
+            int three_people_id = -1;
+
+            if (CheckGameStarted())
+                return;
+
+            Button start = quick_startBtn;
+
+            if (GameState.hallInfo != null)
+            {
+                for (uint i = 0; i < GameState.hallInfo.TotalChessboard; ++i)
+                {
+                    ChessBoardInfo board = GameState.hallInfo.GetChessBoard((int)i);
+                    if (board.PeopleNum == 2)
+                    {
+                        two_people_id = (int)i;
+                        break;
+                    }
+                    else if ((board.PeopleNum == 1) && (one_people_id == -1))
+                    {
+                        one_people_id = (int)i;
+                    }
+                    else if ((board.PeopleNum == 0) && (empty_people_id == -1))
+                    {
+                        empty_people_id = (int)i;
+                    }
+                    else
+                    {
+                        three_people_id = (int)i;
+                    }
+                }
+
+                if (two_people_id != -1)
+                {
+                    ChessBoardImg board = new ChessBoardImg(two_people_id + 1, null);
+                    chessBoard_MouseLeftButtonDown(board, null);
+                }
+                else if (one_people_id != -1)
+                {
+                    ChessBoardImg board = new ChessBoardImg(one_people_id + 1, null);
+                    chessBoard_MouseLeftButtonDown(board, null);
+                }
+                else if (empty_people_id != -1)
+                {
+                    ChessBoardImg board = new ChessBoardImg(empty_people_id + 1, null);
+                    chessBoard_MouseLeftButtonDown(board, null);
+                }
+                else
+                {
+                    MessageBox.Show("当前游戏大厅人数已满，请选择其他大厅","提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+
+                if (!start.IsEnabled)
+                {
+                    start.IsEnabled = true;
+                }
+                send_quick_start = false;
+            }
+            else
+            {
+                Console.WriteLine("Can NOT get the game hall ptr!!!");
+                start.IsEnabled = false;
+                GameReadyState state = new GameReadyState();
+                state.GameHallRequest(1);
+                send_quick_start = true;
+            }
+        }
+
+        private void toobar_grid_loaded(object sender, RoutedEventArgs e)
+        {
+            //toobar_grid_loaded
+            BitmapImage bt = new BitmapImage();
+            bt.BeginInit();
+            bt.UriSource = new Uri(GameState.gWorkPath + @"res\Images\MyIcon.png", UriKind.Absolute);
+            bt.EndInit();
+
+            Image image = new Image();
+            image.Source = bt;
+            image.Height = 20;
+            image.Width = 20;
+            image.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            image.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            image.Margin = new Thickness(5, 3, 10, 10);
+
+            toobar_grid.Children.Add(image);
+        }
     }
 
     public class ChessBoardImg : Image
     {
         public int id;
+        public Grid grid = null;
+
+        public ChessBoardImg() : base() { }
+        public ChessBoardImg(int id, Grid grid) : base() 
+        {
+            this.id = id;
+            this.grid = grid;
+        }
+    }
+
+    public class SeatImg : ChessBoardImg
+    {
+        public Location locate;
+
+        public SeatImg(int id, Grid grid, Location locate)
+            : base(id, grid)
+        {
+            this.locate = locate;
+        }
+    }
+
+    public class ChessBoardGrid : Grid
+    {
+        public int id;
+
+        public ChessBoardGrid(int id): base()
+        {
+            this.id = id;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,6 +27,12 @@ namespace WpfApplication2
         public Chess()
         {
             InitializeComponent();
+
+            BitmapImage bt = new BitmapImage();
+            bt.BeginInit();
+            bt.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\MyIcon.png", UriKind.Absolute);
+            bt.EndInit();
+            this.Icon = bt;
         }
         
         private void Close_Window(object sender, RoutedEventArgs e)
@@ -290,87 +297,9 @@ namespace WpfApplication2
             //ChessMan chess = new Horse;
             Console.WriteLine("GameState.locate = " + GameState.locate);
             ChessBoard chessBoard = ChessBoard.GetChessBoardObj((Location)GameState.locate, this);
-            //ChessBoard chessBoard = ChessBoard.GetChessBoardObj(Location.bottom, this);
-            /*for (int row = 0; row < 14; ++row)
-            {
-                for (int column = 0; column < 19; ++column)
-                {
-                    Thickness margin = new Thickness(4.5 + column * 50.4, 4 + row * 50.4, 0, 0);
-                    this.draw_seat_image(margin);
-                }
-            }
-            */
-        }
-
-        private void draw_seat_image(Thickness margin)
-        {
-            Image myImage = new Image();
-            int wide = 40;
-            myImage.Width = wide;
-
-            // Create source
-            BitmapImage myBitmapImage = new BitmapImage();
-
-            // BitmapImage.UriSource must be in a BeginInit/EndInit block
-            myBitmapImage.BeginInit();
-            string imageSource = @"C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\ChessMan\RedChess\ju.png";
-            myBitmapImage.UriSource = new Uri(imageSource, UriKind.Absolute);
-
-            // To save significant application memory, set the DecodePixelWidth or  
-            // DecodePixelHeight of the BitmapImage value of the image source to the desired 
-            // height or width of the rendered image. If you don't do this, the application will 
-            // cache the image as though it were rendered as its normal size rather then just 
-            // the size that is displayed.
-            // Note: In order to preserve aspect ratio, set DecodePixelWidth
-            // or DecodePixelHeight but not both.
-            myBitmapImage.DecodePixelWidth = wide;
-            myBitmapImage.EndInit();
-            //set image source
-            myImage.Source = myBitmapImage;
-            myImage.HorizontalAlignment = HorizontalAlignment.Left;
-            myImage.VerticalAlignment = VerticalAlignment.Top;
-            myImage.Margin = margin;
-            //myImage.MouseLeftButtonDown += new MouseButtonEventHandler(this.seat_mouse_lbtn_down);
-            //myImage.MouseLeftButtonUp += new MouseButtonEventHandler(this.seat_mouse_lbtn_up);
-            //myImage.MouseMove += new MouseEventHandler(this.myImage_MouseMove);
-
-            gridChessBoard.Children.Add(myImage);
-
 
         }
-        private void ChessBoardMouseMove(object sender, MouseEventArgs e)
-        {
-            Point p = e.GetPosition((IInputElement)sender);
-            string locate = "unknown";
-            string token = "unknown";
-
-            switch (WpfApplication2.GameState.locate)
-            {
-                case 0:
-                    locate = "Left"; break;
-                case 1:
-                    locate = "Right"; break;
-                case 2:
-                    locate = "Bottom"; break;
-                default:
-                    break;
-            }
-            
-            switch ((Location)WpfApplication2.GameState.currentTokenLocate)
-            {
-                case Location.left:
-                    token = "Left"; break;
-                case Location.right:
-                    token = "Right"; break;
-                case Location.bottom:
-                    token = "Bottom"; break;
-                default:
-                    break;
-            }
-
-            chessBoardPosition.Text = locate + " User,should " + token + " go! Point X:" + p.X + "  Y:" + p.Y;
-        }
-
+        
         public bool pressGameReadyBtn = false;
         private void StartGameReady(object sender, RoutedEventArgs e)
         {
@@ -381,8 +310,6 @@ namespace WpfApplication2
                 TimeSetWin win = new TimeSetWin();
                 win.Owner = this;
                 win.ShowDialog();
-                GamePlayingState state = new GamePlayingState();
-                state.StartGameReadyReq(win.total_sec, win.step_sec);
             }
             else
             {
@@ -520,7 +447,6 @@ namespace WpfApplication2
             switch(locate)
             {
                 case Location.left:
-                    //DispatchTimerLabLeft.Content = "Total: " + total.ToString() + " step: " + single_step_time.ToString();
                     DispatchTimerLeftTotalHour.Text = string.Format("{0,-2:D2}", t_min);
                     DispatchTimerLeftTotalMin.Text = string.Format("{0,-2:D2}", t_sec);
 
@@ -533,7 +459,6 @@ namespace WpfApplication2
 
                     DispatchTimerRightStepMin.Text = string.Format("{0,-2:D2}", s_min);
                     DispatchTimerRightStepSec.Text = string.Format("{0,-2:D2}", s_sec);
-                    //DispatchTimerLabRight.Content = "Total: " + total.ToString() + " step: " + single_step_time.ToString();
                     break;
                 case Location.bottom:
                     DispatchTimerBottomTotalHour.Text = string.Format("{0,-2:D2}", t_min);
@@ -541,7 +466,6 @@ namespace WpfApplication2
 
                     DispatchTimerBottomStepMin.Text = string.Format("{0,-2:D2}", s_min);
                     DispatchTimerBottomStepSec.Text = string.Format("{0,-2:D2}", s_sec);
-                    //DispatchTimerLabBottom.Content = "Total: " + total.ToString() + " step: " + single_step_time.ToString();
                     break;
                 default:
                     break;
@@ -550,7 +474,19 @@ namespace WpfApplication2
 
         public void TimeoutHandle(Location locate)
         {
-            MessageBox.Show(locate.ToString() + " user has timeout");
+            if ((int)locate == GameState.locate)
+            {
+                MediaPlayer player = new MediaPlayer();
+                player.Open(new Uri(GameState.gWorkPath + @"\res\voice\gameover.wav", UriKind.Absolute));
+                player.Play();
+
+                ChessBoard.GetChessBoardObj().gGameStatus = ChessBoard.GameSatus.END;
+                ChessBoard.GetChessBoardObj().currentUser.State = User.GameState.LOSE;
+                MessageBox.Show("走棋超时,本轮游戏结束！", "警告");
+
+                GamePlayingState state = new GamePlayingState();
+                state.LeaveOutFromRoom();
+            }
         }
 
         private void ChessWindowActivedHand(object sender, EventArgs e)
@@ -559,27 +495,40 @@ namespace WpfApplication2
             GameState.SetCurrentWin(this);
         }
 
-        private void ChessWindowClosingHand(object sender, System.ComponentModel.CancelEventArgs e)
+        public void ChessWindowClosingHand(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (GameState.allUsersReady)
             {
-                MessageBoxResult result = MessageBox.Show(this.Owner, "Getting out from the room, are you sure ?", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.Cancel)
+                if ((ChessBoard.GetChessBoardObj().currentUser.State == User.GameState.PLAYING) &&
+                    (ChessBoard.GetChessBoardObj().gGameStatus == ChessBoard.GameSatus.PLAYING))
                 {
-                    e.Cancel = true;
+                    MessageBoxResult result = MessageBox.Show("确定要退出游戏吗(将被扣掉30分)?", "警告", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.Cancel)
+                    {
+                        e.Cancel = true;
+                    }
                 }
-                else
+                else//用户游戏已经结束，则直接退出
                 {
-                    //handle something here, get out the game room!!!
                     GamePlayingState state = new GamePlayingState();
-                    state.LeaveOutFromRoom();
+                    state.LeaveOutFromRoom("exit");
                 }
             }
-            else
+
+            if (!e.Cancel)
             {
                 //handle something here, get out the game room!!!
+                if (GameState.allUsersReady)
+                {
+                    ChessBoard.GetChessBoardObj().righttUser.timer.Stop();
+                    ChessBoard.GetChessBoardObj().leftUser.timer.Stop();
+                    ChessBoard.GetChessBoardObj().bottomUser.timer.Stop();
+                    ChessBoard.GetChessBoardObj().currentUser.State = User.GameState.LOSE;
+                }
+                GameState.allUsersReady = false;
+                GameState.gCurrUserGameStatus = UserStatus.STATUS_EXITED;
                 GamePlayingState state = new GamePlayingState();
-                state.LeaveOutFromRoom();
+                state.LeaveOutFromRoom("exit");
             }
         }
 
@@ -588,13 +537,105 @@ namespace WpfApplication2
             //gridChessBoard.Background;
             BitmapImage bit = new BitmapImage();
             bit.BeginInit();
-            bit.UriSource = new Uri(@"C:\Users\GBX386\Desktop\Qipanxxx\drawable-mdpi\qiqi.png", UriKind.Absolute);
+            bit.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\board.png", UriKind.Absolute);
             bit.EndInit();
             
             ImageBrush image = new ImageBrush(bit);
             gridChessBoard.Background = image;
+
+            LoadChessBoadrMiddleAd();
+            LoadChessBoadrBtRightAd();
         }
-        
+
+        public void SetStartButtonStatus(bool enable)
+        {
+            string url_locat = "";
+            if (enable)
+            {
+                url_locat = GameState.gWorkPath + @"\res\Images\Button\StartEn.png";
+                StartGameBtn.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                url_locat = GameState.gWorkPath + @"\res\Images\Button\StartDis.png";
+                StartGameBtn.Cursor = Cursors.Arrow;
+            }
+
+            BitmapImage bit = new BitmapImage();
+            bit.BeginInit();
+            bit.UriSource = new Uri(url_locat, UriKind.Absolute);
+            bit.EndInit();
+
+            StartGameBtn.Background = new ImageBrush(bit);
+            StartGameBtn.IsEnabled = enable;
+        }
+        public void SetHuiQiButtonStatus(bool enable)
+        {
+            string url_locat = "";
+            if (enable)
+            {
+                url_locat = GameState.gWorkPath + @"\res\Images\Button\huiQiEn.png";
+                HuiQiBtn.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                url_locat = GameState.gWorkPath + @"\res\Images\Button\huiQiDis.png"; 
+                HuiQiBtn.Cursor = Cursors.Arrow;
+            }
+
+            BitmapImage bit = new BitmapImage();
+            bit.BeginInit();
+            bit.UriSource = new Uri(url_locat, UriKind.Absolute);
+            bit.EndInit();
+
+            HuiQiBtn.Background = new ImageBrush(bit);
+            HuiQiBtn.IsEnabled = enable;
+        }
+
+        public void SetQiuHeButtonStatus(bool enable)
+        {
+            string url_locat = "";
+            if (enable)
+            {
+                url_locat = GameState.gWorkPath + @"\res\Images\Button\qiuHeEn.png";
+                HeQiBtn.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                url_locat = GameState.gWorkPath + @"\res\Images\Button\qiuHeDis.png";
+                HeQiBtn.Cursor = Cursors.Arrow;
+            }
+
+            BitmapImage bit = new BitmapImage();
+            bit.BeginInit();
+            bit.UriSource = new Uri(url_locat, UriKind.Absolute);
+            bit.EndInit();
+
+            HeQiBtn.Background = new ImageBrush(bit);
+            HeQiBtn.IsEnabled = enable;
+        }
+        public void SetRenShuButtonStatus(bool enable)
+        {
+            string url_locat = "";
+            if (enable)
+            {
+                url_locat = GameState.gWorkPath + @"\res\Images\Button\renShuEn.png";
+                RenShuBtn.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                url_locat = GameState.gWorkPath + @"\res\Images\Button\renShuDis.png";
+                RenShuBtn.Cursor = Cursors.Arrow;
+            }
+
+            BitmapImage bit = new BitmapImage();
+            bit.BeginInit();
+            bit.UriSource = new Uri(url_locat, UriKind.Absolute);
+            bit.EndInit();
+
+            RenShuBtn.Background = new ImageBrush(bit);
+            RenShuBtn.IsEnabled = enable;
+        }
         private void MouseLeftButtonDown_OpenUrl(object sender, MouseButtonEventArgs e)
         {
             // 打开一个链接
@@ -644,6 +685,260 @@ namespace WpfApplication2
                 image = image_in;
             }
         }
+
+        public void LoadChessBoadrMiddleAd()
+        {
+            Image image = null;
+            GetAdvertisementImage((int)ImageID.IMAGE_ID_AD_BOARD_MIDDLE, ref image);
+            if (image != null)
+            {
+                gridMiddleAd.Children.Add(image);
+            }
+        }
+
+        public void ReMoveMiddleAd()
+        {
+            gridMiddleAd.Children.Clear();
+        }
+
         
+        public void LoadChessBoadrBtRightAd()
+        {
+            Image image = null;
+            GetAdvertisementImage((int)ImageID.IMAGE_ID_AD_BOARD_BOTTOM_RIGHT, ref image);
+            if (image != null)
+            {
+                gridBottomRightAd.Children.Add(image);
+            }
+        }
+
+        public void ReMoveBottomRightAd()
+        {
+            gridBottomRightAd.Children.Clear();
+        }
+
+        public void DisplayHeadImage(Grid headgrid, byte []headImage)
+        {
+            BitmapImage b = null;
+            try
+            {
+                b = new BitmapImage();
+                b.BeginInit();
+                b.StreamSource = new MemoryStream(headImage);
+                b.EndInit();
+            }
+            catch
+            {
+                b = null;
+                b = new BitmapImage();
+                b.BeginInit();
+                //默认头像
+                b.UriSource = new Uri(GameState.defaultHeadImagePath, UriKind.Absolute);
+                b.EndInit();
+            }
+
+            try
+            {
+                if ((headgrid != null) && (headgrid.Children.Count > 0))
+                {
+                    headgrid.Children.Clear();
+                }
+
+                Image image = new Image();
+                image.Source = b;
+                image.Stretch = Stretch.Uniform;
+                image.Margin = new Thickness(15);
+                headgrid.Children.Add(image);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Draw head image faile for " + e.Message);
+            }
+        }
+
+        public void UsersInfoLoadAndUpdate()
+        {
+            LeftUserInfoLoad(null, null);
+            BottomUserinfoLoad(null, null);
+            RightUserInfoLoad(null, null);
+        }
+
+        public void LeftUserInfoLoad(object sender, RoutedEventArgs e)
+        {
+            if ((GameState.gLeftUser != null) && (!GameState.gLeftUser.ChessBoardEmpty))
+            {
+                DisplayHeadImage(LeftHeadImageGrid, GameState.gLeftUser.HeadImage.ToByteArray());
+                LeftUserName.Text = GameState.gLeftUser.UserName;
+                LeftUserScore.Text = GameState.gLeftUser.Score.ToString();
+                LeftUserNameLab.Visibility = System.Windows.Visibility.Visible;
+                LeftUserScoreLab.Visibility = System.Windows.Visibility.Visible;
+                DispatchTimerLeftTotalHour.Visibility = System.Windows.Visibility.Visible;
+                DispatchTimerLeftStepMin.Visibility = System.Windows.Visibility.Visible;
+                DispatchTimerLeftTotalMin.Visibility = System.Windows.Visibility.Visible;
+                DispatchTimerLeftStepSec.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                LeftHeadImageGrid.Children.Clear();
+                LeftUserName.Text = "";
+                LeftUserScore.Text = "";
+                LeftUserNameLab.Visibility = System.Windows.Visibility.Hidden;
+                LeftUserScoreLab.Visibility = System.Windows.Visibility.Hidden;
+                DispatchTimerLeftTotalHour.Visibility = System.Windows.Visibility.Hidden;
+                DispatchTimerLeftStepMin.Visibility = System.Windows.Visibility.Hidden;
+                DispatchTimerLeftTotalMin.Visibility = System.Windows.Visibility.Hidden;
+                DispatchTimerLeftStepSec.Visibility = System.Windows.Visibility.Hidden;
+            }
+        }
+
+        public void BottomUserinfoLoad(object sender, RoutedEventArgs e)
+        {
+            if ((GameState.gBottomUser != null) && (!GameState.gBottomUser.ChessBoardEmpty))
+            {
+                DisplayHeadImage(BottomHeadImageGrid, GameState.gBottomUser.HeadImage.ToByteArray());
+                BottomUserName.Text = GameState.gBottomUser.UserName;
+                BottomUserScore.Text = GameState.gBottomUser.Score.ToString();
+                BottomUserNameLab.Visibility = System.Windows.Visibility.Visible;
+                BottomUserScoreLab.Visibility = System.Windows.Visibility.Visible;
+                DispatchTimerBottomTotalHour.Visibility = System.Windows.Visibility.Visible;
+                DispatchTimerBottomStepMin.Visibility = System.Windows.Visibility.Visible;
+                DispatchTimerBottomTotalMin.Visibility = System.Windows.Visibility.Visible;
+                DispatchTimerBottomStepSec.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                BottomHeadImageGrid.Children.Clear();
+                BottomUserName.Text = "";
+                BottomUserScore.Text = "";
+                BottomUserNameLab.Visibility = System.Windows.Visibility.Hidden;
+                BottomUserScoreLab.Visibility = System.Windows.Visibility.Hidden;
+                DispatchTimerBottomTotalHour.Visibility = System.Windows.Visibility.Hidden;
+                DispatchTimerBottomStepMin.Visibility = System.Windows.Visibility.Hidden;
+                DispatchTimerBottomTotalMin.Visibility = System.Windows.Visibility.Hidden;
+                DispatchTimerBottomStepSec.Visibility = System.Windows.Visibility.Hidden;
+            }
+        }
+
+        public void RightUserInfoLoad(object sender, RoutedEventArgs e)
+        {
+            if ((GameState.gRightUser != null) && (!GameState.gRightUser.ChessBoardEmpty))
+            {
+                DisplayHeadImage(RightHeadImageGrid, GameState.gRightUser.HeadImage.ToByteArray());
+                RightUserName.Text = GameState.gRightUser.UserName;
+                RightUserScore.Text = GameState.gRightUser.Score.ToString();
+                RightUserNameLab.Visibility = System.Windows.Visibility.Visible;
+                RightUserScoreLab.Visibility = System.Windows.Visibility.Visible;
+                DispatchTimerRightTotalHour.Visibility = System.Windows.Visibility.Visible;
+                DispatchTimerRightStepMin.Visibility = System.Windows.Visibility.Visible;
+                DispatchTimerRightTotalMin.Visibility = System.Windows.Visibility.Visible;
+                DispatchTimerRightStepSec.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                RightHeadImageGrid.Children.Clear();
+                RightUserName.Text = "";
+                RightUserScore.Text = "";
+                RightUserNameLab.Visibility = System.Windows.Visibility.Hidden;
+                RightUserScoreLab.Visibility = System.Windows.Visibility.Hidden;
+                DispatchTimerRightTotalHour.Visibility = System.Windows.Visibility.Hidden;
+                DispatchTimerRightStepMin.Visibility = System.Windows.Visibility.Hidden;
+                DispatchTimerRightTotalMin.Visibility = System.Windows.Visibility.Hidden;
+                DispatchTimerRightStepSec.Visibility = System.Windows.Visibility.Hidden;
+            }
+        }
+
+        private void RequestHuiQi(object sender, RoutedEventArgs e)
+        {
+            GamePlayingState state = new GamePlayingState();
+            state.UndoRequest();
+            SetHuiQiButtonStatus(false);
+        }
+
+        private void QiuHeClick(object sender, RoutedEventArgs e)
+        {
+            GamePlayingState state = new GamePlayingState();
+            state.QiuHeSendReq();
+            SetQiuHeButtonStatus(false);
+        }
+
+        private void RenShuClick(object sender, RoutedEventArgs e)
+        {
+            if (ChessBoard.GetChessBoardObj().GetCurrentActiveUsrNum() < 3)
+            {
+                GamePlayingState state = new GamePlayingState();
+                state.LeaveOutFromRoom();
+                SetRenShuButtonStatus(false);
+            }
+        }
+
+        private void toobar_grid_loaded(object sender, RoutedEventArgs e)
+        {            //toobar_grid_loaded
+            BitmapImage bt = new BitmapImage();
+            bt.BeginInit();
+            bt.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\MyIcon.png", UriKind.Absolute);
+            bt.EndInit();
+
+            Image image = new Image();
+            image.Source = bt;
+            image.Height = 20;
+            image.Width = 20;
+            image.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            image.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            image.Margin = new Thickness(5, 3, 10, 10);
+
+            toobar_grid.Children.Add(image);
+        }
+
+        private void ChessContentLoad(object sender, RoutedEventArgs e)
+        {
+            BitmapImage bt = new BitmapImage();
+            bt.BeginInit();
+            bt.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\chat.png", UriKind.Absolute);
+            bt.EndInit();
+            chat_btn.Background = new ImageBrush(bt);
+
+            bt = new BitmapImage();
+            bt.BeginInit();
+            bt.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\Button\startEn.png", UriKind.Absolute);
+            bt.EndInit();
+            StartGameBtn.Background = new ImageBrush(bt);
+
+            bt = new BitmapImage();
+            bt.BeginInit();
+            bt.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\Button\huiQiDis.png", UriKind.Absolute);
+            bt.EndInit();
+            HuiQiBtn.Background = new ImageBrush(bt);
+
+            bt = new BitmapImage();
+            bt.BeginInit();
+            bt.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\Button\qiuHeDis.png", UriKind.Absolute);
+            bt.EndInit();
+            HeQiBtn.Background = new ImageBrush(bt);
+
+            bt = new BitmapImage();
+            bt.BeginInit();
+            bt.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\Button\renShuDis.png", UriKind.Absolute);
+            bt.EndInit();
+            RenShuBtn.Background = new ImageBrush(bt);
+
+            bt = new BitmapImage();
+            bt.BeginInit();
+            bt.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\time_panel.png", UriKind.Absolute);
+            bt.EndInit();
+            leftTimepanel.Background = new ImageBrush(bt);
+
+            bt = new BitmapImage();
+            bt.BeginInit();
+            bt.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\time_panel.png", UriKind.Absolute);
+            bt.EndInit();
+            rightTimepanel.Background = new ImageBrush(bt);
+
+            bt = new BitmapImage();
+            bt.BeginInit();
+            bt.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\time_panel.png", UriKind.Absolute);
+            bt.EndInit();
+            bottomTimepanel.Background = new ImageBrush(bt);
+        }
+
     }
 }

@@ -2,6 +2,6 @@
 /bin/*
 /Images/*
 /obj/*
-
+/res/*
 # do NOT filter important files
 !.gitignore

@@ -196,4 +196,67 @@
   <data name="score" xml:space="preserve">
     <value>积分:</value>
   </data>
+  <data name="account" xml:space="preserve">
+    <value>账号</value>
+  </data>
+  <data name="btn_cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="btn_ok" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="chang_head" xml:space="preserve">
+    <value>点击更换头像</value>
+  </data>
+  <data name="confirm" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="email" xml:space="preserve">
+    <value>邮箱</value>
+  </data>
+  <data name="history" xml:space="preserve">
+    <value>历史消息(0)</value>
+  </data>
+  <data name="notify" xml:space="preserve">
+    <value>通知</value>
+  </data>
+  <data name="notify_msg" xml:space="preserve">
+    <value>呼~~ 暂时没有新消息哦~·~</value>
+  </data>
+  <data name="password" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="phone" xml:space="preserve">
+    <value>电话</value>
+  </data>
+  <data name="private_info" xml:space="preserve">
+    <value>个人资料</value>
+  </data>
+  <data name="save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="score_level" xml:space="preserve">
+    <value>积分等级</value>
+  </data>
+  <data name="score_note" xml:space="preserve">
+    <value>积分说明：注册送100积分；赢一局10积分；输一局-10积分；和棋不扣分；</value>
+  </data>
+  <data name="single_time" xml:space="preserve">
+    <value>步时</value>
+  </data>
+  <data name="total_time" xml:space="preserve">
+    <value>局时</value>
+  </data>
+  <data name="unbind" xml:space="preserve">
+    <value>未绑定</value>
+  </data>
+  <data name="hour" xml:space="preserve">
+    <value>时</value>
+  </data>
+  <data name="minute" xml:space="preserve">
+    <value>分</value>
+  </data>
+  <data name="second" xml:space="preserve">
+    <value>秒</value>
+  </data>
 </root>

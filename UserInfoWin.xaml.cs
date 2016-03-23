@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using System.Windows.Controls.Primitives;
+
 
 namespace WpfApplication2
 {
@@ -34,6 +36,7 @@ namespace WpfApplication2
             this.tx_account.Text = GameState.currentUserAccount;
             this.tx_email.Text = GameState.currentUserEmail;
             this.tx_phone.Text = GameState.currentUserPhoneNo;
+            this.tx_score.Text = GameState.currentUserScore.ToString();
         }
 
         private void Close_Window(object sender, RoutedEventArgs e)
@@ -249,16 +252,27 @@ namespace WpfApplication2
             }
         }
 
-        
 
         private void UserInfoWinClosingHand(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
+            if (text_changed && !saved && (changed_num > 3))
+            {
+                MessageBoxResult resut = MessageBox.Show("您的修改未保存，确定要退出吗", "提示" ,MessageBoxButton.OKCancel);
+                if (resut == MessageBoxResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    text_changed = false;
+                    saved = false;
+                }
+            }
         }
 
-        private Image headImage = null;
+        //private Image headImage = null;
         private byte[] headImageBytes = null;
-        private void UploadHeadImage(object sender, RoutedEventArgs e)
+        private void UploadHeadImage(object sender, MouseButtonEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
             //dialog.Filter = "PNG File(*.png)|*.png";
@@ -286,24 +300,15 @@ namespace WpfApplication2
 
         public void DisplayHeadImageToSettingBoard(byte[] byteArray)
         {
-            //set image source
-            if (headImage != null)
-            {
-                settingBoard.Children.Remove(headImage);
-            }
-
             Image headImg = new Image();
             headImg.Source = ByteArrayToBitmapImage(byteArray);
-            headImg.HorizontalAlignment = HorizontalAlignment.Left;
-            headImg.VerticalAlignment = VerticalAlignment.Top;
-            headImg.Margin = new Thickness(32, 22, 0, 0);
-            headImg.Width = 101;
-            headImg.Height = 80;
+            headImg.HorizontalAlignment = HorizontalAlignment.Stretch;
+            headImg.VerticalAlignment = VerticalAlignment.Stretch;
+            //headImg.Margin = new Thickness(32, 22, 0, 0);
             headImg.Stretch = Stretch.Uniform;
-
-            headImage = headImg;
             
-            settingBoard.Children.Add(headImage);
+            head_image_board.Background = new ImageBrush(headImg.Source);
+            
         }
 
         BitmapImage ByteArrayToBitmapImage(byte[] byteArray)
@@ -325,9 +330,15 @@ namespace WpfApplication2
             return bmp;
         }
 
+        private bool text_changed = false;
+        private int changed_num = 0;
+        private bool saved = false;
         private void textChanged(object sender, TextChangedEventArgs e)
         {
+            TextBlock tt = sender as TextBlock;
             Console.WriteLine("Text changed!");
+            text_changed = true;
+            ++changed_num;
         }
 
         private void PwdTextChanged(object sender, RoutedEventArgs e)
@@ -340,30 +351,15 @@ namespace WpfApplication2
                 tx_passwordRe.Password = "";
             }
         }
-
-        private void EditUserInfoClick(object sender, RoutedEventArgs e)
-        {
-            tx_password.IsEnabled = true;
-            tx_email.IsEnabled = true;
-            tx_phone.IsEnabled = true;
-            tx_nickname.IsEnabled = true;
-            tx_passwordRe.IsEnabled = true;
-        }
-
+        
         private void SaveUserInfoClick(object sender, RoutedEventArgs e)
         {
-            tx_password.IsEnabled = false;
-            tx_email.IsEnabled = false;
-            tx_phone.IsEnabled = false;
-            tx_nickname.IsEnabled = false;
-            tx_passwordRe.IsEnabled = false;
-
-
-            lbpwdRetry.Visibility = System.Windows.Visibility.Hidden;
-            tx_passwordRe.Visibility = System.Windows.Visibility.Hidden;
-
             if (tx_password.Password.Equals(tx_passwordRe.Password))
             {
+                lbpwdRetry.Visibility = System.Windows.Visibility.Hidden;
+                tx_passwordRe.Visibility = System.Windows.Visibility.Hidden;
+                saved = true;
+
                 MD5Hash hash = new MD5Hash(tx_password.Password);
                 GameReadyState s = new GameReadyState();
                 s.UpdateUserInfos(tx_account.Text, tx_nickname.Text, hash.GetMD5HashCode(), tx_email.Text, tx_phone.Text, headImageBytes);
@@ -379,6 +375,91 @@ namespace WpfApplication2
             if (GameState.currentUserHeadImage != null)
             {
                 DisplayHeadImageToSettingBoard(GameState.currentUserHeadImage);
+            }
+        }
+        
+        private void EmailGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (tx_email.IsFocused)
+            {
+                tx_email.Background = Brushes.White;
+                tx_email.SelectionStart = tx_email.Text.Length;
+            }
+        }
+
+        private void PhoneGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (tx_phone.IsFocused)
+            {
+                tx_phone.Background = Brushes.White;
+                tx_phone.SelectionStart = tx_phone.Text.Length;
+            }
+        }
+
+        private void EmailLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (!tx_email.IsFocused)
+            {
+                tx_email.Background = Brushes.Transparent;
+            }
+        }
+
+        private void PhoneLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (!tx_phone.IsFocused)
+            {
+                tx_phone.Background = Brushes.Transparent;
+            }
+        }
+
+        private void NickNameGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (tx_nickname.IsFocused)
+            {
+                tx_nickname.Background = Brushes.White;
+                tx_nickname.SelectionStart = tx_nickname.Text.Length;
+            }
+        }
+
+        private void NickNameLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (!tx_nickname.IsFocused)
+            {
+                tx_nickname.Background = Brushes.Transparent;
+            }
+        }
+
+        private void PwdGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (tx_password.IsFocused)
+            {
+                tx_password.Background = Brushes.White;
+            }
+        }
+
+        private void PwdLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (!tx_password.IsFocused)
+            {
+                tx_password.Background = Brushes.Transparent;
+            }
+        }
+
+        private void RePwdLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (!tx_passwordRe.IsFocused)
+            {
+                tx_passwordRe.Background = Brushes.Transparent;
+                lbpwdRetry.Visibility = System.Windows.Visibility.Hidden;
+            }
+        }
+
+        private void RePwdGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (tx_passwordRe.IsFocused)
+            {
+                tx_passwordRe.Background = Brushes.White;
+                lbpwdRetry.Visibility = System.Windows.Visibility.Visible;
             }
         }
     }

@@ -16,8 +16,8 @@ namespace WpfApplication2
     {
         static private Socket tcpClient = null;
         static private int port = 8888;
-        static private string host = "123.57.180.67";
-        //static private string host = "10.193.90.79";
+        //static private string host = "123.57.180.67";
+        static private string host = "10.193.90.79";
         private const int HEAD_SIZE = 2 * sizeof(uint);
         static private GameState state = null;
         private const int MAX_RECONNECT_NUM = 10;
@@ -62,7 +62,20 @@ namespace WpfApplication2
 
         static private bool ConnectToServer()
         {
-            ///创建终结点EndPoint
+            ///创建终结点EndPoint            
+            string tmp_host = IniFileHand.ReadIniData("Server", "IP", host, GameState.gWorkPath + @"\res\files\info.ini");
+            if (tmp_host != String.Empty)
+            {
+                host = tmp_host;
+                Console.WriteLine("Got the config IP:" + host);
+            }
+            string tmp_port = IniFileHand.ReadIniData("Server", "Port", port.ToString(), GameState.gWorkPath + @"\res\files\info.ini");
+            if (tmp_port != String.Empty)
+            {
+                port = int.Parse(tmp_port);
+                Console.WriteLine("Got the config Port:" + tmp_port);
+            }
+
             IPAddress ip = IPAddress.Parse(host);
             IPEndPoint ipe = new IPEndPoint(ip, port);//把ip和端口转化为IPEndpoint实例
 

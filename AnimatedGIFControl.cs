@@ -35,7 +35,7 @@ namespace WpfApplication2
         private Bitmap _bitmap; // Local bitmap member to cache image resource
         private BitmapSource _bitmapSource;
         public delegate void FrameUpdatedEventHandler();
-        private string filePath = @"C:\Users\GBX386\Desktop\Visual C#\WpfApplication1\WpfApplication1\Resources\ad.gif";
+        private string filePath = "";
 
         public AnimatedGIFControl(string file)
         {

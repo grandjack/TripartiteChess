@@ -45,9 +45,10 @@ namespace WpfApplication2
 
 
         protected User ownerUsr = null;
+        protected User originalOwnerUsr = null;
         public bool beSelected = false;
 
-        public string imageUriSourcePre = @"C:\Users\GBX386\Desktop\Visual C#\WpfApplication2\WpfApplication2\Images\ChessMan";
+        public string imageUriSourcePre = GameState.gWorkPath + @"\res\Images\ChessMan";
         public string imageUriSource = null;
 
         //定义属性
@@ -86,6 +87,11 @@ namespace WpfApplication2
             return this.ownerUsr;
         }
 
+        public User GetOriginalOwnUser()
+        {
+            return this.originalOwnerUsr;
+        }
+
         public void SetOwnUser(User user)
         {
             this.ownerUsr = user;
@@ -120,14 +126,24 @@ namespace WpfApplication2
             ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess = ChessBoard.GetChessBoardObj().g_chess_board[cur_row, cur_column].chess;
             ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess.Row = des_row;
             ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess.Column = des_column;
-            //必须重新计算图像坐标位置
+
+            //将棋子在目标grid中显示
+            if (ChessBoard.GetChessBoardObj().g_chess_board[cur_row, cur_column].chessGrid.Children.Count > 0)
+            {
+                ChessBoard.GetChessBoardObj().g_chess_board[cur_row, cur_column].chessGrid.Children.Clear();
+            }
+            ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chessGrid.Children.Clear();
+            ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chessGrid.Children.Add(ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess);
+
+            //重新计算图像坐标位置
             Point p = ChessBoard.GetPointByGrid(des_row, des_column);
             ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess.XPoint = p.X;
             ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess.YPoint = p.Y;
-            ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess.Margin = new Thickness(p.X, p.Y, 0, 0);
+            //ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess.Margin = new Thickness(p.X, p.Y, 0, 0);
 
             ChessBoard.GetChessBoardObj().g_chess_board[cur_row, cur_column].status = ChessBoard.BoardStatus.empty;
             ChessBoard.GetChessBoardObj().g_chess_board[cur_row, cur_column].chess = null;
+            
 
             this.row = des_row;
             this.column = des_column;
@@ -153,11 +169,11 @@ namespace WpfApplication2
 
             //将被吃方先减分
             originUser.MinusScore(10);
-            ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess);
+            //ChessBoard.chessWindow.gridChessBoard.Children.Remove(ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess);
             MoveToAction(des_row, des_column);
             //吃方加分
             ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess.GetOwnUser().PlusScore(10);
-
+            User move_user = ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess.GetOwnUser();
 
             //first check whether the Shuai face to face 
             if (true == eatCaptain)
@@ -165,13 +181,18 @@ namespace WpfApplication2
                 Console.WriteLine("You ate Captain!!");
 
                 MediaPlayer player = new MediaPlayer();
-                player.Open(new Uri(@"D:\My Software\QQGame\CChess\res\gamewin.wav", UriKind.Absolute));
+                if (originUser.GetUserLocation() == ChessBoard.GetChessBoardObj().currUserLocation)
+                    player.Open(new Uri(GameState.gWorkPath + @"\res\voice\gameover.wav", UriKind.Absolute));
+                else
+                    player.Open(new Uri(GameState.gWorkPath + @"\res\voice\gamewin.wav", UriKind.Absolute));
                 player.Play();
 
                 originUser.State = User.GameState.LOSE;
                 if (ChessBoard.GetChessBoardObj().GetCurrentActiveUsrNum() <= 1)
                 {
                     Console.WriteLine("You are the last winner!! Congratulations!");
+                    move_user.State = User.GameState.WON;
+                    ChessBoard.GetChessBoardObj().gGameStatus = ChessBoard.GameSatus.END;
                     return true;
                 }
                 else
@@ -291,13 +312,21 @@ namespace WpfApplication2
                 ChessSpec tarType = ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess.GetChessType();
                 int tarLocate = (int)ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess.ownerUsr.GetUserLocation();
                 User tarUsr = ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess.GetOwnUser();
-                
+                ChessMan tarchess = ChessBoard.GetChessBoardObj().g_chess_board[des_row, des_column].chess;
                 status = this.EatAction(des_row, des_column);
                 if (status)
                 {
                     MediaPlayer player = new MediaPlayer ();
-                    player.Open(new Uri(@"D:\My Software\QQGame\CChess\res\eat.wav", UriKind.Absolute));
+                    player.Open(new Uri(GameState.gWorkPath + @"\res\voice\eat.wav", UriKind.Absolute));
                     player.Play();
+
+                    //记录走棋路线
+                    ChessBoard.gHuiQiStack.ate_chess = true;
+                    ChessBoard.gHuiQiStack.from_x = src_row;
+                    ChessBoard.gHuiQiStack.from_y = src_column;
+                    ChessBoard.gHuiQiStack.des_x = des_row;
+                    ChessBoard.gHuiQiStack.des_y = des_column;
+                    ChessBoard.gHuiQiStack.chess = tarchess;
 
                     if (shouldbrocast)
                     {
@@ -319,8 +348,16 @@ namespace WpfApplication2
                 if (status)
                 {
                     MediaPlayer player = new MediaPlayer();
-                    player.Open(new Uri(@"D:\My Software\QQGame\CChess\res\go.wav", UriKind.Absolute));
+                    player.Open(new Uri(GameState.gWorkPath + @"\res\voice\go.wav", UriKind.Absolute));
                     player.Play();
+                    
+                    //记录走棋路线
+                    ChessBoard.gHuiQiStack.ate_chess = false;
+                    ChessBoard.gHuiQiStack.from_x = src_row;
+                    ChessBoard.gHuiQiStack.from_y = src_column;
+                    ChessBoard.gHuiQiStack.des_x = des_row;
+                    ChessBoard.gHuiQiStack.des_y = des_column;
+                    ChessBoard.gHuiQiStack.chess = null;
 
                     if (shouldbrocast)
                     {
@@ -335,7 +372,7 @@ namespace WpfApplication2
             {
                 //播放将军提示你好                
                 MediaPlayer player = new MediaPlayer();
-                player.Open(new Uri(@"D:\My Software\QQGame\CChess\res\dead.wav", UriKind.Absolute));
+                player.Open(new Uri(GameState.gWorkPath + @"\res\voice\dead.wav", UriKind.Absolute));
                 player.Play();
             }
 
@@ -367,6 +404,7 @@ namespace WpfApplication2
             this.chessSpec = ChessSpec.CHESS_MA;
             this.chessName = ChessName[(int)this.chessSpec];
             this.ownerUsr = ownerUsr;
+            this.originalOwnerUsr = ownerUsr;
             this.beSelected = false;
 
             this.InitialImageUriSource(this.chessName);
@@ -661,6 +699,7 @@ namespace WpfApplication2
             this.chessSpec = ChessSpec.CHESS_XIANG;
             this.chessName = ChessName[(int)this.chessSpec];
             this.ownerUsr = ownerUsr;
+            this.originalOwnerUsr = ownerUsr;
             this.beSelected = false;
 
             this.InitialImageUriSource(this.chessName);
@@ -711,6 +750,7 @@ namespace WpfApplication2
             this.chessSpec = ChessSpec.CHESS_PAO;
             this.chessName = ChessName[(int)this.chessSpec];
             this.ownerUsr = ownerUsr;
+            this.originalOwnerUsr = ownerUsr;
             this.beSelected = false; 
             this.InitialImageUriSource(this.chessName);
         }
@@ -874,6 +914,7 @@ namespace WpfApplication2
             this.chessSpec = ChessSpec.CHESS_BING;
             this.chessName = ChessName[(int)this.chessSpec];
             this.ownerUsr = ownerUsr;
+            this.originalOwnerUsr = ownerUsr;
             this.beSelected = false;
             this.InitialImageUriSource(this.chessName);
         }
@@ -934,6 +975,7 @@ namespace WpfApplication2
             this.chessSpec = ChessSpec.CHESS_CHE;
             this.chessName = ChessName[(int)this.chessSpec];
             this.ownerUsr = ownerUsr;
+            this.originalOwnerUsr = ownerUsr;
             this.beSelected = false;
             this.InitialImageUriSource(this.chessName);
         }
@@ -1077,6 +1119,7 @@ namespace WpfApplication2
             this.chessSpec = ChessSpec.CHESS_SHUAI;
             this.chessName = ChessName[(int)this.chessSpec];
             this.ownerUsr = ownerUsr;
+            this.originalOwnerUsr = ownerUsr;
             this.beSelected = false;
             this.InitialImageUriSource(this.chessName);
         }
@@ -1136,6 +1179,7 @@ namespace WpfApplication2
             this.chessSpec = ChessSpec.CHESS_SHI;
             this.chessName = ChessName[(int)this.chessSpec];
             this.ownerUsr = ownerUsr;
+            this.originalOwnerUsr = ownerUsr;
             this.beSelected = false;
             this.InitialImageUriSource(this.chessName);
         }

@@ -173,12 +173,7 @@
 
     <!-- Window design and layout Code-->
     <Grid>
-        <Border CornerRadius="2" BorderThickness="2" BorderBrush="#FF00A3FF">
-            <Border.Background>
-                <SolidColorBrush Color="Gray" Opacity="1" />
-            </Border.Background>
-        </Border>
-
+        
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -190,6 +185,9 @@
                 <ColumnDefinition Width="586*" />
             </Grid.ColumnDefinitions>
 
+            <!--用以为中间面板添加背景色  -->
+            <Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2" Background="Gray" Margin="10"/>
+            
             <!--标题栏框-->
             <Border Name="toolBar2" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Opacity="1" 
                         Height="Auto" Width="auto" Padding="0" 
@@ -216,7 +214,8 @@
             </Grid>
 
             <!--Content-->
-            <Grid x:Name="chessContent" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ShowGridLines="False" Loaded="ChessContentLoad">
+            <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" CornerRadius="0,0,2,2" BorderThickness="2,0,2,2" BorderBrush="#FF00A3FF" x:Name="chessBoarder" />
+            <Grid x:Name="chessContent" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ShowGridLines="False" Loaded="ChessContentLoad" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
@@ -492,6 +491,6 @@
             </Grid>
 
         </Grid>
-
+        
     </Grid>
 </Window>

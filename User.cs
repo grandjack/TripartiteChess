@@ -164,9 +164,10 @@ namespace WpfApplication2
                 
                 ChessBoard.SetSelectGrid(true, ChessBoard.GetChessBoardObj().g_chess_board[chessMan.Row, chessMan.Column].chessGrid);
 
-                MediaPlayer player = new MediaPlayer();
+                /*MediaPlayer player = new MediaPlayer();
                 player.Open(new Uri(WpfApplication2.GameState.gWorkPath + @"\res\voice\select.wav", UriKind.Absolute));
-                player.Play();
+                player.Play();*/
+                MediaBackgroundThread.PlayMedia(MediaType.MEDIA_SELECT);
 
                 //消息终止，不再路由到上层
                 e.Handled = true;

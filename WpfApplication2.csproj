@@ -83,6 +83,7 @@
     <Compile Include="GameState.cs" />
     <Compile Include="IniFileHand.cs" />
     <Compile Include="MD5Hash.cs" />
+    <Compile Include="MediaBackgroundThread.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="NetworkThread.cs" />
     <Compile Include="TimeSetWin.xaml.cs">

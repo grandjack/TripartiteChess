@@ -191,7 +191,14 @@ namespace WpfApplication2
                 Left = lMousePosition.X - targetHorizontal;
                 Top = lMousePosition.Y - targetVertical;
 
-                DragMove();
+                try
+                {
+                    DragMove();
+                }
+                catch (Exception ee)
+                {
+                    Console.WriteLine("Can NOT DragMove for " + ee.Message);
+                }
                 e.Handled = true;
             }
         }
@@ -479,9 +486,11 @@ namespace WpfApplication2
 
             if ((int)locate == GameState.locate)
             {
-                MediaPlayer player = new MediaPlayer();
+                /*MediaPlayer player = new MediaPlayer();
                 player.Open(new Uri(GameState.gWorkPath + @"\res\voice\gameover.wav", UriKind.Absolute));
                 player.Play();
+                */
+                MediaBackgroundThread.PlayMedia(MediaType.MEDIA_OVER);
                 
                 ChessBoard.GetChessBoardObj().currentUser.State = User.GameState.LOSE;
 
@@ -943,7 +952,8 @@ namespace WpfApplication2
             bt.BeginInit();
             bt.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\background.png", UriKind.Absolute);
             bt.EndInit();
-            chessContent.Background = new ImageBrush(bt);
+            //chessContent.Background = new ImageBrush(bt);
+            chessBoarder.Background = new ImageBrush(bt);
         }
 
     }

@@ -617,6 +617,7 @@ namespace WpfApplication2
                 else
                 {
                     myBitmapImage.StreamSource = new MemoryStream(userinfo.HeadImage.ToByteArray());
+                    left.ToolTip = userinfo.UserName;
                 }
             }
             else
@@ -648,6 +649,7 @@ namespace WpfApplication2
                 else
                 {
                     myBitmapImage.StreamSource = new MemoryStream(userinfo.HeadImage.ToByteArray());
+                    right.ToolTip = userinfo.UserName;
                 }
             }
             else
@@ -678,6 +680,7 @@ namespace WpfApplication2
                 else
                 {
                     myBitmapImage.StreamSource = new MemoryStream(userinfo.HeadImage.ToByteArray());
+                    bottom.ToolTip = userinfo.UserName;
                 }
             }
             else
@@ -707,51 +710,7 @@ namespace WpfApplication2
 
             grid_game_hall.Children.Add(grid);
         }
-        /*
-        private void draw_seat_image(Thickness margin, int index)
-        {
-            ChessBoardImg myImage = new ChessBoardImg();
-            myImage.Width = 115;
-            myImage.id = index;
 
-            // Create source
-            BitmapImage myBitmapImage = new BitmapImage();
-
-            // BitmapImage.UriSource must be in a BeginInit/EndInit block
-            myBitmapImage.BeginInit();
-            myBitmapImage.UriSource = new Uri(@"\Images\tablen.bmp", UriKind.Relative);
-
-            // To save significant application memory, set the DecodePixelWidth or  
-            // DecodePixelHeight of the BitmapImage value of the image source to the desired 
-            // height or width of the rendered image. If you don't do this, the application will 
-            // cache the image as though it were rendered as its normal size rather then just 
-            // the size that is displayed.
-            // Note: In order to preserve aspect ratio, set DecodePixelWidth
-            // or DecodePixelHeight but not both.
-            myBitmapImage.DecodePixelWidth = 115;
-            myBitmapImage.EndInit();
-            //set image source
-            myImage.Source = myBitmapImage;
-            myImage.HorizontalAlignment = HorizontalAlignment.Left;
-            myImage.VerticalAlignment = VerticalAlignment.Top;
-            myImage.Margin = margin;
-            //myImage.MouseLeftButtonDown += new MouseButtonEventHandler(this.seat_mouse_lbtn_down);
-            //myImage.MouseLeftButtonUp += new MouseButtonEventHandler(this.seat_mouse_lbtn_up);
-            myImage.MouseMove += new MouseEventHandler(this.myImage_MouseMove);
-
-            Label chessBoardNo = new Label();
-            chessBoardNo.HorizontalAlignment = HorizontalAlignment.Left;
-            chessBoardNo.VerticalAlignment = VerticalAlignment.Top;
-            chessBoardNo.Margin = new Thickness(margin.Left + 47, margin.Top + 110, 0, 0);
-            chessBoardNo.Foreground = Brushes.White;
-            chessBoardNo.FontSize = 10;
-            chessBoardNo.Content = index.ToString();
-
-            Console.WriteLine("Current ChessBoard : " + chessBoardNo.Content);
-            grid_game_hall.Children.Add(chessBoardNo);
-            grid_game_hall.Children.Add(myImage);
-        }
-        */
 
         private Border g_select_display_border = null;
         private Brush g_select_background = null;

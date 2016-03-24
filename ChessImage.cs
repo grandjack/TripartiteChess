@@ -180,12 +180,18 @@ namespace WpfApplication2
             {
                 Console.WriteLine("You ate Captain!!");
 
-                MediaPlayer player = new MediaPlayer();
+                //MediaPlayer player = new MediaPlayer();
                 if (originUser.GetUserLocation() == ChessBoard.GetChessBoardObj().currUserLocation)
-                    player.Open(new Uri(GameState.gWorkPath + @"\res\voice\gameover.wav", UriKind.Absolute));
+                {
+                    //player.Open(new Uri(GameState.gWorkPath + @"\res\voice\gameover.wav", UriKind.Absolute));
+                    MediaBackgroundThread.PlayMedia(MediaType.MEDIA_OVER);
+                }
                 else
-                    player.Open(new Uri(GameState.gWorkPath + @"\res\voice\gamewin.wav", UriKind.Absolute));
-                player.Play();
+                {
+                    MediaBackgroundThread.PlayMedia(MediaType.MEDIA_WIN);
+                    //player.Open(new Uri(GameState.gWorkPath + @"\res\voice\gamewin.wav", UriKind.Absolute));
+                }
+                //player.Play();
 
                 originUser.State = User.GameState.LOSE;
                 if (ChessBoard.GetChessBoardObj().GetCurrentActiveUsrNum() <= 1)
@@ -316,9 +322,11 @@ namespace WpfApplication2
                 status = this.EatAction(des_row, des_column);
                 if (status)
                 {
-                    MediaPlayer player = new MediaPlayer ();
+                    /*MediaPlayer player = new MediaPlayer ();
                     player.Open(new Uri(GameState.gWorkPath + @"\res\voice\eat.wav", UriKind.Absolute));
                     player.Play();
+                    */
+                    MediaBackgroundThread.PlayMedia(MediaType.MEDIA_EAT);
 
                     //记录走棋路线
                     ChessBoard.gHuiQiStack.ate_chess = true;
@@ -347,9 +355,10 @@ namespace WpfApplication2
                 status = this.MoveToAction(des_row, des_column); 
                 if (status)
                 {
-                    MediaPlayer player = new MediaPlayer();
+                    /*MediaPlayer player = new MediaPlayer();
                     player.Open(new Uri(GameState.gWorkPath + @"\res\voice\go.wav", UriKind.Absolute));
-                    player.Play();
+                    player.Play();*/
+                    MediaBackgroundThread.PlayMedia(MediaType.MEDIA_GO);
                     
                     //记录走棋路线
                     ChessBoard.gHuiQiStack.ate_chess = false;
@@ -371,9 +380,10 @@ namespace WpfApplication2
             if (this.ownerUsr.IfJiangJun() && status)
             {
                 //播放将军提示你好                
-                MediaPlayer player = new MediaPlayer();
+                /*MediaPlayer player = new MediaPlayer();
                 player.Open(new Uri(GameState.gWorkPath + @"\res\voice\dead.wav", UriKind.Absolute));
-                player.Play();
+                player.Play();*/
+                MediaBackgroundThread.PlayMedia(MediaType.MEDIA_DEAD);
             }
 
             return status;

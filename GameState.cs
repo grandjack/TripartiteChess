@@ -89,6 +89,7 @@ namespace WpfApplication2
         //Current user info
         static public string currentUserName = null;
         static public string currentUserPassword = null;
+        static public string currentUserActualPassword = null;
         static public string currentUserAccount = null;
         static public string currentUserEmail = null;
         static public string currentUserPhoneNo = null;
@@ -636,8 +637,13 @@ namespace WpfApplication2
             builder.SetUserName(name);
             builder.SetPassword(pwd);
 
+            if (!GameState.currentUserPassword.Equals(pwd))
+            {
+                GameState.currentUserPassword = pwd;
+                GameState.logginWin.SavePassword();
+            }
+
             GameState.currentUserName = name;
-            GameState.currentUserPassword = pwd;
             //Display user nick name and score
             GameState.gameHallWin.nick_name_lab.Content = GameState.currentUserName;
 
@@ -1054,14 +1060,16 @@ namespace WpfApplication2
                     {
                         user.timer.Start();
                     }
-                    MediaPlayer player = new MediaPlayer();
-                    player.Open(new Uri(GameState.gWorkPath + @"\res\voice\Begin.wav", UriKind.Absolute));
-                    player.Play();
-
                 }
                 );
 
                 SendChessBoardReq();
+
+                //在网络线程中播放media，与主线程异步操作
+                /*MediaPlayer player = new MediaPlayer();
+                player.Open(new Uri(GameState.gWorkPath + @"\res\voice\Begin.wav", UriKind.Absolute));
+                player.Play();*/
+                MediaBackgroundThread.PlayMedia(MediaType.MEDIA_BEGAIN);
                 
                 ret = true;
             }

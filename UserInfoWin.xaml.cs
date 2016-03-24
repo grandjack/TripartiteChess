@@ -31,8 +31,11 @@ namespace WpfApplication2
             InitializeComponent();
 
             this.tx_nickname.Text = GameState.currentUserName;
-            this.tx_password.Password = GameState.currentUserPassword;
-            this.tx_passwordRe.Password = GameState.currentUserPassword;
+            //this.tx_password.Password = GameState.currentUserPassword;
+            //this.tx_passwordRe.Password = GameState.currentUserPassword;
+
+            this.tx_password.Password = GameState.currentUserActualPassword;
+            this.tx_passwordRe.Password = GameState.currentUserActualPassword;
             this.tx_account.Text = GameState.currentUserAccount;
             this.tx_email.Text = GameState.currentUserEmail;
             this.tx_phone.Text = GameState.currentUserPhoneNo;
@@ -341,14 +344,16 @@ namespace WpfApplication2
             ++changed_num;
         }
 
+        private int paw_changed_count = 0;
         private void PwdTextChanged(object sender, RoutedEventArgs e)
         {
-            if (!tx_password.Password.Equals(GameState.currentUserPassword))
+            if (!tx_password.Password.Equals(GameState.currentUserActualPassword))
             {
                 Console.WriteLine("pwd changed!");
                 lbpwdRetry.Visibility = System.Windows.Visibility.Visible;
                 tx_passwordRe.Visibility = System.Windows.Visibility.Visible;
                 tx_passwordRe.Password = "";
+                ++paw_changed_count;
             }
         }
         
@@ -360,9 +365,20 @@ namespace WpfApplication2
                 tx_passwordRe.Visibility = System.Windows.Visibility.Hidden;
                 saved = true;
 
-                MD5Hash hash = new MD5Hash(tx_password.Password);
+                string pwd_md5 = "";
+                if (GameState.logginWin.NeedRecordPwd() && (paw_changed_count < 2))
+                {
+                    pwd_md5 = GameState.currentUserPassword;
+                }
+                else
+                {
+                    MD5Hash hash = new MD5Hash(tx_password.Password);
+                    pwd_md5 = hash.GetMD5HashCode();
+                }
+
                 GameReadyState s = new GameReadyState();
-                s.UpdateUserInfos(tx_account.Text, tx_nickname.Text, hash.GetMD5HashCode(), tx_email.Text, tx_phone.Text, headImageBytes);
+                s.UpdateUserInfos(tx_account.Text, tx_nickname.Text, pwd_md5, tx_email.Text, tx_phone.Text, headImageBytes);
+                this.Close();
             }
             else
             {

@@ -28,6 +28,7 @@ namespace WpfApplication2
         private loggonState curState = loggonState.Loggin;
         private int actual_pwd_len = 0;
         private string record_pwd_md5 = "";
+        private bool need_record_pwd = false;
 
         public MainWindow()
         {
@@ -68,6 +69,8 @@ namespace WpfApplication2
                     }
                 }
             }
+
+            NetworkThread.CreateWorkThread();
         }
 
         private void button3_Click(object sender, RoutedEventArgs e)
@@ -226,7 +229,7 @@ namespace WpfApplication2
 
                 ++click_count;
 
-                NetworkThread.CreateWorkThread();
+                //NetworkThread.CreateWorkThread();
                 GameState.SetCurrentWin(this);
                 GameState.SetLogWin(this);
 
@@ -252,12 +255,12 @@ namespace WpfApplication2
                     login.SendLoginReq(cbUser.Text, hash.GetMD5HashCode());
                 }
 
+                GameState.currentUserActualPassword = passwordBox.Password;
             }
             else if (curState == loggonState.Register)
             {
                 ++click_count;
 
-                NetworkThread.CreateWorkThread();
                 GameState.SetCurrentWin(this);
                 GameState.SetLogWin(this);
 
@@ -267,7 +270,6 @@ namespace WpfApplication2
             } else if (curState == loggonState.FindPwd)
             {
                 ++click_count;
-                NetworkThread.CreateWorkThread();
                 GameState.SetCurrentWin(this);
                 GameState.SetLogWin(this);
                 LoginState state = new LoginState();
@@ -295,7 +297,6 @@ namespace WpfApplication2
             loggin_border.Background = new ImageBrush(bt);
         }
 
-        public bool need_record_pwd = false;
         private void RecordClick(object sender, RoutedEventArgs e)
         {
             if (record_pwd.IsChecked == true)
@@ -322,7 +323,13 @@ namespace WpfApplication2
                 IniFileHand.WriteIniData("User", "ActualPwdLen", "0", GameState.gWorkPath + @"\res\files\info.ini");
                 IniFileHand.WriteIniData("User", "Pwdmd5", "None", GameState.gWorkPath + @"\res\files\info.ini");
             }
+
+            GameState.currentUserActualPassword = passwordBox.Password;
         }
 
+        public bool NeedRecordPwd()
+        {
+            return this.need_record_pwd;
+        }
     }
 }

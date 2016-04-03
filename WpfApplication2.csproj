@@ -85,7 +85,13 @@
     <Compile Include="MD5Hash.cs" />
     <Compile Include="MediaBackgroundThread.cs" />
     <Compile Include="Message.cs" />
+    <Compile Include="MyMessageBox.xaml.cs">
+      <DependentUpon>MyMessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NetworkThread.cs" />
+    <Compile Include="PromptMessageBox.xaml.cs">
+      <DependentUpon>PromptMessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TimeSetWin.xaml.cs">
       <DependentUpon>TimeSetWin.xaml</DependentUpon>
     </Compile>
@@ -113,6 +119,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="GameHall.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PromptMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -151,23 +165,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\MyIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\QQiPan.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\tableh.png" />
-    <Resource Include="Images\tablen.bmp" />
-    <Resource Include="Images\tablen.png" />
-    <Resource Include="Images\tables.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Images\ChessMan\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
       <Visible>False</Visible>

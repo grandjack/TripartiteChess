@@ -25,7 +25,7 @@ namespace WpfApplication2
         public const byte BOARD_ROW_NUM = 14;
         public const byte BOARD_COLUMN_NUM = 19;
         public enum BoardStatus { illegal, empty, occupied }
-        public enum GameSatus { NOT_START, PLAYING, END }
+        public enum GameSatus { NOT_START=0, END = NOT_START, PLAYING}
 
         private static ChessBoard chessBoard = null;
 
@@ -143,6 +143,8 @@ namespace WpfApplication2
                     Console.WriteLine("Original user:" + gHuiQiStack.chess.GetOriginalOwnUser());
                     chessBoard.BackToOriginalOwner(chessBoard.g_chess_board[gHuiQiStack.from_x, gHuiQiStack.from_y].chess.GetOwnUser(),
                         gHuiQiStack.chess.GetOriginalOwnUser());
+                    //更新用户状态
+                    gHuiQiStack.chess.GetOriginalOwnUser().State = User.GameState.PLAYING;
                 }
 
                 chessBoard.g_chess_board[gHuiQiStack.des_x, gHuiQiStack.des_y].chess = gHuiQiStack.chess;
@@ -164,7 +166,7 @@ namespace WpfApplication2
             ChessBoard.SetTargetGrid(true, ChessBoard.GetChessBoardObj().g_chess_board[gHuiQiStack.des_x, gHuiQiStack.des_y].chessGrid);
 
             //重新设置当前棋面状态
-            GameState.currentTokenLocate = (Location)(Location)GamePlayingState.gUndo_msg.SrcUserLocate;
+            GameState.currentTokenLocate = (Location)GamePlayingState.gUndo_msg.SrcUserLocate;
 
             User user = ChessBoard.GetChessBoardObj().GetUserByUsrLocation((Location)GamePlayingState.gUndo_msg.TarUserLocate);
             if (user != null)
@@ -189,8 +191,6 @@ namespace WpfApplication2
             
             if (!WpfApplication2.GameState.allUsersReady || (WpfApplication2.GameState.currentTokenLocate != (Location)WpfApplication2.GameState.locate))
             {
-                //MessageBox.Show("You should NOT go!!");
-                //play the invalid tone
                 return;
             }
 

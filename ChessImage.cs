@@ -178,34 +178,50 @@ namespace WpfApplication2
             //first check whether the Shuai face to face 
             if (true == eatCaptain)
             {
-                Console.WriteLine("You ate Captain!!");
+                Console.WriteLine("Ate Captain!!");
+                originUser.State = User.GameState.LOSE;
 
-                //MediaPlayer player = new MediaPlayer();
                 if (originUser.GetUserLocation() == ChessBoard.GetChessBoardObj().currUserLocation)
                 {
-                    //player.Open(new Uri(GameState.gWorkPath + @"\res\voice\gameover.wav", UriKind.Absolute));
                     MediaBackgroundThread.PlayMedia(MediaType.MEDIA_OVER);
+                    originUser.timer.Stop();
+                    //WindowShowTimer box = new WindowShowTimer(GameState.gameWin, "提示", "您已经输棋，将会扣掉10分，希望再接再厉！", -1);
+                    //box.Show();
+
+                    MyMessageBox.Show(GameState.gameWin, "您已经输棋，将会扣掉10分，希望再接再厉！是否再来一局？", "提示", MessageBoxButton.YesNo, false);
+                }
+                else if (ChessBoard.GetChessBoardObj().currUserLocation == move_user.GetUserLocation())
+                {
+                    MediaBackgroundThread.PlayMedia(MediaType.MEDIA_WIN);
+
+                    if (ChessBoard.GetChessBoardObj().GetCurrentActiveUsrNum() <= 1)
+                    {
+                        Console.WriteLine("You are the last winner!! Congratulations!");
+                        move_user.State = User.GameState.WON;
+
+                        GameState.gameWin.EndGame();
+                        MessageBoxResult result = MyMessageBox.Show(GameState.gameWin, "恭喜您赢得本局最终胜利！是否再来一局？", "提示", MessageBoxButton.YesNo, false);
+                        /*if (result == MessageBoxResult.OK)
+                        {
+                            GameReadyState state = new GameReadyState();
+                            state.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
+
+                            GameState.gameWin.SetStartButtonStatus(true);
+                        }*/
+                    }
                 }
                 else
                 {
                     MediaBackgroundThread.PlayMedia(MediaType.MEDIA_WIN);
-                    //player.Open(new Uri(GameState.gWorkPath + @"\res\voice\gamewin.wav", UriKind.Absolute));
                 }
-                //player.Play();
 
-                originUser.State = User.GameState.LOSE;
-                if (ChessBoard.GetChessBoardObj().GetCurrentActiveUsrNum() <= 1)
-                {
-                    Console.WriteLine("You are the last winner!! Congratulations!");
-                    move_user.State = User.GameState.WON;
-                    ChessBoard.GetChessBoardObj().gGameStatus = ChessBoard.GameSatus.END;
-                    return true;
-                }
-                else
-                {
-                    ChessBoard.GetChessBoardObj().UpdateChessOwner(originUser, this.ownerUsr);
-                    //吃掉一方棋子
-                }
+
+                ChessBoard.GetChessBoardObj().UpdateChessOwner(originUser, this.ownerUsr);
+
+            }
+            else
+            {
+                MediaBackgroundThread.PlayMedia(MediaType.MEDIA_EAT);
             }
 
             return true;
@@ -322,12 +338,6 @@ namespace WpfApplication2
                 status = this.EatAction(des_row, des_column);
                 if (status)
                 {
-                    /*MediaPlayer player = new MediaPlayer ();
-                    player.Open(new Uri(GameState.gWorkPath + @"\res\voice\eat.wav", UriKind.Absolute));
-                    player.Play();
-                    */
-                    MediaBackgroundThread.PlayMedia(MediaType.MEDIA_EAT);
-
                     //记录走棋路线
                     ChessBoard.gHuiQiStack.ate_chess = true;
                     ChessBoard.gHuiQiStack.from_x = src_row;

@@ -244,7 +244,7 @@
                                     Margin="2,0,2,2">
                                     <Button Name="quick_startBtn" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Width="150" Content="{x:Static props:Resources.quick_start}" Margin="13,10,3,10" Background="#FF00A9FF" Click="QuickStart">
                                     </Button>
-                                    <ListBox Name="listBox1" HorizontalAlignment="Left" ItemsSource="{Binding}" Background="Transparent" Margin="3,0,0,0" BorderThickness="0" VerticalAlignment="Top" SelectionChanged ="GameHallSelectionChanged">
+                                    <ListBox Name="listBox1" HorizontalAlignment="Left" ItemsSource="{Binding}" Background="Transparent" Margin="3,0,0,0" BorderThickness="0" VerticalAlignment="Top" >
                                     </ListBox>                                    
                                 </StackPanel>
                                 <Grid  x:Name="hallBottomLeft" Grid.Row="1" Height="130" Width="130" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
@@ -259,9 +259,9 @@
 
                                             <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="500" Margin="0,0,2,2">
                                                 <StackPanel Orientation="Vertical"  VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="0,0,2,2">
-                                                    <Label Content="【游戏界面】" Height="28" HorizontalAlignment="Left" Margin="10,27,0,0" Name="label1" VerticalAlignment="Top" Width="71" />
+                                                    <Label Content="【游戏界面】" Height="28" HorizontalAlignment="Left" Margin="10,27,0,0" Name="label1" VerticalAlignment="Top" Width="auto" />
                                                     <Image Margin="10,10,0,0" Name="image1" Stretch="Fill" Initialized="game_qipan_loaded"/>
-                                                    <Label Content="一．游戏简介" Height="28" HorizontalAlignment="Left" Margin="10,27,0,0" Name="label2" VerticalAlignment="Top" Width="93" />
+                                                    <Label Content="【游戏简介】" Height="28" HorizontalAlignment="Left" Margin="10,27,0,0" Name="label2" VerticalAlignment="Top" Width="auto" />
                                                     <TextBox IsReadOnly="True" HorizontalAlignment="Left" BorderThickness="0" Background="Transparent" Width="auto" TextWrapping="Wrap" Text="   众游三人中国象棋类似普通中国象棋游戏，只是由三个玩家一起游戏，并且棋盘也跟普通的稍有区别。"
                                                              AutoWordSelection="True" />
                                                     <TextBox IsReadOnly="True" BorderThickness="0" Background="Transparent"  AutoWordSelection="True" Width="auto" TextWrapping="Wrap" Text="    开始游戏后下方先走，然后是右方，最后是左方，依次循环。车马炮象士帅与普通中国象棋走法完全相同，且左方和右方将帅之间不能为空子。三方棋子使用颜色作为区分，首负方棋子需要转换成首胜方棋子。2、	除了卒(兵)的走法与普通象棋稍有不同外，其他棋子走法跟传统中国象棋走法基本一样。左方卒在左方自己区域内只能向右走一步。在交战区域内可以向上，向下，向右走，不能向左走。进入右方区域只能向向上，向下，向右走，不能向左走。进入下方区域只能向下，向左，向右走，不能向上走。右方卒在右方自己区域内只能向左走一步。在交战区域内可以向上，向下，向左走，不能向右走。进入左方区域只能向向上，向下，向左走，不能向右走。进入下方区域只能向下，向左，向右走，不能向上走。下方卒在下方自己区域内只能向上走，进入交战区后只能向上，向左，向右走，不能向下走。进入左方区域与右方卒走法相同，进入右方区域与左方卒走法相同。" />

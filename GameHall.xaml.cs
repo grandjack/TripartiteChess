@@ -300,7 +300,6 @@ namespace WpfApplication2
                 string str = listBox1.SelectedItem.ToString();
                 string index = listBox1.SelectedIndex.ToString();
                 str += " " + index;
-                //MessageBox.Show(str);
                 Console.WriteLine(str);
 
                 tab_game_hall.IsSelected = true;
@@ -312,14 +311,6 @@ namespace WpfApplication2
             }
         }
 
-        private void GameHallSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {/*
-            string str = listBox1.SelectedItem.ToString();
-            string index = listBox1.SelectedIndex.ToString();
-            str += " " + index;
-            MessageBox.Show(str);*/
-        }
-
         public void game_hall_loaded(object sender, RoutedEventArgs e)
         {
             int board_index = listBox1.SelectedIndex;
@@ -329,12 +320,12 @@ namespace WpfApplication2
                 board_index = 0;
             }
 
-            if (GameState.sumary == null)
+            if ((GameState.sumary == null) || (GameState.hallInfo == null))
                 return;
 
             grid_game_hall.Children.Clear();
             Console.WriteLine("grid_game_hall.Children.Clear() for loading hall info");
-            int total_seats_num = (int)GameState.sumary.GetHallInfo(board_index).TotalChessboard;
+            int total_seats_num = (int)GameState.hallInfo.TotalChessboard;
             int total_row = 0;
             int total_column = 0;
 
@@ -359,6 +350,7 @@ namespace WpfApplication2
                     DrawSeat(margin, ++index);
                 }
             }
+            Console.WriteLine("grid_game_hall.Children.Added over for loading hall info");
         }
 
         private void chessBoard_MouseEnter(object sender, MouseEventArgs e)
@@ -392,13 +384,15 @@ namespace WpfApplication2
 
         private void chessBoard_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (CheckGameStarted())
-                return;
-
             ChessBoardImg board = sender as ChessBoardImg;
             if (GameState.hallInfo != null)
             {
                 ChessBoardInfo chessBoard = GameState.hallInfo.GetChessBoard((int)(board.id - 1));
+                if (CheckGameStarted(chessBoard))
+                {
+                    return;
+                }
+
                 int locate = 3;
                 if ((chessBoard != null) &&
                     (chessBoard.PeopleNum != 3))
@@ -499,13 +493,15 @@ namespace WpfApplication2
         }
         private void Seat_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (CheckGameStarted())
-                return;
-
             SeatImg img = sender as SeatImg;
             if (GameState.hallInfo != null)
             {
                 ChessBoardInfo chessBoard = GameState.hallInfo.GetChessBoard((int)(img.id - 1));
+                if (CheckGameStarted(chessBoard))
+                {
+                    return;
+                }
+                
                 if ((chessBoard != null) &&
                     (chessBoard.PeopleNum != 3))
                 {
@@ -558,10 +554,11 @@ namespace WpfApplication2
             }
         }
 
+        private ChessBoardGrid grid = null;
         private void DrawSeat(Thickness margin, int index)
         {
             ChessBoardUser userinfo = null;
-            ChessBoardGrid grid = new ChessBoardGrid(index);
+            grid = new ChessBoardGrid(index);
             grid.Height = 115;
             grid.Width = 115;
             grid.Background = new SolidColorBrush(Color.FromRgb(0x2C, 0x59, 0x85));
@@ -616,14 +613,21 @@ namespace WpfApplication2
                 }
                 else
                 {
-                    myBitmapImage.StreamSource = new MemoryStream(userinfo.HeadImage.ToByteArray());
+                    if ((userinfo.HasHeadImage) && (userinfo.HeadImage != null) && (userinfo.HeadImage.Length > 0))
+                        myBitmapImage.StreamSource = new MemoryStream(userinfo.HeadImage.ToByteArray());
+                    else
+                    {
+                        myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\MyIcon.png", UriKind.Absolute);
+                    }
+
                     left.ToolTip = userinfo.UserName;
                 }
             }
             else
             {
                 myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\user.png", UriKind.Absolute);
-            }            
+            }
+
             myBitmapImage.EndInit();
             left.Source = myBitmapImage;
             left.Stretch = Stretch.Uniform;
@@ -648,7 +652,12 @@ namespace WpfApplication2
                 }
                 else
                 {
-                    myBitmapImage.StreamSource = new MemoryStream(userinfo.HeadImage.ToByteArray());
+                    if ((userinfo.HasHeadImage) && (userinfo.HeadImage != null) && (userinfo.HeadImage.Length > 0))
+                        myBitmapImage.StreamSource = new MemoryStream(userinfo.HeadImage.ToByteArray());
+                    else
+                    {
+                        myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\MyIcon.png", UriKind.Absolute);
+                    }
                     right.ToolTip = userinfo.UserName;
                 }
             }
@@ -679,7 +688,12 @@ namespace WpfApplication2
                 }
                 else
                 {
-                    myBitmapImage.StreamSource = new MemoryStream(userinfo.HeadImage.ToByteArray());
+                    if ((userinfo.HasHeadImage) && (userinfo.HeadImage != null) && (userinfo.HeadImage.Length > 0))
+                        myBitmapImage.StreamSource = new MemoryStream(userinfo.HeadImage.ToByteArray());
+                    else
+                    {
+                        myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\MyIcon.png", UriKind.Absolute);
+                    }
                     bottom.ToolTip = userinfo.UserName;
                 }
             }
@@ -723,7 +737,6 @@ namespace WpfApplication2
 
         private void seat_mouse_lbtn_up(object sender, MouseButtonEventArgs e)
         {
-            //MessageBox.Show("Catch a lbtndown event!");
             Border border = sender as Border;
 
             g_select_display_border.Background = g_select_background;
@@ -924,14 +937,21 @@ namespace WpfApplication2
         private void HallBottomLeftAd_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // 打开一个链接
-            AdvertisementImage image = sender as AdvertisementImage;
-            string url = image.LinkUrl;
-            //string url = ImageDownloadState.ImageIDMap[(int)ImageID.IMAGE_ID_AD_HALL_BOTTOM_LEFT].link_url;
-            if ((url != null) && (url.Length > 0))
+            try
             {
-                System.Diagnostics.Process.Start(url);
+                AdvertisementImage image = sender as AdvertisementImage;
+                string url = image.LinkUrl;
+                if ((url != null) && (url.Length > 0))
+                {
+                    System.Diagnostics.Process.Start(url);
+                }
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine("Open url failed for "+ ee.Message);
             }
         }
+
         private void DisplayHallBottomLeftAd()
         {
             if (!ImageDownloadState.ImageIDMap[(int)ImageID.IMAGE_ID_AD_HALL_BOTTOM_LEFT].existed)
@@ -1040,7 +1060,7 @@ namespace WpfApplication2
             {
                 if (ChessBoard.GetChessBoardObj().gGameStatus != ChessBoard.GameSatus.END)
                 {
-                    MessageBoxResult result = MessageBox.Show(this.Owner, "确定要退出游戏吗(将被扣掉30分)?", "警告", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                    MessageBoxResult result = MyMessageBox.Show(this, "确定要退出游戏吗(将被扣掉30分)?", "警告", MessageBoxButton.OKCancel);
                     if (result == MessageBoxResult.Cancel)
                     {
                         e.Cancel = true;
@@ -1120,12 +1140,29 @@ namespace WpfApplication2
             }
         }
 
-        private bool CheckGameStarted()
+        private bool CheckGameStarted(ChessBoardInfo chessboard =null, bool need_tip=true)
         {
             bool ret = false;
             if (UserStatus.STATUS_NOT_START != GameState.gCurrUserGameStatus)
             {
-                ret = true;
+                if (need_tip)
+                {
+                    WindowShowTimer box = new WindowShowTimer(this, "警告", "您目前还未退出游戏窗口，暂时不能进入其他游戏！", 2);
+                    box.Show();
+                }
+
+                return true;
+            }
+
+            if ((chessboard != null) && (GameState.GameBegan(chessboard)))
+            {
+                if (need_tip)
+                {
+                    WindowShowTimer box = new WindowShowTimer(this, "警告", "当前棋盘游戏正在进行中，暂时不能进入！", 2);
+                    box.Show();
+                }
+
+                return true;
             }
 
             return ret;
@@ -1139,7 +1176,7 @@ namespace WpfApplication2
             int two_people_id = -1;
             int three_people_id = -1;
 
-            if (CheckGameStarted())
+            if (CheckGameStarted(null))
                 return;
 
             Button start = quick_startBtn;
@@ -1149,6 +1186,9 @@ namespace WpfApplication2
                 for (uint i = 0; i < GameState.hallInfo.TotalChessboard; ++i)
                 {
                     ChessBoardInfo board = GameState.hallInfo.GetChessBoard((int)i);
+                    if (CheckGameStarted(board, false)) 
+                        continue;
+
                     if (board.PeopleNum == 2)
                     {
                         two_people_id = (int)i;
@@ -1185,7 +1225,9 @@ namespace WpfApplication2
                 }
                 else
                 {
-                    MessageBox.Show("当前游戏大厅人数已满，请选择其他大厅","提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    //MessageBox.Show("当前游戏大厅人数已满，请选择其他大厅","提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    WindowShowTimer box = new WindowShowTimer(this, "提示", "当前游戏大厅人数已满，请选择其他大厅");
+                    box.Show();
                 }
 
                 if (!start.IsEnabled)

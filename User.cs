@@ -104,17 +104,12 @@ namespace WpfApplication2
                 (WpfApplication2.GameState.currentTokenLocate != (Location)WpfApplication2.GameState.locate) ||
                 ((chessMan.GetOwnUser().location != (Location)WpfApplication2.GameState.locate) && ((board.currSelectChess == null) || !board.currSelectChess.beSelected)) )
             {
-                //MessageBox.Show("You should NOT go!!");
                 e.Handled = true;
                 return;
             }
 
-            if (ChessBoard.GetChessBoardObj().GetUserByUsrLocation((Location)WpfApplication2.GameState.locate).State != User.GameState.PLAYING)
-            {
-                return;
-            }
-
-            if (ChessBoard.GetChessBoardObj().gGameStatus != ChessBoard.GameSatus.PLAYING)
+            if ((ChessBoard.GetChessBoardObj().gGameStatus != ChessBoard.GameSatus.PLAYING) ||
+                (ChessBoard.GetChessBoardObj().GetUserByUsrLocation((Location)WpfApplication2.GameState.locate).State != User.GameState.PLAYING))
             {
                 return;
             }
@@ -509,6 +504,11 @@ namespace WpfApplication2
             curr_single_time = 0;
         }
 
+        public void Reset()
+        {
+            total_time = 0;
+            single_step_time = 0;
+        }
         //  System.Windows.Threading.DispatcherTimer.Tick handler
         //
         //  Updates the current seconds display and calls

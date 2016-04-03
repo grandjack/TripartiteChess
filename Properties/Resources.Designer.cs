@@ -151,6 +151,15 @@ namespace WpfApplication2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 果断退出.
+        /// </summary>
+        public static string exit {
+            get {
+                return ResourceManager.GetString("exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 找回密码.
         /// </summary>
         public static string find_pwd {
@@ -165,6 +174,15 @@ namespace WpfApplication2.Properties {
         public static string forget_pwd {
             get {
                 return ResourceManager.GetString("forget_pwd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 再来一局.
+        /// </summary>
+        public static string game_again {
+            get {
+                return ResourceManager.GetString("game_again", resourceCulture);
             }
         }
         
@@ -273,6 +291,15 @@ namespace WpfApplication2.Properties {
         public static string nickname {
             get {
                 return ResourceManager.GetString("nickname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 否.
+        /// </summary>
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
             }
         }
         
@@ -489,6 +516,15 @@ namespace WpfApplication2.Properties {
         public static string unbind {
             get {
                 return ResourceManager.GetString("unbind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 是.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

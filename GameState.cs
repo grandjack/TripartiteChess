@@ -74,8 +74,9 @@ namespace WpfApplication2
         STATUS_NOT_START = 0,
         STATUS_EXITED = STATUS_NOT_START,
         STATUS_READY,
+        STATUS_BEGAN,
         STATUS_PLAYING,
-        STATUS_ENDED 
+        STATUS_ENDED
     }
 
     abstract class GameState
@@ -85,6 +86,7 @@ namespace WpfApplication2
         static public int locate = 0;
         static public Location currentTokenLocate = Location.unknown;
         static public bool allUsersReady = false;
+        static public bool again_play = false;
         
         //Current user info
         static public string currentUserName = null;
@@ -180,6 +182,39 @@ namespace WpfApplication2
 
             return num;
         }
+
+
+        public static bool GameBegan(ChessBoardInfo board)
+        {
+            bool ret = false;
+            int num = 0;
+
+            if ((!board.LeftUser.ChessBoardEmpty) &&
+                ((UserStatus)board.LeftUser.Status > UserStatus.STATUS_ENDED))
+            {
+                ++num;
+            }
+
+            if ((!board.RightUser.ChessBoardEmpty) &&
+                ((UserStatus)board.RightUser.Status > UserStatus.STATUS_ENDED))
+            {
+                ++num;
+            }
+
+            if ((!board.BottomUser.ChessBoardEmpty) &&
+                ((UserStatus)board.BottomUser.Status > UserStatus.STATUS_ENDED))
+            {
+                ++num;
+            }
+
+            if (num > 0)
+            {
+                ret = true;
+            }
+
+            return ret;
+        }
+        
 
         public static ChessBoardUser GetSpeciUserFromHall(int chessBoadrIndex, Location locate)
         {
@@ -431,7 +466,9 @@ namespace WpfApplication2
                             currentWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                 (ThreadStart)delegate()
                                 {
-                                    MessageBox.Show("注册失败，该账号可能已经被注册");
+                                    WindowShowTimer box = new WindowShowTimer(currentWin, "提示", "注册失败，该账号可能已经被注册");
+                                    box.Show();
+
                                 }
                             );
                         }
@@ -495,7 +532,8 @@ namespace WpfApplication2
                             logginWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                 (ThreadStart)delegate()
                                 {
-                                    MessageBox.Show("用户名或密码错误");
+                                    WindowShowTimer box = new WindowShowTimer(logginWin, "提示", "用户名或密码错误", 3);
+                                    box.Show();
                                 }
                             );
                         }
@@ -720,10 +758,7 @@ namespace WpfApplication2
                 case MessageType.MSG_CHESS_BOARD:
                     ParseChessBoard(msg);
                     break;
-                case MessageType.MSG_REQUEST_PLAY_REPLY:
-                    GameRequestPlayReplyHandle(msg);
-                    break;
-
+                    
                 case MessageType.MSG_UNDO_REPS:
                 case MessageType.MSG_UNDO_REQ:
                     UndoParseReply(msg);
@@ -733,6 +768,15 @@ namespace WpfApplication2
                 case MessageType.MSG_RECONCILED_RESP:
                     HeQiParse(msg);
                     break;
+
+                case MessageType.MSG_REQUEST_PLAY_REPLY:
+                    ReplayGameHandle(msg);
+                    break;
+                /*
+                case MessageType.MSG_REQUEST_PLAY_REPLY:
+                    GameRequestPlayReplyHandle(msg);
+                    break;
+               */
 
                 default:
                     break;
@@ -866,6 +910,7 @@ namespace WpfApplication2
             NetworkThread.SendMessage(MessageType.MSG_GIVE_UP, bytes);
         }
 
+        //当有用户超时、退出(带有exit参数)、认输发生时，就会接受此消息
         private bool ParseLeaveOutRoomMsg(byte[] msg)
         {
             GiveUp giveUp = GiveUp.ParseFrom(msg);
@@ -874,7 +919,6 @@ namespace WpfApplication2
             try
             {
                 usr = ChessBoard.GetChessBoardObj().GetUserByUsrLocation((Location)giveUp.SrcUserLocate);
-                usr.State = User.GameState.LOSE;
             }
             catch (Exception e)
             {
@@ -885,18 +929,50 @@ namespace WpfApplication2
             ChessBoardUser give_up_usr = GameState.GetChessBoardtUserByLocate(giveUp.SrcUserLocate);
             gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
             {
-                ChessBoard.GetChessBoardObj().gGameStatus = ChessBoard.GameSatus.END;
-                MessageBox.Show(give_up_usr.UserName + " 退出游戏，本轮游戏结束！", "提示");
-                try{
-                    ChessBoard.GetChessBoardObj().leftUser.timer.Stop();
-                    ChessBoard.GetChessBoardObj().righttUser.timer.Stop();
-                    ChessBoard.GetChessBoardObj().bottomUser.timer.Stop();
-                } catch(Exception e)
+                if (ChessBoard.GetChessBoardObj().gGameStatus != ChessBoard.GameSatus.END)
                 {
-                    Console.WriteLine("Game over! Stop timer failed.");
+                    if ((ChessBoard.GetChessBoardObj() != null) &&
+                        (ChessBoard.GetChessBoardObj().GetUserByUsrLocation((Location)giveUp.SrcUserLocate).State != User.GameState.LOSE))
+                    {
+                        if (ChessBoard.GetChessBoardObj().currentUser.State != User.GameState.LOSE)
+                        {
+                            usr.State = User.GameState.LOSE;
+                            gameWin.EndGame();
+
+                            if (giveUp.HasOpt && (giveUp.Opt.Equals("exit")))
+                            {
+                                MessageBoxResult result = MyMessageBox.Show(GameState.gameWin, give_up_usr.UserName + " 退出游戏，Ta将被扣掉30分，本轮游戏结束！ 是否再来一局？", "提示", MessageBoxButton.YesNo);
+                                if (result == MessageBoxResult.OK)
+                                {
+                                    GameReadyState s = new GameReadyState();
+                                    s.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
+
+                                    GameState.gameWin.SetStartButtonStatus(true);
+                                }
+
+                            }
+                            else
+                            {
+                                MessageBoxResult result = MyMessageBox.Show(GameState.gameWin, give_up_usr.UserName + " 已经认输，恭喜你赢得本局胜利！ 是否再来一局？", "提示", MessageBoxButton.YesNo);
+                                if (result == MessageBoxResult.OK)
+                                {
+                                    GameReadyState s = new GameReadyState();
+                                    s.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
+
+                                    GameState.gameWin.SetStartButtonStatus(true);
+                                }
+                            }
+                        }
+
+                    }
+                }
+                else
+                {
+                    //Do nothing, 游戏本来已经结束
                 }
             }
             );
+
             return true;
         }
 
@@ -995,7 +1071,7 @@ namespace WpfApplication2
             gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
                 {
                     gameWin.AddMsgToBox(ChessBoard.GetChessBoardObj().GetUserByUsrLocation((Location)reply.SrcUserLocate).user_name,
-                        reply.MsgContent);
+                        reply.MsgContent, reply.SrcUserLocate == (uint)GameState.locate);
                 }
             );
         }
@@ -1054,7 +1130,15 @@ namespace WpfApplication2
                 gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
                 {
                     gameWin.ReMoveMiddleAd();
+
+                    ChessBoard.DestroryChessBoard();
+
                     gameWin.ChessBoardLoaded(null, null);
+
+                    ChessBoard.GetChessBoardObj().leftUser.timer.Reset();
+                    ChessBoard.GetChessBoardObj().righttUser.timer.Reset();
+                    ChessBoard.GetChessBoardObj().bottomUser.timer.Reset();
+
                     User user = ChessBoard.GetChessBoardObj().GetUserByUsrLocation((Location)currentTokenLocate);
                     if (user != null)
                     {
@@ -1066,9 +1150,6 @@ namespace WpfApplication2
                 SendChessBoardReq();
 
                 //在网络线程中播放media，与主线程异步操作
-                /*MediaPlayer player = new MediaPlayer();
-                player.Open(new Uri(GameState.gWorkPath + @"\res\voice\Begin.wav", UriKind.Absolute));
-                player.Play();*/
                 MediaBackgroundThread.PlayMedia(MediaType.MEDIA_BEGAIN);
                 
                 ret = true;
@@ -1149,9 +1230,9 @@ namespace WpfApplication2
                     {
                         gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
                         {
-                            MessageBoxResult result = MessageBox.Show(GameState.GetChessBoardtUserByLocate(gUndo_msg.SrcUserLocate).UserName.ToString()
-                                +" request to Hui Qi, Do you agree?", "Warnig", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                            if (result == MessageBoxResult.Yes)
+                            MessageBoxResult result = MyMessageBox.Show(gameWin,GameState.GetChessBoardtUserByLocate(gUndo_msg.SrcUserLocate).UserName.ToString()
+                                +" 向你请求悔棋，同意吗?", "提示", MessageBoxButton.OKCancel);
+                            if (result == MessageBoxResult.OK)
                             {
                                 gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
                                 {
@@ -1182,20 +1263,21 @@ namespace WpfApplication2
                 {
                     if (gUndo_msg.HasStatus && gUndo_msg.Status)//允许悔棋
                     {
+                        GameState.currentTokenLocate = (Location)GameState.locate;
                         //HuiQi
                         gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
                         {
                             ChessBoard.HuiQi_chess_move();
                         }
                         );
-                        
                     }
                     else//对方拒绝悔棋
                     {
                         gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
                         {
-                            MessageBox.Show(GameState.GetChessBoardtUserByLocate(gUndo_msg.TarUserLocate).UserName.ToString()
-                                + " reject HuiQi", "TiShi", MessageBoxButton.OK, MessageBoxImage.Information);
+                            WindowShowTimer box = new WindowShowTimer(gameWin, "提示", GameState.GetChessBoardtUserByLocate(gUndo_msg.TarUserLocate).UserName.ToString()
+                                + " 拒绝了您的悔棋请求！");
+                            box.Show();
                         }
                         );
                     }
@@ -1222,12 +1304,17 @@ namespace WpfApplication2
 
         private static uint HeQiReqLocate = 3;
         //请求和棋
-        public void QiuHeSendReq()
+        public void QiuHeSendReq(string starus="")
         {
             Reconciled.Builder builder = new Reconciled.Builder();
             builder.SetSrcUserLocate((uint)locate);
             builder.SetTarUserLocate((uint)currentTokenLocate);
             builder.SetApplyOrReply(0);
+
+            if ((starus != null) && (starus.Length>0))
+            {
+                builder.SetStatus(starus);
+            }
 
             Reconciled msg = builder.Build();
             byte[] bytes = msg.ToByteArray();
@@ -1257,25 +1344,53 @@ namespace WpfApplication2
 
             if (qiuhe.ApplyOrReply == 0)//请求报文
             {
-                HeQiReqLocate = qiuhe.SrcUserLocate; 
-                
-                gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                HeQiReqLocate = qiuhe.SrcUserLocate;
+
+                if ((qiuhe.HasStatus) && (qiuhe.Status.Equals("All")))
+                {
+                    gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                  (ThreadStart)delegate()
                                  {
-                                     GamePlayingState.HeQiReqLocate = qiuhe.SrcUserLocate; 
-                                     MessageBoxResult result= MessageBox.Show(GameState.GetChessBoardtUserByLocate(qiuhe.SrcUserLocate).UserName.ToString() + " 请求和棋","提示",MessageBoxButton.YesNo);
-                                     if (result == MessageBoxResult.Yes)
+                                     gameWin.EndGame();
+                                     //WindowShowTimer box = new WindowShowTimer(gameWin, "提示", "合棋，游戏结束！", -1);
+                                     //box.Show();
+                                     MessageBoxResult result = MyMessageBox.Show(GameState.gameWin, "合棋，本轮游戏结束！ 是否再来一局？", "提示", MessageBoxButton.YesNo);
+                                     if (result == MessageBoxResult.OK)
                                      {
-                                         GamePlayingState s = new GamePlayingState();
-                                         s.QiuHeSendResponse(true);
-                                     }
-                                     else
-                                     {
-                                         GamePlayingState s = new GamePlayingState();
-                                         s.QiuHeSendResponse(false);
+                                         GameReadyState s = new GameReadyState();
+                                         s.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
+
+                                         GameState.gameWin.SetStartButtonStatus(true);
                                      }
                                  }
                              );
+                }
+                else
+                {
+
+                    gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                                     (ThreadStart)delegate()
+                                     {
+                                         //只有当前用户还在状态才能显示该提示
+                                         if ((ChessBoard.GetChessBoardObj() != null) &&
+                                             (ChessBoard.GetChessBoardObj().currentUser.State == User.GameState.PLAYING))
+                                         {
+                                             GamePlayingState.HeQiReqLocate = qiuhe.SrcUserLocate;
+                                             MessageBoxResult result = MyMessageBox.Show(gameWin, GameState.GetChessBoardtUserByLocate(qiuhe.SrcUserLocate).UserName.ToString() + " 请求和棋 ?", "提示", MessageBoxButton.OKCancel);
+                                             if (result == MessageBoxResult.OK)
+                                             {
+                                                 GamePlayingState s = new GamePlayingState();
+                                                 s.QiuHeSendResponse(true);
+                                             }
+                                             else
+                                             {
+                                                 GamePlayingState s = new GamePlayingState();
+                                                 s.QiuHeSendResponse(false);
+                                             }
+                                         }
+                                     }
+                                 );
+                }
             }
             else//回复报文
             {
@@ -1285,7 +1400,8 @@ namespace WpfApplication2
                     gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                 (ThreadStart)delegate()
                                 {
-                                    MessageBox.Show(GameState.GetChessBoardtUserByLocate(qiuhe.SrcUserLocate).UserName.ToString() + " 拒绝了您的请求！");
+                                    WindowShowTimer box = new WindowShowTimer(gameWin, "提示", GameState.GetChessBoardtUserByLocate(qiuhe.SrcUserLocate).UserName.ToString() + " 拒绝了您的求和请求！");
+                                    box.Show();
                                 }
                             );
                 }
@@ -1299,16 +1415,92 @@ namespace WpfApplication2
                                     if (GameState.currentTokenLocate == (Location)locate)
                                     {
                                         GameState.currentAgreeHeQiNum++;
-                                        MessageBox.Show(GameState.GetChessBoardtUserByLocate(qiuhe.SrcUserLocate).UserName.ToString() + " 同意了您的请求！");
                                         if (GameState.currentAgreeHeQiNum == GameState.GetActiveUserNum() - 1)
                                         {
-                                            MessageBox.Show("和棋，本轮游戏结束！");
-                                            ChessBoard.GetChessBoardObj().currentUser.timer.Stop();
+                                            gameWin.EndGame();
+
+                                            GamePlayingState state = new GamePlayingState();
+                                            state.QiuHeSendReq("All");
+
+                                            //WindowShowTimer box = new WindowShowTimer(gameWin, "提示", GameState.GetChessBoardtUserByLocate(qiuhe.SrcUserLocate).UserName.ToString() + " 同意了您的请求，和棋，本轮游戏结束！", -1);
+                                            //box.Show();
+                                            MessageBoxResult result = MyMessageBox.Show(GameState.gameWin, GameState.GetChessBoardtUserByLocate(qiuhe.SrcUserLocate).UserName.ToString() + " 同意了您的请求，和棋，本轮游戏结束！ 是否再来一局？", "提示", MessageBoxButton.YesNo);
+                                            if (result == MessageBoxResult.OK)
+                                            {
+                                                GameReadyState s = new GameReadyState();
+                                                s.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
+
+                                                GameState.gameWin.SetStartButtonStatus(true);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            WindowShowTimer box = new WindowShowTimer(gameWin, "提示", GameState.GetChessBoardtUserByLocate(qiuhe.SrcUserLocate).UserName.ToString() + " 同意了您求和的请求！");
+                                            box.Show();
                                         }
                                     }
                                 }
                             );
                 }
+            }
+
+            return true;
+        }
+
+        public bool ReplayGameHandle(byte[] msg)
+        {
+            RequestPlayReply reply = RequestPlayReply.ParseFrom(msg);
+            Console.WriteLine("status = " + reply.Status);
+            Console.WriteLine("first come user locate : " + reply.FirstComeUserLocate);
+            ChessBoard.firsr_come_user_locate = (int)reply.FirstComeUserLocate;
+
+            if (reply.HasChessBoard)
+            {
+                chessBoardID = (int)reply.ChessBoard.Id;
+                Console.WriteLine("chessBoard.id = " + reply.ChessBoard.Id);
+                Console.WriteLine("chessBoard.people_num = " + reply.ChessBoard.PeopleNum);
+                Console.WriteLine("chessBoard.left_user.chess_board_empty = " + reply.ChessBoard.LeftUser.ChessBoardEmpty);
+                Console.WriteLine("chessBoard.right_user.chess_board_empty = " + reply.ChessBoard.RightUser.ChessBoardEmpty);
+                Console.WriteLine("chessBoard.bottom_user.chess_board_empty = " + reply.ChessBoard.BottomUser.ChessBoardEmpty);
+
+                if (!reply.ChessBoard.LeftUser.ChessBoardEmpty)
+                {
+                    gLeftUser = reply.ChessBoard.LeftUser;
+                }
+
+                if (!reply.ChessBoard.RightUser.ChessBoardEmpty)
+                {
+                    gRightUser = reply.ChessBoard.RightUser;
+                }
+
+                if (!reply.ChessBoard.BottomUser.ChessBoardEmpty)
+                {
+                    gBottomUser = reply.ChessBoard.BottomUser;
+                }                
+            }
+
+            if (reply.Status == 0)
+            {
+                gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                             (ThreadStart)delegate()
+                             {
+                                 WindowShowTimer box = new WindowShowTimer(gameWin, "警告", "当前状态不能再来一局", 10);
+                                 box.Show();
+                             }
+                         );
+            }
+            else if (reply.Status == 1)
+            {
+                GameState.gCurrUserGameStatus = UserStatus.STATUS_READY;
+            }
+            else if (reply.Status == 2)
+            {
+                gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                            (ThreadStart)delegate()
+                            {
+                                gameWin.UsersInfoLoadAndUpdate();
+                            }
+                        );
             }
 
             return true;
@@ -1482,6 +1674,7 @@ namespace WpfApplication2
 
                 currentFilePath = ImageIDMap[currPicItemReply.ImageId].locate_path;
                 Console.WriteLine("Current file : " + currentFilePath + "  Size:" + ImageIDMap[currPicItemReply.ImageId].size.ToString());
+                Console.WriteLine("Got the URL:" + currPicItemReply.Url);
 
                 string hashcode = GetFileHashCode(currentFilePath);
                 if (hashcode == null || hashcode.Length <= 0)

@@ -56,7 +56,8 @@ namespace WpfApplication2
             if (((total_hour == 0) && (total_min == 0)) ||
                 ((step_min == 0) && (step_sec == 0)))
             {
-                MessageBox.Show("不能同时设置为0", "警告", MessageBoxButton.OK, MessageBoxImage.Error);
+                WindowShowTimer box = new WindowShowTimer(this, "警告", "不能同时设置为 0 !");
+                box.Show();
                 return;
             }
 

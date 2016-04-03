@@ -33,7 +33,7 @@ namespace WpfApplication2
         public MainWindow()
         {
             InitializeComponent();
-            //MessageBox.Show("System.Environment.CurrentDirectory:\r\n" +AppDomain.CurrentDomain.BaseDirectory);
+            
             BitmapImage bt = new BitmapImage();
             bt.BeginInit();
             bt.UriSource = new Uri(GameState.gWorkPath + @"res\Images\MyIcon.png", UriKind.Absolute);
@@ -218,12 +218,14 @@ namespace WpfApplication2
                 //verify the User's account whether match the password,if OK, then show the MainWindow
                 if (cbUser.Text.Length == 0)
                 {
-                    MessageBox.Show("用户名不能为空");
+                    WindowShowTimer box = new WindowShowTimer(this, "错误", "用户名不能为空", 2);
+                    box.Show();
                     return;
                 }
                 if (passwordBox.Password.Length == 0)
                 {
-                    MessageBox.Show("密码不能为空");
+                    WindowShowTimer box = new WindowShowTimer(this, "错误", "密码不能为空", 2);
+                    box.Show();
                     return;
                 }
 
@@ -259,6 +261,27 @@ namespace WpfApplication2
             }
             else if (curState == loggonState.Register)
             {
+                if (cbUser.Text.Length == 0)
+                {
+                    WindowShowTimer box = new WindowShowTimer(this, "错误", "用户名不能为空", 2);
+                    box.Show();
+                    return;
+                }
+
+                if (passwordBox.Password.Length == 0)
+                {
+                    WindowShowTimer box = new WindowShowTimer(this, "错误", "密码不能为空", 2);
+                    box.Show();
+                    return;
+                }
+
+                if ((cbUser.Text.IndexOf("@") < 0) || (cbUser.Text.IndexOf("@") >= cbUser.Text.Length - 3))
+                {
+                    WindowShowTimer box = new WindowShowTimer(this, "错误", "请输入有效的邮箱地址", 2);
+                    box.Show();
+                    return;
+                }
+
                 ++click_count;
 
                 GameState.SetCurrentWin(this);
@@ -269,11 +292,21 @@ namespace WpfApplication2
                 register.SendRegist(cbUser.Text, hash.GetMD5HashCode());
             } else if (curState == loggonState.FindPwd)
             {
+                if ((cbUser.Text.IndexOf("@") < 0) || (cbUser.Text.IndexOf("@") >= cbUser.Text.Length -3))
+                {
+                    WindowShowTimer box = new WindowShowTimer(this, "错误", "请输入有效的邮箱地址", 2);
+                    box.Show();
+                    return;
+                }
+
                 ++click_count;
                 GameState.SetCurrentWin(this);
                 GameState.SetLogWin(this);
                 LoginState state = new LoginState();
                 state.FindUsrPassword(cbUser.Text);
+
+                WindowShowTimer box2 = new WindowShowTimer(this, "提示", "已向您发送邮件，请在5分钟内登录修改密码", 60);
+                box2.Show();
             }
             else
             {

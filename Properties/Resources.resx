@@ -262,4 +262,16 @@
   <data name="record_pwd" xml:space="preserve">
     <value>记住密码</value>
   </data>
+  <data name="exit" xml:space="preserve">
+    <value>果断退出</value>
+  </data>
+  <data name="game_again" xml:space="preserve">
+    <value>再来一局</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>是</value>
+  </data>
 </root>

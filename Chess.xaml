@@ -335,7 +335,7 @@
                         
                         <TextBlock Text="{x:Static props:Resources.message}" Foreground="White" HorizontalAlignment="Left" Width="auto" Height="auto" Margin="8,0,0,0"/>
                         <ScrollViewer x:Name="messageBoxScro" Grid.Row="1" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" Margin="0,0,16,2" MinWidth="0" AllowDrop="False" OverridesDefaultStyle="True" IsDeferredScrollingEnabled="False" IsManipulationEnabled="False" IsTabStop="True" PanningMode="None" Grid.ColumnSpan="2">
-                            <TextBlock Height="Auto" Width="auto">
+                            <TextBlock Height="Auto" HorizontalAlignment="Stretch">
                                 <StackPanel x:Name="messageBoxStackPanel" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="220" Margin="3,3,0,0">
                                 </StackPanel>
                             </TextBlock>
@@ -485,7 +485,7 @@
                 <Grid Grid.Row="15" Grid.Column="9" Grid.ColumnSpan="9" >
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                         <Label Content="版权所有 © 2015-2016 众游三人象棋" HorizontalAlignment="Center"/>
-                        <Label Content="  联系我们" HorizontalAlignment="Center" Cursor="Hand" Foreground="Wheat"/>
+                        <Label Content="  联系我们" HorizontalAlignment="Center" Cursor="Hand" Foreground="Wheat" MouseLeftButtonDown="ContactMe"/>
                     </StackPanel>
                 </Grid>
             </Grid>

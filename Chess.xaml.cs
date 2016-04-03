@@ -326,11 +326,11 @@ namespace WpfApplication2
             //ChessBoardLoaded(null, null);
         }
 
-        private static uint message_count = 0;
-        public void AddMsgToBox(string title, string msgContent)
+        //private static uint message_count = 0;
+        public void AddMsgToBox(string title, string msgContent, bool belongToMe)
         {
             Border border = new Border();
-            if ((message_count++) % 2 == 0)
+            if (!belongToMe)
             {//left msg
                 border.CornerRadius = new CornerRadius(15);
                 border.HorizontalAlignment = HorizontalAlignment.Left;
@@ -423,22 +423,24 @@ namespace WpfApplication2
         {
             ComboBoxItem item = (ComboBoxItem)comboBoxIMMsg.SelectedItem;
             GamePlayingState state = new GamePlayingState();
-
+            //AddMsgToBox("Jack", comboBoxIMMsg.Text.ToString(), true);
+            
             if (ChessBoard.GetChessBoardObj() == null)
             {
                 return;
             }
+            
 
             if (item != null)
             {
-                AddMsgToBox(ChessBoard.GetChessBoardObj().currentUser.user_name, item.Content.ToString());
+                AddMsgToBox(ChessBoard.GetChessBoardObj().currentUser.user_name, item.Content.ToString(), true);
                 state.SendIMMessage(item.Content.ToString());
             }
             else
             {
                 if (comboBoxIMMsg.Text.Length > 0)
                 {
-                    AddMsgToBox(ChessBoard.GetChessBoardObj().currentUser.user_name, comboBoxIMMsg.Text.ToString());
+                    AddMsgToBox(ChessBoard.GetChessBoardObj().currentUser.user_name, comboBoxIMMsg.Text.ToString(),true);
                     state.SendIMMessage(comboBoxIMMsg.Text.ToString());
                 }
             }
@@ -481,24 +483,52 @@ namespace WpfApplication2
 
         public void TimeoutHandle(Location locate)
         {
-            ChessBoard.GetChessBoardObj().gGameStatus = ChessBoard.GameSatus.END;
-            GameState.allUsersReady = false;
-
             if ((int)locate == GameState.locate)
             {
-                /*MediaPlayer player = new MediaPlayer();
-                player.Open(new Uri(GameState.gWorkPath + @"\res\voice\gameover.wav", UriKind.Absolute));
-                player.Play();
-                */
                 MediaBackgroundThread.PlayMedia(MediaType.MEDIA_OVER);
-                
+
                 ChessBoard.GetChessBoardObj().currentUser.State = User.GameState.LOSE;
 
                 GamePlayingState state = new GamePlayingState();
                 state.LeaveOutFromRoom();
 
-                MessageBox.Show("走棋超时,本轮游戏结束！", "警告");
+                //WindowShowTimer box = new WindowShowTimer(this, "警告", "走棋超时,您将被扣掉30分，本轮游戏结束！", -1);
+                //box.Show();
+
+                EndGame();
+
+                MessageBoxResult result = MyMessageBox.Show(GameState.gameWin, "走棋超时,您将被扣掉30分，本轮游戏结束！是否再来一局？", "提示", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.OK)
+                {
+                    GameReadyState s = new GameReadyState();
+                    s.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
+
+                    GameState.gameWin.SetStartButtonStatus(true);
+                }
             }
+            else
+            {
+                if (ChessBoard.GetChessBoardObj().GetUserByUsrLocation(locate).State != User.GameState.LOSE)
+                {
+                    //WindowShowTimer box = new WindowShowTimer(this, "提示", GameState.GetChessBoardtUserByLocate((uint)locate).UserName + " 走棋超时,Ta将被扣掉30分，本轮游戏结束！", -1);
+                    //box.Show();
+
+                    EndGame();
+
+                    MessageBoxResult result = MyMessageBox.Show(GameState.gameWin, GameState.GetChessBoardtUserByLocate((uint)locate).UserName + "走棋超时,Ta将被扣掉30分，本轮游戏结束！是否再来一局？", "提示", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.OK)
+                    {
+                        GameReadyState s = new GameReadyState();
+                        s.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
+
+                        GameState.gameWin.SetStartButtonStatus(true);
+                    }
+                }
+                else
+                    EndGame();
+
+            }
+
         }
 
         private void ChessWindowActivedHand(object sender, EventArgs e)
@@ -514,7 +544,7 @@ namespace WpfApplication2
                 if ((ChessBoard.GetChessBoardObj().currentUser.State == User.GameState.PLAYING) &&
                     (ChessBoard.GetChessBoardObj().gGameStatus == ChessBoard.GameSatus.PLAYING))
                 {
-                    MessageBoxResult result = MessageBox.Show("确定要退出游戏吗(将被扣掉30分)?", "警告", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                    MessageBoxResult result = MyMessageBox.Show(this, "确定要退出游戏吗(将被扣掉30分)?", "警告", MessageBoxButton.OKCancel);
                     if (result == MessageBoxResult.Cancel)
                     {
                         e.Cancel = true;
@@ -525,16 +555,22 @@ namespace WpfApplication2
             if (!e.Cancel)
             {
                 //handle something here, get out the game room!!!
-                if (GameState.allUsersReady)
+                if (ChessBoard.GetChessBoardObj() != null)
                 {
                     ChessBoard.GetChessBoardObj().righttUser.timer.Stop();
                     ChessBoard.GetChessBoardObj().leftUser.timer.Stop();
                     ChessBoard.GetChessBoardObj().bottomUser.timer.Stop();
                     ChessBoard.GetChessBoardObj().currentUser.State = User.GameState.LOSE;
                 }
+
                 GameState.allUsersReady = false;
                 GameState.gCurrUserGameStatus = UserStatus.STATUS_EXITED;
+                GameState.gLeftUser = null;
+                GameState.gRightUser = null;
+                GameState.gBottomUser = null;
+                GameState.currentAgreeHeQiNum = 0;
                 ChessBoard.DestroryChessBoard();
+                GameState.again_play = false;
 
                 GamePlayingState state = new GamePlayingState();
                 state.LeaveOutFromRoom("exit");
@@ -648,11 +684,18 @@ namespace WpfApplication2
         private void MouseLeftButtonDown_OpenUrl(object sender, MouseButtonEventArgs e)
         {
             // 打开一个链接
-            AdvertisementImage image = sender as AdvertisementImage;
-            string url = image.LinkUrl;
-            if ((url != null) && (url.Length > 0))
+            try
             {
-                System.Diagnostics.Process.Start(url);
+                AdvertisementImage image = sender as AdvertisementImage;
+                string url = image.LinkUrl;
+                if ((url != null) && (url.Length > 0))
+                {
+                    System.Diagnostics.Process.Start(url);
+                }
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine("Open the Ad url failed for "+ ee.Message);
             }
         }
 
@@ -864,19 +907,39 @@ namespace WpfApplication2
         }
 
         private void QiuHeClick(object sender, RoutedEventArgs e)
-        {
-            GamePlayingState state = new GamePlayingState();
-            state.QiuHeSendReq();
-            SetQiuHeButtonStatus(false);
+        {            
+            MessageBoxResult result = MyMessageBox.Show(this, "确定要求和吗？", "提示", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                GamePlayingState state = new GamePlayingState();
+                state.QiuHeSendReq();
+                SetQiuHeButtonStatus(false);
+            }
         }
 
         private void RenShuClick(object sender, RoutedEventArgs e)
         {
             if (ChessBoard.GetChessBoardObj().GetCurrentActiveUsrNum() < 3)
             {
-                GamePlayingState state = new GamePlayingState();
-                state.LeaveOutFromRoom();
-                SetRenShuButtonStatus(false);
+                MessageBoxResult result = MyMessageBox.Show(this, "确定要认输吗?", "警告", MessageBoxButton.OKCancel);
+                if (result == MessageBoxResult.OK)
+                {
+                    GamePlayingState state = new GamePlayingState();
+                    state.LeaveOutFromRoom();
+                    SetRenShuButtonStatus(false);
+
+                    MediaBackgroundThread.PlayMedia(MediaType.MEDIA_OVER);
+                    EndGame();
+
+                    result = MyMessageBox.Show(GameState.gameWin, "是否再来一局？", "提示", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.OK)
+                    {
+                        GameReadyState s = new GameReadyState();
+                        s.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
+
+                        GameState.gameWin.SetStartButtonStatus(true);
+                    }
+                }
             }
         }
 
@@ -956,5 +1019,55 @@ namespace WpfApplication2
             chessBoarder.Background = new ImageBrush(bt);
         }
 
+
+        public void EndGame()
+        {
+            try
+            {
+                GameState.allUsersReady = false;
+                ChessBoard.GetChessBoardObj().gGameStatus = ChessBoard.GameSatus.END;
+                ChessBoard.GetChessBoardObj().currentUser.State = User.GameState.LOSE;
+                ChessBoard.GetChessBoardObj().leftUser.State = User.GameState.LOSE;
+                ChessBoard.GetChessBoardObj().righttUser.State = User.GameState.LOSE;
+                ChessBoard.GetChessBoardObj().bottomUser.State = User.GameState.LOSE;
+                ChessBoard.GetChessBoardObj().leftUser.timer.Stop();
+                ChessBoard.GetChessBoardObj().righttUser.timer.Stop();
+                ChessBoard.GetChessBoardObj().bottomUser.timer.Stop();
+                GameState.gCurrUserGameStatus = UserStatus.STATUS_ENDED;
+
+                SetHuiQiButtonStatus(false);
+                SetQiuHeButtonStatus(false);
+                SetRenShuButtonStatus(false);
+                if (GameState.again_play)
+                {
+                    SetStartButtonStatus(true);
+                }
+                else
+                {
+                    SetStartButtonStatus(false);
+                }
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine("Can NOT over the game for " + ee.Message);
+            }
+        }
+
+        private void ContactMe(object sender, MouseButtonEventArgs e)
+        {
+            // 打开一个链接
+            try
+            {
+                string url = "http://123.57.180.67/";
+                if ((url != null) && (url.Length > 0))
+                {
+                    System.Diagnostics.Process.Start(url);
+                }
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine("Open the Ad url failed for " + ee.Message);
+            }
+        }
     }
 }

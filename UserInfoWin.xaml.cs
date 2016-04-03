@@ -260,7 +260,7 @@ namespace WpfApplication2
         {
             if (text_changed && !saved && (changed_num > 3))
             {
-                MessageBoxResult resut = MessageBox.Show("您的修改未保存，确定要退出吗", "提示" ,MessageBoxButton.OKCancel);
+                MessageBoxResult resut = MyMessageBox.Show(this, "您的修改未保存，确定要退出吗", "提示" ,MessageBoxButton.OKCancel);
                 if (resut == MessageBoxResult.Cancel)
                 {
                     e.Cancel = true;
@@ -288,7 +288,8 @@ namespace WpfApplication2
                 BinaryReader br = new BinaryReader(fs);
                 if ((int)fs.Length > 200*1024)//must less than 200KB per picture
                 {
-                    MessageBox.Show("The Image is too big (max size 200KB)!!!  Current size: " + (fs.Length/1024).ToString() + "KB");
+                    WindowShowTimer box = new WindowShowTimer(this, "警告", "头像图片不能超过200KB");
+                    box.Show();
                     return;
                 }
 
@@ -382,7 +383,8 @@ namespace WpfApplication2
             }
             else
             {
-                MessageBox.Show("Password are NOT equal!  " + tx_password.Password.ToString() + "\n\rRePwd:" + tx_passwordRe.Password.ToString());
+                WindowShowTimer box = new WindowShowTimer(this, "警告", "前后两次密码不一致，请重新输入！");
+                box.Show();
             }
         }
 
@@ -391,6 +393,22 @@ namespace WpfApplication2
             if (GameState.currentUserHeadImage != null)
             {
                 DisplayHeadImageToSettingBoard(GameState.currentUserHeadImage);
+            }
+            else
+            {
+                BitmapImage bit = new BitmapImage();
+                bit.BeginInit();
+                bit.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\MyIcon.png");
+                bit.EndInit();
+
+                Image headImg = new Image();
+                headImg.Source = bit;
+                headImg.HorizontalAlignment = HorizontalAlignment.Stretch;
+                headImg.VerticalAlignment = VerticalAlignment.Stretch;
+                //headImg.Margin = new Thickness(32, 22, 0, 0);
+                headImg.Stretch = Stretch.Uniform;
+
+                head_image_board.Background = new ImageBrush(headImg.Source);
             }
         }
         

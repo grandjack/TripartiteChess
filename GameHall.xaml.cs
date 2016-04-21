@@ -588,13 +588,22 @@ namespace WpfApplication2
             ChessBoardImg chessBoard = new ChessBoardImg(index, grid);
             BitmapImage myBitmapImage = new BitmapImage();
             myBitmapImage.BeginInit();
-            myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\little_board.png", UriKind.Absolute);
+
+            ChessBoardInfo boardInfo = GameState.hallInfo.GetChessBoard((int)(index - 1));
+            if ((boardInfo != null) && (GameState.GameBegan(boardInfo)))
+            {
+                myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\playing.png", UriKind.Absolute);
+            }else{
+                myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\little_board.png", UriKind.Absolute);
+                //只有在该棋盘还未开始游戏的时候才会添加事件
+                chessBoard.MouseEnter += new MouseEventHandler(chessBoard_MouseEnter);
+                chessBoard.MouseLeave += new MouseEventHandler(chessBoard_MouseLeave);
+                chessBoard.MouseLeftButtonDown += new MouseButtonEventHandler(chessBoard_MouseLeftButtonDown);
+            }
+
             myBitmapImage.EndInit();
             chessBoard.Source = myBitmapImage;
             chessBoard.Stretch = Stretch.Uniform;
-            chessBoard.MouseEnter += new MouseEventHandler(chessBoard_MouseEnter);
-            chessBoard.MouseLeave += new MouseEventHandler(chessBoard_MouseLeave);
-            chessBoard.MouseLeftButtonDown += new MouseButtonEventHandler(chessBoard_MouseLeftButtonDown);
 
             Grid.SetRow(chessBoard, 1);
             Grid.SetColumn(chessBoard, 1);

@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:props="clr-namespace:WpfApplication2.Properties"
         Title="{x:Static props:Resources.Login_name}" Height="263" Width="401" AllowsTransparency="True" WindowStyle="None" Background="Transparent"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown"
-        WindowStartupLocation="CenterScreen" ShowInTaskbar="True" Closing="ClosingLogWin">  
+        MouseLeftButtonDown="Window_MouseLeftButtonDown" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen" ShowInTaskbar="True" Closing="ClosingLogWin">
     <Window.Resources>        
         <ControlTemplate x:Key="CloseButtonTemplate" TargetType="{x:Type Button}">
             <Border Name="Border" CornerRadius="0,3,0,0"  Background="Transparent">
@@ -93,10 +93,10 @@
 
             <Button Content="{x:Static props:Resources.Login_name}" Height="30" HorizontalAlignment="Left" Margin="113,148,0,0" Name="logginBtn" VerticalAlignment="Top" Width="169" BorderThickness="1" FontStretch="Normal" Focusable="True" DataContext="{Binding}" Background="#FF00A9FF" Click="LogginGame"></Button>
 
-            <Label Content="{x:Static props:Resources.account_info}" FontStyle="Italic" Foreground="Gray" Height="30" HorizontalAlignment="Left" Margin="114,68,0,0" Name="labelUser" VerticalAlignment="Top" Width="168" BorderThickness="1" GotFocus="label_Click" IsEnabled="True" Focusable="True" MouseDown="label_Click" />
-            <Label Content="{x:Static props:Resources.paswd_info}" FontStyle="Italic" Foreground="Gray"  Height="30" HorizontalAlignment="Left" Margin="114,102,0,0" Name="labelPwd" VerticalAlignment="Top" Width="168" BorderThickness="1" GotFocus="label_Click" IsEnabled="True" Focusable="True" MouseDown="label_Click" />
-            <Label Content="{x:Static props:Resources.forget_pwd}" Height="24" Foreground="White" HorizontalAlignment="Left" Margin="111,192,0,0" Name="forget" VerticalAlignment="Top" Width="55" FontSize="10" Cursor="Hand" MouseDown="FindPwd"/>
-            <Label Content="{x:Static props:Resources.register}" Height="24" Foreground="White" HorizontalAlignment="Left" Margin="233,192,0,0" Name="register" VerticalAlignment="Top" Width="50" FontSize="10" Cursor="Hand" MouseDown="Register"/>
+            <Label Content="{x:Static props:Resources.account_info}" FontStyle="Oblique"  Foreground="Gray" Height="30" HorizontalAlignment="Left" Margin="114,68,0,0" Name="labelUser" VerticalAlignment="Top" Width="168" BorderThickness="1" GotFocus="label_Click" IsEnabled="True" Focusable="True" MouseDown="label_Click" />
+            <Label Content="{x:Static props:Resources.paswd_info}" FontStyle="Oblique" Foreground="Gray"  Height="30" HorizontalAlignment="Left" Margin="114,102,0,0" Name="labelPwd" VerticalAlignment="Top" Width="168" BorderThickness="1" GotFocus="label_Click" IsEnabled="True" Focusable="True" MouseDown="label_Click" />
+            <Label Content="{x:Static props:Resources.forget_pwd}" Height="24" Foreground="White" HorizontalAlignment="Left" Margin="111,192,0,0" Name="forget" VerticalAlignment="Top" Width="auto" FontSize="10" Cursor="Hand" MouseDown="FindPwd" ToolTip="点击找回密码"/>
+            <Label Content="{x:Static props:Resources.no_account}" Height="24" Foreground="White" HorizontalAlignment="Left" Margin="233,192,0,0" Name="register" VerticalAlignment="Top" Width="auto" FontSize="10" Cursor="Hand" MouseDown="Register" ToolTip="点击注册账号"/>
             <Button Content="{x:Static props:Resources.cancelBtn}" Visibility="Hidden" Height="21" HorizontalAlignment="Left" Margin="302,156,0,0" Name="cancelBtn" VerticalAlignment="Top" Width="42" FontSize="10" Background="#FF00A9FF" Click="CancelBtn"/>
             <CheckBox Content="{x:Static props:Resources.record_pwd}" Height="auto"  FontSize="11" Foreground="White" HorizontalAlignment="Left" Margin="288,108,0,0" Name="record_pwd" VerticalAlignment="Top" Click="RecordClick"/>
         </Grid>

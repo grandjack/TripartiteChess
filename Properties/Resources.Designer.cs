@@ -70,7 +70,7 @@ namespace WpfApplication2.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 请输入用户名.
+        ///   Looks up a localized string similar to 请输入登录账号(邮箱地址).
         /// </summary>
         public static string account_info {
             get {
@@ -300,6 +300,15 @@ namespace WpfApplication2.Properties {
         public static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 没有账号?.
+        /// </summary>
+        public static string no_account {
+            get {
+                return ResourceManager.GetString("no_account", resourceCulture);
             }
         }
         

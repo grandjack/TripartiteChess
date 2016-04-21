@@ -20,12 +20,15 @@ namespace WpfApplication2
     {
         private static MessageBoxResult result = MessageBoxResult.Cancel;
         private static bool isModalDialogue = true;
+        private MessageBoxButton button;
 
         public MyMessageBox(string title, string content, MessageBoxButton button)
         {
             InitializeComponent();
             title_lab.Content = title;
             content_lab.Text = content;
+            this.button = button;
+
             if (button == MessageBoxButton.OKCancel)
             {
                 okBtn.Content = (string)Properties.Resources.btn_ok;
@@ -50,37 +53,72 @@ namespace WpfApplication2
 
         private void OK_click(object sender, RoutedEventArgs e)
         {
-            result = MessageBoxResult.OK;
-
-            GameState.again_play = true;
-            GameState.gameWin.pressGameReadyBtn = false;
-
-            if (!MyMessageBox.isModalDialogue)
+            try
             {
-                GameReadyState state = new GameReadyState();
-                state.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
-                GameState.gameWin.EndGame();
-            }
+                GameState.again_play = true;
+                if (GameState.gameWin != null)
+                    GameState.gameWin.pressGameReadyBtn = false;
 
-            this.Close();
+                if (!MyMessageBox.isModalDialogue)
+                {
+                    if (GameState.gameWin != null)
+                    {
+                        GameReadyState state = new GameReadyState();
+                        state.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
+                        GameState.gameWin.EndGame();
+                    }
+                }
+
+                if (GameState.gameWin != null)
+                    GameState.gameWin.DisplayUserStatus((uint)GameState.locate, UserStatus.STATUS_READY);
+
+                this.Close();
+
+                if (button == MessageBoxButton.YesNo)
+                {
+                    result = MessageBoxResult.Yes;
+                }
+                else
+                {
+                    result = MessageBoxResult.OK;
+                }
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine("Catch expection : " + ee.Message);
+            }
         }
 
         private void No_click(object sender, RoutedEventArgs e)
         {
-            result = MessageBoxResult.Cancel;
-
-            if (GameState.again_play)
+            try
             {
-                GameState.again_play = false;
-                GameState.gameWin.SetStartButtonStatus(false);
-            }
+                if (GameState.again_play)
+                {
+                    GameState.again_play = false;
+                    if (GameState.gameWin != null)
+                        GameState.gameWin.SetStartButtonStatus(false);
+                }
 
-            if (!MyMessageBox.isModalDialogue)
+                //对应模态对话框，必须先关闭当前窗口，之后才能关闭父窗口
+                this.Close();
+
+                if (button == MessageBoxButton.YesNo)
+                {
+                    if (GameState.gameWin != null)
+                        GameState.gameWin.Close();
+
+                    result = MessageBoxResult.No;
+                }
+                else
+                {
+                    result = MessageBoxResult.Cancel;
+                }
+            }
+            catch (Exception ee)
             {
-                GameState.gameWin.Close();
+                Console.WriteLine("Catch expection : " + ee.Message);
             }
-
-            this.Close();
         }
 
         public static MessageBoxResult Show(Window owner, string content, string title, MessageBoxButton button, bool isModalDialogue=true)

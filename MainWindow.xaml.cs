@@ -33,6 +33,7 @@ namespace WpfApplication2
         public MainWindow()
         {
             InitializeComponent();
+            this.Activate();
             
             BitmapImage bt = new BitmapImage();
             bt.BeginInit();
@@ -193,16 +194,39 @@ namespace WpfApplication2
             {
                 passwordBox.Visibility = Visibility.Visible;
             }
+
             record_pwd.Visibility = System.Windows.Visibility.Visible;
             register.Visibility = Visibility.Visible;
             forget.Visibility = Visibility.Visible;
+            logginBtn.Visibility = System.Windows.Visibility.Visible;
+            labelUser.Visibility = System.Windows.Visibility.Visible;
+            labelPwd.Visibility = System.Windows.Visibility.Visible;
+
             logginBtn.Content = (string)Properties.Resources.Login_name;
             labelUser.Content = (string)Properties.Resources.account_info;
+            labelPwd.Content = (string)Properties.Resources.paswd_info;
+
             cancelBtn.Visibility = Visibility.Hidden;
             cbUser.Text = "";
             passwordBox.Password = "";
 
             curState = loggonState.Loggin;
+        }
+
+
+        public Loading ld = null;
+        public void LoadingImage()
+        {
+            ld = new Loading();
+            ld.Owner = this;
+            //ld.Owner.Opacity = 0.5;
+            ld.IniLocate();
+            ld.Show();
+        }
+        public void LoadingImageClose()
+        {
+            //ld.Owner.Opacity = 1;
+            ld.Close();
         }
 
         public int click_count = 0;
@@ -218,13 +242,21 @@ namespace WpfApplication2
                 //verify the User's account whether match the password,if OK, then show the MainWindow
                 if (cbUser.Text.Length == 0)
                 {
-                    WindowShowTimer box = new WindowShowTimer(this, "错误", "用户名不能为空", 2);
+                    WindowShowTimer box = new WindowShowTimer(this, "错误", "账号不能为空", 2);
                     box.Show();
                     return;
                 }
                 if (passwordBox.Password.Length == 0)
                 {
                     WindowShowTimer box = new WindowShowTimer(this, "错误", "密码不能为空", 2);
+                    box.Show();
+                    return;
+                }
+                if ((cbUser.Text.IndexOf("@") < 0) || (cbUser.Text.IndexOf(".") < 0)
+                    || (cbUser.Text.IndexOf("@") >= cbUser.Text.Length - 3)
+                    || (cbUser.Text.IndexOf("@") > cbUser.Text.IndexOf(".")))
+                {
+                    WindowShowTimer box = new WindowShowTimer(this, "错误", "请输入有效的邮箱账号", 2);
                     box.Show();
                     return;
                 }
@@ -235,6 +267,8 @@ namespace WpfApplication2
                 GameState.SetCurrentWin(this);
                 GameState.SetLogWin(this);
 
+                //加载中。。。。。。
+                LoadingImage();
 
                 bool use_record = false;
                 if ((actual_pwd_len > 0) && 
@@ -263,7 +297,7 @@ namespace WpfApplication2
             {
                 if (cbUser.Text.Length == 0)
                 {
-                    WindowShowTimer box = new WindowShowTimer(this, "错误", "用户名不能为空", 2);
+                    WindowShowTimer box = new WindowShowTimer(this, "错误", "邮箱地址不能为空", 2);
                     box.Show();
                     return;
                 }
@@ -275,7 +309,9 @@ namespace WpfApplication2
                     return;
                 }
 
-                if ((cbUser.Text.IndexOf("@") < 0) || (cbUser.Text.IndexOf("@") >= cbUser.Text.Length - 3))
+                if ((cbUser.Text.IndexOf("@") < 0) || (cbUser.Text.IndexOf(".") < 0)
+                    || (cbUser.Text.IndexOf("@") >= cbUser.Text.Length - 3)
+                    || (cbUser.Text.IndexOf("@") > cbUser.Text.IndexOf(".")))
                 {
                     WindowShowTimer box = new WindowShowTimer(this, "错误", "请输入有效的邮箱地址", 2);
                     box.Show();

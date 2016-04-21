@@ -51,8 +51,8 @@ namespace WpfApplication2
         public static Chess chessWindow = null;
         public ChessMan currSelectChess = null;
 
-        private static Grid selectGrid = null;
-        private static Grid targetGrid = null;
+        public static Grid selectGrid = null;
+        public static Grid targetGrid = null;
 
         public static int total_time = 0;
         public static int single_step_time = 0;
@@ -599,7 +599,7 @@ namespace WpfApplication2
             }
             else
             {
-                return Location.unknown;
+                return Location.middle;
             }
         }
 
@@ -630,9 +630,9 @@ namespace WpfApplication2
                     }
                     break;
 
-                //case Location.middle:
-                 //   ret = true;
-                 //   break;
+                case Location.middle:
+                    ret = true;
+                    break;
 
                 default:
                     break;

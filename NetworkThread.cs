@@ -106,7 +106,7 @@ namespace WpfApplication2
                 try
                 {
                     tcpClient.Close();
-                    Thread.Sleep(3000);
+                    Thread.Sleep(1000);
                     ConnectToServer();
                     return true;
                 }
@@ -176,7 +176,7 @@ namespace WpfApplication2
                         else
                         {
                             Console.WriteLine("Receive failed. " + bytes);
-                            //if (!ReConnectServer())
+                            if (!ReConnectServer())
                                 return;
                         }
                     }
@@ -224,8 +224,8 @@ namespace WpfApplication2
                             Console.WriteLine("Send failed. send_bytes=" + total_size);
                             if (reTry)
                             {
-                                //if (!ReConnectServer())
-                                   // return;
+                                if (!ReConnectServer())
+                                    return;
                             }
                             break;
                         }
@@ -237,8 +237,8 @@ namespace WpfApplication2
                     Console.WriteLine("send failed for {0}", e.Message);
                     if (reTry)
                     {
-                        //if (!ReConnectServer())
-                       //     return;
+                        if (!ReConnectServer())
+                            return;
                     }
                 }
             }

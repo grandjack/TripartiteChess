@@ -1,0 +1,13 @@
+﻿<Window x:Class="WpfApplication2.Loading"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:props="clr-namespace:WpfApplication2.Properties"
+        Height="263" Width="401" AllowsTransparency="True" WindowStyle="None" ResizeMode="NoResize"      
+        WindowStartupLocation="Manual" ShowInTaskbar="True" >
+    <Window.Background>
+        <SolidColorBrush Color="Gray" Opacity="0.7" />
+    </Window.Background>
+    <Grid x:Name="mainGrid">
+        
+    </Grid>
+</Window>

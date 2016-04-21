@@ -24,7 +24,7 @@ namespace WpfApplication2
             CHESS_BING,
             CHESS_NUM
         }
-        public enum MoveEvent { VALID_MOVE_EVENT, JUST_MOVE_EVENT, MOVE_TO_EAT_EVENT }
+        public enum MoveEvent { INVALID_MOVE_EVENT, JUST_MOVE_EVENT, MOVE_TO_EAT_EVENT }
         public string[] ChessName = new string[(int)ChessSpec.CHESS_NUM]
         {
             "ju",
@@ -201,13 +201,7 @@ namespace WpfApplication2
 
                         GameState.gameWin.EndGame();
                         MessageBoxResult result = MyMessageBox.Show(GameState.gameWin, "恭喜您赢得本局最终胜利！是否再来一局？", "提示", MessageBoxButton.YesNo, false);
-                        /*if (result == MessageBoxResult.OK)
-                        {
-                            GameReadyState state = new GameReadyState();
-                            state.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
-
-                            GameState.gameWin.SetStartButtonStatus(true);
-                        }*/
+                      
                     }
                 }
                 else
@@ -237,7 +231,7 @@ namespace WpfApplication2
 
             if (this.beSelected == false)
             {
-                return false;
+                //return false;
             }
 
             //目的坐标是己方棋子，则返回
@@ -432,7 +426,7 @@ namespace WpfApplication2
 
         public override MoveEvent CheckMoveEvent(byte row, byte column)
         {
-            MoveEvent ret = MoveEvent.VALID_MOVE_EVENT;
+            MoveEvent ret = MoveEvent.INVALID_MOVE_EVENT;
             byte x = row;
             byte y = column;
 
@@ -727,7 +721,7 @@ namespace WpfApplication2
 
         public override MoveEvent CheckMoveEvent(byte des_row, byte des_column)
         {
-            MoveEvent ret = MoveEvent.VALID_MOVE_EVENT;
+            MoveEvent ret = MoveEvent.INVALID_MOVE_EVENT;
 
             if (this.CheckDesPointValid(des_row, des_column) != true)
             {
@@ -777,7 +771,7 @@ namespace WpfApplication2
 
         public override MoveEvent CheckMoveEvent(byte des_row, byte des_column)
         {
-            MoveEvent ret = MoveEvent.VALID_MOVE_EVENT;
+            MoveEvent ret = MoveEvent.INVALID_MOVE_EVENT;
             if (this.CheckDesPointValid(des_row, des_column) != true)
             {
                 Console.WriteLine("Invalid Point!");
@@ -941,7 +935,7 @@ namespace WpfApplication2
 
         public override MoveEvent CheckMoveEvent(byte des_row, byte des_column)
         {
-            MoveEvent ret = MoveEvent.VALID_MOVE_EVENT;
+            MoveEvent ret = MoveEvent.INVALID_MOVE_EVENT;
 
             if (this.CheckDesPointValid(des_row, des_column) != true)
             {
@@ -1002,7 +996,7 @@ namespace WpfApplication2
 
         public override MoveEvent CheckMoveEvent(byte des_row, byte des_column)
         {
-            MoveEvent ret = MoveEvent.VALID_MOVE_EVENT;
+            MoveEvent ret = MoveEvent.INVALID_MOVE_EVENT;
 
             if (this.CheckDesPointValid(des_row, des_column) != true)
             {
@@ -1146,7 +1140,7 @@ namespace WpfApplication2
 
         public override MoveEvent CheckMoveEvent(byte des_row, byte des_column)
         {
-            MoveEvent ret = MoveEvent.VALID_MOVE_EVENT;
+            MoveEvent ret = MoveEvent.INVALID_MOVE_EVENT;
 
             if (this.CheckDesPointValid(des_row, des_column) != true)
             {
@@ -1206,7 +1200,7 @@ namespace WpfApplication2
 
         public override MoveEvent CheckMoveEvent(byte des_row, byte des_column)
         {
-            MoveEvent ret = MoveEvent.VALID_MOVE_EVENT;
+            MoveEvent ret = MoveEvent.INVALID_MOVE_EVENT;
 
 
             if (this.CheckDesPointValid(des_row, des_column) != true)

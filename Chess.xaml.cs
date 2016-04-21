@@ -498,7 +498,7 @@ namespace WpfApplication2
                 EndGame();
 
                 MessageBoxResult result = MyMessageBox.Show(GameState.gameWin, "走棋超时,您将被扣掉30分，本轮游戏结束！是否再来一局？", "提示", MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.OK)
+                if (result == MessageBoxResult.Yes)
                 {
                     GameReadyState s = new GameReadyState();
                     s.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
@@ -516,7 +516,7 @@ namespace WpfApplication2
                     EndGame();
 
                     MessageBoxResult result = MyMessageBox.Show(GameState.gameWin, GameState.GetChessBoardtUserByLocate((uint)locate).UserName + "走棋超时,Ta将被扣掉30分，本轮游戏结束！是否再来一局？", "提示", MessageBoxButton.YesNo);
-                    if (result == MessageBoxResult.OK)
+                    if (result == MessageBoxResult.Yes)
                     {
                         GameReadyState s = new GameReadyState();
                         s.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
@@ -590,6 +590,7 @@ namespace WpfApplication2
 
             LoadChessBoadrMiddleAd();
             LoadChessBoadrBtRightAd();
+            LoadChessBoadrBtLeftAd();
         }
 
         public void SetStartButtonStatus(bool enable)
@@ -769,6 +770,21 @@ namespace WpfApplication2
             gridBottomRightAd.Children.Clear();
         }
 
+        public void LoadChessBoadrBtLeftAd()
+        {
+            Image image = null;
+            GetAdvertisementImage((int)ImageID.IMAGE_ID_AD_BOARD_BOTTOM_LEFT, ref image);
+            if (image != null)
+            {
+                gridBottomLeftAd.Children.Add(image);
+            }
+        }
+
+        public void ReMoveBottomLeftAd()
+        {
+            gridBottomLeftAd.Children.Clear();
+        }
+
         public void DisplayHeadImage(Grid headgrid, byte []headImage)
         {
             BitmapImage b = null;
@@ -828,6 +844,8 @@ namespace WpfApplication2
                 DispatchTimerLeftStepMin.Visibility = System.Windows.Visibility.Visible;
                 DispatchTimerLeftTotalMin.Visibility = System.Windows.Visibility.Visible;
                 DispatchTimerLeftStepSec.Visibility = System.Windows.Visibility.Visible;
+                if ((UserStatus)(GameState.gLeftUser.Status) != UserStatus.STATUS_EXITED)
+                    DisplayUserStatus((uint)Location.left, (UserStatus)GameState.gLeftUser.Status);
             }
             else
             {
@@ -840,6 +858,10 @@ namespace WpfApplication2
                 DispatchTimerLeftStepMin.Visibility = System.Windows.Visibility.Hidden;
                 DispatchTimerLeftTotalMin.Visibility = System.Windows.Visibility.Hidden;
                 DispatchTimerLeftStepSec.Visibility = System.Windows.Visibility.Hidden;
+                if (ChessBoard.GetChessBoardObj() != null)
+                {
+                    DisplayUserStatus((uint)Location.left, UserStatus.STATUS_EXITED);
+                }
             }
         }
 
@@ -856,6 +878,8 @@ namespace WpfApplication2
                 DispatchTimerBottomStepMin.Visibility = System.Windows.Visibility.Visible;
                 DispatchTimerBottomTotalMin.Visibility = System.Windows.Visibility.Visible;
                 DispatchTimerBottomStepSec.Visibility = System.Windows.Visibility.Visible;
+                if ((UserStatus)(GameState.gBottomUser.Status) != UserStatus.STATUS_EXITED)
+                    DisplayUserStatus((uint)Location.bottom, (UserStatus)GameState.gBottomUser.Status);
             }
             else
             {
@@ -868,6 +892,10 @@ namespace WpfApplication2
                 DispatchTimerBottomStepMin.Visibility = System.Windows.Visibility.Hidden;
                 DispatchTimerBottomTotalMin.Visibility = System.Windows.Visibility.Hidden;
                 DispatchTimerBottomStepSec.Visibility = System.Windows.Visibility.Hidden;
+                if (ChessBoard.GetChessBoardObj() != null)
+                {
+                    DisplayUserStatus((uint)Location.bottom, UserStatus.STATUS_EXITED);
+                }
             }
         }
 
@@ -884,6 +912,8 @@ namespace WpfApplication2
                 DispatchTimerRightStepMin.Visibility = System.Windows.Visibility.Visible;
                 DispatchTimerRightTotalMin.Visibility = System.Windows.Visibility.Visible;
                 DispatchTimerRightStepSec.Visibility = System.Windows.Visibility.Visible;
+                if ((UserStatus)(GameState.gRightUser.Status) != UserStatus.STATUS_EXITED)
+                    DisplayUserStatus((uint)Location.right, (UserStatus)GameState.gRightUser.Status);
             }
             else
             {
@@ -896,6 +926,10 @@ namespace WpfApplication2
                 DispatchTimerRightStepMin.Visibility = System.Windows.Visibility.Hidden;
                 DispatchTimerRightTotalMin.Visibility = System.Windows.Visibility.Hidden;
                 DispatchTimerRightStepSec.Visibility = System.Windows.Visibility.Hidden;
+                if (ChessBoard.GetChessBoardObj() != null)
+                {
+                    DisplayUserStatus((uint)Location.right, UserStatus.STATUS_EXITED);
+                }
             }
         }
 
@@ -932,7 +966,7 @@ namespace WpfApplication2
                     EndGame();
 
                     result = MyMessageBox.Show(GameState.gameWin, "是否再来一局？", "提示", MessageBoxButton.YesNo);
-                    if (result == MessageBoxResult.OK)
+                    if (result == MessageBoxResult.Yes)
                     {
                         GameReadyState s = new GameReadyState();
                         s.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
@@ -1025,14 +1059,29 @@ namespace WpfApplication2
             try
             {
                 GameState.allUsersReady = false;
-                ChessBoard.GetChessBoardObj().gGameStatus = ChessBoard.GameSatus.END;
-                ChessBoard.GetChessBoardObj().currentUser.State = User.GameState.LOSE;
-                ChessBoard.GetChessBoardObj().leftUser.State = User.GameState.LOSE;
-                ChessBoard.GetChessBoardObj().righttUser.State = User.GameState.LOSE;
-                ChessBoard.GetChessBoardObj().bottomUser.State = User.GameState.LOSE;
-                ChessBoard.GetChessBoardObj().leftUser.timer.Stop();
-                ChessBoard.GetChessBoardObj().righttUser.timer.Stop();
-                ChessBoard.GetChessBoardObj().bottomUser.timer.Stop();
+                if (null != ChessBoard.GetChessBoardObj())
+                {
+                    ChessBoard.GetChessBoardObj().gGameStatus = ChessBoard.GameSatus.END;
+
+                    if (ChessBoard.GetChessBoardObj().leftUser != null)
+                    {
+                        //ChessBoard.GetChessBoardObj().currentUser.State = User.GameState.LOSE;
+                        ChessBoard.GetChessBoardObj().leftUser.State = User.GameState.LOSE;
+                        ChessBoard.GetChessBoardObj().leftUser.timer.Stop();
+                    }
+
+                    if (ChessBoard.GetChessBoardObj().righttUser != null)
+                    {
+                        ChessBoard.GetChessBoardObj().righttUser.State = User.GameState.LOSE;
+                        ChessBoard.GetChessBoardObj().righttUser.timer.Stop();
+                    }
+                    if (ChessBoard.GetChessBoardObj().bottomUser != null)
+                    {
+                        ChessBoard.GetChessBoardObj().bottomUser.State = User.GameState.LOSE;
+                        ChessBoard.GetChessBoardObj().bottomUser.timer.Stop();
+                    }
+                }
+
                 GameState.gCurrUserGameStatus = UserStatus.STATUS_ENDED;
 
                 SetHuiQiButtonStatus(false);
@@ -1067,6 +1116,67 @@ namespace WpfApplication2
             catch (Exception ee)
             {
                 Console.WriteLine("Open the Ad url failed for " + ee.Message);
+            }
+        }
+
+        public void DisplayUserStatus(uint locate, UserStatus status)
+        {
+            Image statusImg = new Image();
+            BitmapImage myBitmapImage = new BitmapImage();
+            bool should_add = false;
+
+            if (status == UserStatus.STATUS_BEGAN)
+            {
+                myBitmapImage.BeginInit();
+                myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\ready.png", UriKind.Absolute);
+                statusImg.ToolTip = "准备";
+                myBitmapImage.EndInit();
+                statusImg.Source = myBitmapImage;
+                should_add = true;
+            }
+            else if (status == UserStatus.STATUS_ENDED)
+            {
+                myBitmapImage.BeginInit();
+                myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\end.png", UriKind.Absolute);
+                statusImg.ToolTip = "结束";
+                myBitmapImage.EndInit();
+                statusImg.Source = myBitmapImage;
+                should_add = true;
+            }
+            else if (status == UserStatus.STATUS_EXITED)
+            {
+                myBitmapImage.BeginInit();
+                myBitmapImage.UriSource = new Uri(GameState.gWorkPath + @"\res\Images\leave.png", UriKind.Absolute);
+                statusImg.ToolTip = "离开";
+                myBitmapImage.EndInit();
+                statusImg.Source = myBitmapImage;
+                should_add = true;
+            }
+
+            //statusImg.Opacity = 0.5;
+
+            switch ((Location)locate)
+            {
+                case Location.left:
+                    LeftStatusGrid.Children.Clear();
+                    if (should_add )
+                        LeftStatusGrid.Children.Add(statusImg);
+                    break;
+
+                case Location.right:
+                    RightStatusGrid.Children.Clear();
+                    if (should_add)
+                        RightStatusGrid.Children.Add(statusImg);
+                    break;
+
+                case Location.bottom:
+                    BottomStatusGrid.Children.Clear();
+                    if (should_add)
+                        BottomStatusGrid.Children.Add(statusImg);
+                    break;
+
+                default:
+                    break;
             }
         }
     }

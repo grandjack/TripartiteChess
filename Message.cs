@@ -20,6 +20,8 @@ namespace MessageStruct {
     internal static pb::FieldAccess.FieldAccessorTable<global::MessageStruct.Echo, global::MessageStruct.Echo.Builder> internal__static_MessageStruct_Echo__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_MessageStruct_LogOnorOut__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::MessageStruct.LogOnorOut, global::MessageStruct.LogOnorOut.Builder> internal__static_MessageStruct_LogOnorOut__FieldAccessorTable;
+    internal static pbd::MessageDescriptor internal__static_MessageStruct_ImageVersion__Descriptor;
+    internal static pb::FieldAccess.FieldAccessorTable<global::MessageStruct.ImageVersion, global::MessageStruct.ImageVersion.Builder> internal__static_MessageStruct_ImageVersion__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_MessageStruct_ReplyStatus__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::MessageStruct.ReplyStatus, global::MessageStruct.ReplyStatus.Builder> internal__static_MessageStruct_ReplyStatus__FieldAccessorTable;
     internal static pbd::MessageDescriptor internal__static_MessageStruct_Register__Descriptor;
@@ -82,66 +84,68 @@ namespace MessageStruct {
           string.Concat(
             "Cg1tZXNzYWdlLnByb3RvEg1NZXNzYWdlU3RydWN0IhoKBEVjaG8SEgoKdGlt", 
             "ZV9zdGFtcBgBIAEoCSIvCgpMb2dPbm9yT3V0Eg8KB2FjY291bnQYASACKAkS", 
-            "EAoIcGFzc3dvcmQYAiACKAkiSgoLUmVwbHlTdGF0dXMSDgoGc3RhdHVzGAEg", 
-            "AigNEisKBHVzZXIYAiABKAsyHS5NZXNzYWdlU3RydWN0LkNoZXNzQm9hcmRV", 
-            "c2VyIkUKCFJlZ2lzdGVyEhUKDWVtYWlsX2FjY291bnQYASACKAkSEAoIcGFz", 
-            "c3dvcmQYAiACKAkSEAoIdXNlcm5hbWUYAyABKAkiowEKDkNoZXNzQm9hcmRV", 
-            "c2VyEhkKEWNoZXNzX2JvYXJkX2VtcHR5GAEgAigIEhEKCXVzZXJfbmFtZRgC", 
-            "IAEoCRIPCgdhY2NvdW50GAMgASgJEg0KBXNjb3JlGAQgASgFEhAKCGV4X2Vt", 
-            "YWlsGAUgASgJEg0KBXBob25lGAYgASgJEhIKCmhlYWRfaW1hZ2UYByABKAwS", 
-            "DgoGc3RhdHVzGAggASgNIjsKEUNoZXNzQm9hcmRJbmZvUmVxEhYKDmNoZXNz", 
-            "X2JvYXJkX2lkGAEgAigFEg4KBm9wY29kZRgCIAEoBSLJAQoOQ2hlc3NCb2Fy", 
-            "ZEluZm8SCgoCaWQYASACKA0SEgoKcGVvcGxlX251bRgCIAIoDRIwCglsZWZ0", 
-            "X3VzZXIYAyACKAsyHS5NZXNzYWdlU3RydWN0LkNoZXNzQm9hcmRVc2VyEjEK", 
-            "CnJpZ2h0X3VzZXIYBCACKAsyHS5NZXNzYWdlU3RydWN0LkNoZXNzQm9hcmRV", 
-            "c2VyEjIKC2JvdHRvbV91c2VyGAUgAigLMh0uTWVzc2FnZVN0cnVjdC5DaGVz", 
-            "c0JvYXJkVXNlciIzCgtIYWxsSW5mb1JlcRIUCgxnYW1lX2hhbGxfaWQYASAC", 
-            "KAUSDgoGb3Bjb2RlGAIgASgFIpkBCghIYWxsSW5mbxIUCgxnYW1lX2hhbGxf", 
-            "aWQYASACKAUSFAoMdG90YWxfcGVvcGxlGAIgAigNEhMKC2N1cnJfcGVvcGxl", 
-            "GAMgAigNEhgKEHRvdGFsX2NoZXNzYm9hcmQYBCABKA0SMgoLY2hlc3NfYm9h", 
-            "cmQYBSADKAsyHS5NZXNzYWdlU3RydWN0LkNoZXNzQm9hcmRJbmZvIiMKEUdh", 
-            "bWVIYWxsU3VtYXJ5UmVxEg4KBm9wY29kZRgBIAEoBSLAAQoOR2FtZUhhbGxT", 
-            "dW1hcnkSDwoHYWNjb3VudBgBIAIoCRIQCgh1c2VybmFtZRgCIAIoCRINCgVz", 
-            "Y29yZRgDIAIoBRIQCghoYWxsX251bRgEIAIoDRIUCgxoZWFkX3BpY3R1cmUY", 
-            "BSACKAkSEwoLYWRfcGljdHVyZTEYBiACKAkSEwoLYWRfcGljdHVyZTIYByAB", 
-            "KAkSKgoJaGFsbF9pbmZvGAggAygLMhcuTWVzc2FnZVN0cnVjdC5IYWxsSW5m", 
-            "byJLCgtSZXF1ZXN0UGxheRIUCgxnYW1lX2hhbGxfaWQYASACKAUSFgoOY2hl", 
-            "c3NfYm9hcmRfaWQYAiACKAUSDgoGbG9jYXRlGAMgAigFInUKEFJlcXVlc3RQ", 
-            "bGF5UmVwbHkSDgoGc3RhdHVzGAEgAigFEh4KFmZpcnN0X2NvbWVfdXNlcl9s", 
-            "b2NhdGUYAiACKA0SMQoKY2hlc3NCb2FyZBgDIAEoCzIdLk1lc3NhZ2VTdHJ1", 
-            "Y3QuQ2hlc3NCb2FyZEluZm8i3AEKCU1vdmVDaGVzcxIWCg5zcmNfY2hlc3Nf", 
-            "dHlwZRgBIAIoBRIXCg9zcmNfdXNlcl9sb2NhdGUYAiACKAUSEwoLZnJvbV9w", 
-            "b2ludFgYAyACKAUSEwoLZnJvbV9wb2ludFkYBCACKAUSEgoKZGVzX3BvaW50", 
-            "WBgFIAIoBRISCgpkZXNfcG9pbnRZGAYgAigFEhEKCWlzX3dpbm5lchgHIAIo", 
-            "CBIdChVlYXRfdGFyZ2V0X2NoZXNzX3R5cGUYCCABKAUSGgoSdGFyZ2V0X3Vz", 
-            "ZXJfbG9jYXRlGAkgASgNImgKCk1vdmVBY3Rpb24SFwoPc3JjX3VzZXJfbG9j", 
-            "YXRlGAEgAigNEisKCW1vdmVjaGVzcxgCIAIoCzIYLk1lc3NhZ2VTdHJ1Y3Qu", 
-            "TW92ZUNoZXNzEhQKDHRva2VuX2xvY2F0ZRgDIAIoDSI6CgtVc2VyTWVzc2Fn", 
-            "ZRIXCg9zcmNfdXNlcl9sb2NhdGUYASACKA0SEgoKbXNnQ29udGVudBgCIAIo", 
-            "CSIjCg1TeXN0ZW1NZXNzYWdlEhIKCm1zZ0NvbnRlbnQYASACKAkiZgoKUmVj", 
-            "b25jaWxlZBIWCg5hcHBseV9vcl9yZXBseRgBIAIoDRIXCg9zcmNfdXNlcl9s", 
-            "b2NhdGUYAiACKA0SFwoPdGFyX3VzZXJfbG9jYXRlGAMgAigNEg4KBnN0YXR1", 
-            "cxgEIAEoCSIuCgZHaXZlVXASFwoPc3JjX3VzZXJfbG9jYXRlGAEgAigNEgsK", 
-            "A29wdBgCIAEoCSJfCgRVbmRvEhUKDXJlcF9vcl9yZXNwb24YASACKA0SFwoP", 
-            "c3JjX3VzZXJfbG9jYXRlGAIgAigNEhcKD3Rhcl91c2VyX2xvY2F0ZRgDIAIo", 
-            "DRIOCgZzdGF0dXMYBCABKAgiZQoMR2FtZVJlYWR5UmVxEhcKD3NyY191c2Vy", 
-            "X2xvY2F0ZRgBIAIoDRIOCgZvcGNvZGUYAiABKA0SEgoKdG90YWxfdGltZRgD", 
-            "IAEoDRIYChBzaW5nbGVfc3RlcF90aW1lGAQgASgNIqYBCg9HYW1lU3RhdHVz", 
-            "UmVwbHkSGAoQbGVmdF91c2VyX3N0YXR1cxgBIAIoCBIZChFyaWdodF91c2Vy", 
-            "X3N0YXR1cxgCIAIoCBIaChJib3R0b21fdXNlcl9zdGF0dXMYAyACKAgSFAoM", 
-            "dG9rZW5fbG9jYXRlGAQgAigNEhIKCnRvdGFsX3RpbWUYBSACKA0SGAoQc2lu", 
-            "Z2xlX3N0ZXBfdGltZRgGIAIoDSIqCgxGaW5kUGFzc3dvcmQSDQoFZW1haWwY", 
-            "ASACKAkSCwoDb3B0GAIgASgJInsKDlVwZGF0ZVVzZXJJbmZvEhEKCXVzZXJf", 
-            "bmFtZRgBIAIoCRIPCgdhY2NvdW50GAIgAigJEhAKCHBhc3N3b3JkGAMgAigJ", 
-            "EhAKCGV4X2VtYWlsGAQgASgJEg0KBXBob25lGAUgASgJEhIKCmhlYWRfaW1h", 
-            "Z2UYBiABKAwimAEKEkFkUGljdHVyZUl0ZW1SZXBseRIQCghpbWFnZV9pZBgB", 
-            "IAIoDRIPCgdleGlzdGVkGAIgAigIEhIKCmltYWdlX3R5cGUYAyABKAkSEgoK", 
-            "aW1hZ2VfbmFtZRgEIAEoCRIWCg5pbWFnZV9oYXNoY29kZRgFIAEoCRILCgN1", 
-            "cmwYBiABKAkSEgoKaW1hZ2Vfc2l6ZRgHIAEoDSJXCgxBZFBpY3R1cmVSZXES", 
-            "EAoIaW1hZ2VfaWQYASACKA0SFgoOaW1hZ2VfaGFzaGNvZGUYAiABKAkSCwoD", 
-            "dXJsGAMgASgJEhAKCGxhc3Rfb25lGAQgASgIIkcKFUFkUGljdHVyZUNvbnRl", 
-            "bnRSZXBseRIOCgZzeW5jZWQYASACKAgSDwoHY29udGVudBgCIAEoDBINCgVl", 
-          "bmRlZBgDIAEoCA=="));
+            "EAoIcGFzc3dvcmQYAiACKAkiQAoMSW1hZ2VWZXJzaW9uEhYKDnNlcnZlcl92", 
+            "ZXJzaW9uGAEgAigJEhgKEG1hbmRhdG9yeV91cGRhdGUYAiACKAgifQoLUmVw", 
+            "bHlTdGF0dXMSDgoGc3RhdHVzGAEgAigNEisKBHVzZXIYAiABKAsyHS5NZXNz", 
+            "YWdlU3RydWN0LkNoZXNzQm9hcmRVc2VyEjEKDHZlcnNpb25faW5mbxgDIAEo", 
+            "CzIbLk1lc3NhZ2VTdHJ1Y3QuSW1hZ2VWZXJzaW9uIkUKCFJlZ2lzdGVyEhUK", 
+            "DWVtYWlsX2FjY291bnQYASACKAkSEAoIcGFzc3dvcmQYAiACKAkSEAoIdXNl", 
+            "cm5hbWUYAyABKAkiowEKDkNoZXNzQm9hcmRVc2VyEhkKEWNoZXNzX2JvYXJk", 
+            "X2VtcHR5GAEgAigIEhEKCXVzZXJfbmFtZRgCIAEoCRIPCgdhY2NvdW50GAMg", 
+            "ASgJEg0KBXNjb3JlGAQgASgFEhAKCGV4X2VtYWlsGAUgASgJEg0KBXBob25l", 
+            "GAYgASgJEhIKCmhlYWRfaW1hZ2UYByABKAwSDgoGc3RhdHVzGAggASgNIjsK", 
+            "EUNoZXNzQm9hcmRJbmZvUmVxEhYKDmNoZXNzX2JvYXJkX2lkGAEgAigFEg4K", 
+            "Bm9wY29kZRgCIAEoBSLJAQoOQ2hlc3NCb2FyZEluZm8SCgoCaWQYASACKA0S", 
+            "EgoKcGVvcGxlX251bRgCIAIoDRIwCglsZWZ0X3VzZXIYAyACKAsyHS5NZXNz", 
+            "YWdlU3RydWN0LkNoZXNzQm9hcmRVc2VyEjEKCnJpZ2h0X3VzZXIYBCACKAsy", 
+            "HS5NZXNzYWdlU3RydWN0LkNoZXNzQm9hcmRVc2VyEjIKC2JvdHRvbV91c2Vy", 
+            "GAUgAigLMh0uTWVzc2FnZVN0cnVjdC5DaGVzc0JvYXJkVXNlciIzCgtIYWxs", 
+            "SW5mb1JlcRIUCgxnYW1lX2hhbGxfaWQYASACKAUSDgoGb3Bjb2RlGAIgASgF", 
+            "IpkBCghIYWxsSW5mbxIUCgxnYW1lX2hhbGxfaWQYASACKAUSFAoMdG90YWxf", 
+            "cGVvcGxlGAIgAigNEhMKC2N1cnJfcGVvcGxlGAMgAigNEhgKEHRvdGFsX2No", 
+            "ZXNzYm9hcmQYBCABKA0SMgoLY2hlc3NfYm9hcmQYBSADKAsyHS5NZXNzYWdl", 
+            "U3RydWN0LkNoZXNzQm9hcmRJbmZvIiMKEUdhbWVIYWxsU3VtYXJ5UmVxEg4K", 
+            "Bm9wY29kZRgBIAEoBSLAAQoOR2FtZUhhbGxTdW1hcnkSDwoHYWNjb3VudBgB", 
+            "IAIoCRIQCgh1c2VybmFtZRgCIAIoCRINCgVzY29yZRgDIAIoBRIQCghoYWxs", 
+            "X251bRgEIAIoDRIUCgxoZWFkX3BpY3R1cmUYBSACKAkSEwoLYWRfcGljdHVy", 
+            "ZTEYBiACKAkSEwoLYWRfcGljdHVyZTIYByABKAkSKgoJaGFsbF9pbmZvGAgg", 
+            "AygLMhcuTWVzc2FnZVN0cnVjdC5IYWxsSW5mbyJLCgtSZXF1ZXN0UGxheRIU", 
+            "CgxnYW1lX2hhbGxfaWQYASACKAUSFgoOY2hlc3NfYm9hcmRfaWQYAiACKAUS", 
+            "DgoGbG9jYXRlGAMgAigFInUKEFJlcXVlc3RQbGF5UmVwbHkSDgoGc3RhdHVz", 
+            "GAEgAigFEh4KFmZpcnN0X2NvbWVfdXNlcl9sb2NhdGUYAiACKA0SMQoKY2hl", 
+            "c3NCb2FyZBgDIAEoCzIdLk1lc3NhZ2VTdHJ1Y3QuQ2hlc3NCb2FyZEluZm8i", 
+            "3AEKCU1vdmVDaGVzcxIWCg5zcmNfY2hlc3NfdHlwZRgBIAIoBRIXCg9zcmNf", 
+            "dXNlcl9sb2NhdGUYAiACKAUSEwoLZnJvbV9wb2ludFgYAyACKAUSEwoLZnJv", 
+            "bV9wb2ludFkYBCACKAUSEgoKZGVzX3BvaW50WBgFIAIoBRISCgpkZXNfcG9p", 
+            "bnRZGAYgAigFEhEKCWlzX3dpbm5lchgHIAIoCBIdChVlYXRfdGFyZ2V0X2No", 
+            "ZXNzX3R5cGUYCCABKAUSGgoSdGFyZ2V0X3VzZXJfbG9jYXRlGAkgASgNImgK", 
+            "Ck1vdmVBY3Rpb24SFwoPc3JjX3VzZXJfbG9jYXRlGAEgAigNEisKCW1vdmVj", 
+            "aGVzcxgCIAIoCzIYLk1lc3NhZ2VTdHJ1Y3QuTW92ZUNoZXNzEhQKDHRva2Vu", 
+            "X2xvY2F0ZRgDIAIoDSI6CgtVc2VyTWVzc2FnZRIXCg9zcmNfdXNlcl9sb2Nh", 
+            "dGUYASACKA0SEgoKbXNnQ29udGVudBgCIAIoCSIjCg1TeXN0ZW1NZXNzYWdl", 
+            "EhIKCm1zZ0NvbnRlbnQYASACKAkiZgoKUmVjb25jaWxlZBIWCg5hcHBseV9v", 
+            "cl9yZXBseRgBIAIoDRIXCg9zcmNfdXNlcl9sb2NhdGUYAiACKA0SFwoPdGFy", 
+            "X3VzZXJfbG9jYXRlGAMgAigNEg4KBnN0YXR1cxgEIAEoCSIuCgZHaXZlVXAS", 
+            "FwoPc3JjX3VzZXJfbG9jYXRlGAEgAigNEgsKA29wdBgCIAEoCSJfCgRVbmRv", 
+            "EhUKDXJlcF9vcl9yZXNwb24YASACKA0SFwoPc3JjX3VzZXJfbG9jYXRlGAIg", 
+            "AigNEhcKD3Rhcl91c2VyX2xvY2F0ZRgDIAIoDRIOCgZzdGF0dXMYBCABKAgi", 
+            "ZQoMR2FtZVJlYWR5UmVxEhcKD3NyY191c2VyX2xvY2F0ZRgBIAIoDRIOCgZv", 
+            "cGNvZGUYAiABKA0SEgoKdG90YWxfdGltZRgDIAEoDRIYChBzaW5nbGVfc3Rl", 
+            "cF90aW1lGAQgASgNIqYBCg9HYW1lU3RhdHVzUmVwbHkSGAoQbGVmdF91c2Vy", 
+            "X3N0YXR1cxgBIAIoCBIZChFyaWdodF91c2VyX3N0YXR1cxgCIAIoCBIaChJi", 
+            "b3R0b21fdXNlcl9zdGF0dXMYAyACKAgSFAoMdG9rZW5fbG9jYXRlGAQgAigN", 
+            "EhIKCnRvdGFsX3RpbWUYBSACKA0SGAoQc2luZ2xlX3N0ZXBfdGltZRgGIAIo", 
+            "DSIqCgxGaW5kUGFzc3dvcmQSDQoFZW1haWwYASACKAkSCwoDb3B0GAIgASgJ", 
+            "InsKDlVwZGF0ZVVzZXJJbmZvEhEKCXVzZXJfbmFtZRgBIAIoCRIPCgdhY2Nv", 
+            "dW50GAIgAigJEhAKCHBhc3N3b3JkGAMgAigJEhAKCGV4X2VtYWlsGAQgASgJ", 
+            "Eg0KBXBob25lGAUgASgJEhIKCmhlYWRfaW1hZ2UYBiABKAwimAEKEkFkUGlj", 
+            "dHVyZUl0ZW1SZXBseRIQCghpbWFnZV9pZBgBIAIoDRIPCgdleGlzdGVkGAIg", 
+            "AigIEhIKCmltYWdlX3R5cGUYAyABKAkSEgoKaW1hZ2VfbmFtZRgEIAEoCRIW", 
+            "Cg5pbWFnZV9oYXNoY29kZRgFIAEoCRILCgN1cmwYBiABKAkSEgoKaW1hZ2Vf", 
+            "c2l6ZRgHIAEoDSJECgxBZFBpY3R1cmVSZXESEAoIaW1hZ2VfaWQYASACKA0S", 
+            "EAoIcmVxX3R5cGUYAiACKA0SEAoIbGFzdF9vbmUYAyABKAgiNwoVQWRQaWN0", 
+            "dXJlQ29udGVudFJlcGx5Eg0KBWVuZGVkGAEgAigIEg8KB2NvbnRlbnQYAiAB", 
+          "KAw="));
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_MessageStruct_Echo__Descriptor = Descriptor.MessageTypes[0];
@@ -152,106 +156,110 @@ namespace MessageStruct {
         internal__static_MessageStruct_LogOnorOut__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.LogOnorOut, global::MessageStruct.LogOnorOut.Builder>(internal__static_MessageStruct_LogOnorOut__Descriptor,
                 new string[] { "Account", "Password", });
-        internal__static_MessageStruct_ReplyStatus__Descriptor = Descriptor.MessageTypes[2];
+        internal__static_MessageStruct_ImageVersion__Descriptor = Descriptor.MessageTypes[2];
+        internal__static_MessageStruct_ImageVersion__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.ImageVersion, global::MessageStruct.ImageVersion.Builder>(internal__static_MessageStruct_ImageVersion__Descriptor,
+                new string[] { "ServerVersion", "MandatoryUpdate", });
+        internal__static_MessageStruct_ReplyStatus__Descriptor = Descriptor.MessageTypes[3];
         internal__static_MessageStruct_ReplyStatus__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.ReplyStatus, global::MessageStruct.ReplyStatus.Builder>(internal__static_MessageStruct_ReplyStatus__Descriptor,
-                new string[] { "Status", "User", });
-        internal__static_MessageStruct_Register__Descriptor = Descriptor.MessageTypes[3];
+                new string[] { "Status", "User", "VersionInfo", });
+        internal__static_MessageStruct_Register__Descriptor = Descriptor.MessageTypes[4];
         internal__static_MessageStruct_Register__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.Register, global::MessageStruct.Register.Builder>(internal__static_MessageStruct_Register__Descriptor,
                 new string[] { "EmailAccount", "Password", "Username", });
-        internal__static_MessageStruct_ChessBoardUser__Descriptor = Descriptor.MessageTypes[4];
+        internal__static_MessageStruct_ChessBoardUser__Descriptor = Descriptor.MessageTypes[5];
         internal__static_MessageStruct_ChessBoardUser__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.ChessBoardUser, global::MessageStruct.ChessBoardUser.Builder>(internal__static_MessageStruct_ChessBoardUser__Descriptor,
                 new string[] { "ChessBoardEmpty", "UserName", "Account", "Score", "ExEmail", "Phone", "HeadImage", "Status", });
-        internal__static_MessageStruct_ChessBoardInfoReq__Descriptor = Descriptor.MessageTypes[5];
+        internal__static_MessageStruct_ChessBoardInfoReq__Descriptor = Descriptor.MessageTypes[6];
         internal__static_MessageStruct_ChessBoardInfoReq__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.ChessBoardInfoReq, global::MessageStruct.ChessBoardInfoReq.Builder>(internal__static_MessageStruct_ChessBoardInfoReq__Descriptor,
                 new string[] { "ChessBoardId", "Opcode", });
-        internal__static_MessageStruct_ChessBoardInfo__Descriptor = Descriptor.MessageTypes[6];
+        internal__static_MessageStruct_ChessBoardInfo__Descriptor = Descriptor.MessageTypes[7];
         internal__static_MessageStruct_ChessBoardInfo__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.ChessBoardInfo, global::MessageStruct.ChessBoardInfo.Builder>(internal__static_MessageStruct_ChessBoardInfo__Descriptor,
                 new string[] { "Id", "PeopleNum", "LeftUser", "RightUser", "BottomUser", });
-        internal__static_MessageStruct_HallInfoReq__Descriptor = Descriptor.MessageTypes[7];
+        internal__static_MessageStruct_HallInfoReq__Descriptor = Descriptor.MessageTypes[8];
         internal__static_MessageStruct_HallInfoReq__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.HallInfoReq, global::MessageStruct.HallInfoReq.Builder>(internal__static_MessageStruct_HallInfoReq__Descriptor,
                 new string[] { "GameHallId", "Opcode", });
-        internal__static_MessageStruct_HallInfo__Descriptor = Descriptor.MessageTypes[8];
+        internal__static_MessageStruct_HallInfo__Descriptor = Descriptor.MessageTypes[9];
         internal__static_MessageStruct_HallInfo__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.HallInfo, global::MessageStruct.HallInfo.Builder>(internal__static_MessageStruct_HallInfo__Descriptor,
                 new string[] { "GameHallId", "TotalPeople", "CurrPeople", "TotalChessboard", "ChessBoard", });
-        internal__static_MessageStruct_GameHallSumaryReq__Descriptor = Descriptor.MessageTypes[9];
+        internal__static_MessageStruct_GameHallSumaryReq__Descriptor = Descriptor.MessageTypes[10];
         internal__static_MessageStruct_GameHallSumaryReq__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.GameHallSumaryReq, global::MessageStruct.GameHallSumaryReq.Builder>(internal__static_MessageStruct_GameHallSumaryReq__Descriptor,
                 new string[] { "Opcode", });
-        internal__static_MessageStruct_GameHallSumary__Descriptor = Descriptor.MessageTypes[10];
+        internal__static_MessageStruct_GameHallSumary__Descriptor = Descriptor.MessageTypes[11];
         internal__static_MessageStruct_GameHallSumary__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.GameHallSumary, global::MessageStruct.GameHallSumary.Builder>(internal__static_MessageStruct_GameHallSumary__Descriptor,
                 new string[] { "Account", "Username", "Score", "HallNum", "HeadPicture", "AdPicture1", "AdPicture2", "HallInfo", });
-        internal__static_MessageStruct_RequestPlay__Descriptor = Descriptor.MessageTypes[11];
+        internal__static_MessageStruct_RequestPlay__Descriptor = Descriptor.MessageTypes[12];
         internal__static_MessageStruct_RequestPlay__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.RequestPlay, global::MessageStruct.RequestPlay.Builder>(internal__static_MessageStruct_RequestPlay__Descriptor,
                 new string[] { "GameHallId", "ChessBoardId", "Locate", });
-        internal__static_MessageStruct_RequestPlayReply__Descriptor = Descriptor.MessageTypes[12];
+        internal__static_MessageStruct_RequestPlayReply__Descriptor = Descriptor.MessageTypes[13];
         internal__static_MessageStruct_RequestPlayReply__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.RequestPlayReply, global::MessageStruct.RequestPlayReply.Builder>(internal__static_MessageStruct_RequestPlayReply__Descriptor,
                 new string[] { "Status", "FirstComeUserLocate", "ChessBoard", });
-        internal__static_MessageStruct_MoveChess__Descriptor = Descriptor.MessageTypes[13];
+        internal__static_MessageStruct_MoveChess__Descriptor = Descriptor.MessageTypes[14];
         internal__static_MessageStruct_MoveChess__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.MoveChess, global::MessageStruct.MoveChess.Builder>(internal__static_MessageStruct_MoveChess__Descriptor,
                 new string[] { "SrcChessType", "SrcUserLocate", "FromPointX", "FromPointY", "DesPointX", "DesPointY", "IsWinner", "EatTargetChessType", "TargetUserLocate", });
-        internal__static_MessageStruct_MoveAction__Descriptor = Descriptor.MessageTypes[14];
+        internal__static_MessageStruct_MoveAction__Descriptor = Descriptor.MessageTypes[15];
         internal__static_MessageStruct_MoveAction__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.MoveAction, global::MessageStruct.MoveAction.Builder>(internal__static_MessageStruct_MoveAction__Descriptor,
                 new string[] { "SrcUserLocate", "Movechess", "TokenLocate", });
-        internal__static_MessageStruct_UserMessage__Descriptor = Descriptor.MessageTypes[15];
+        internal__static_MessageStruct_UserMessage__Descriptor = Descriptor.MessageTypes[16];
         internal__static_MessageStruct_UserMessage__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.UserMessage, global::MessageStruct.UserMessage.Builder>(internal__static_MessageStruct_UserMessage__Descriptor,
                 new string[] { "SrcUserLocate", "MsgContent", });
-        internal__static_MessageStruct_SystemMessage__Descriptor = Descriptor.MessageTypes[16];
+        internal__static_MessageStruct_SystemMessage__Descriptor = Descriptor.MessageTypes[17];
         internal__static_MessageStruct_SystemMessage__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.SystemMessage, global::MessageStruct.SystemMessage.Builder>(internal__static_MessageStruct_SystemMessage__Descriptor,
                 new string[] { "MsgContent", });
-        internal__static_MessageStruct_Reconciled__Descriptor = Descriptor.MessageTypes[17];
+        internal__static_MessageStruct_Reconciled__Descriptor = Descriptor.MessageTypes[18];
         internal__static_MessageStruct_Reconciled__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.Reconciled, global::MessageStruct.Reconciled.Builder>(internal__static_MessageStruct_Reconciled__Descriptor,
                 new string[] { "ApplyOrReply", "SrcUserLocate", "TarUserLocate", "Status", });
-        internal__static_MessageStruct_GiveUp__Descriptor = Descriptor.MessageTypes[18];
+        internal__static_MessageStruct_GiveUp__Descriptor = Descriptor.MessageTypes[19];
         internal__static_MessageStruct_GiveUp__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.GiveUp, global::MessageStruct.GiveUp.Builder>(internal__static_MessageStruct_GiveUp__Descriptor,
                 new string[] { "SrcUserLocate", "Opt", });
-        internal__static_MessageStruct_Undo__Descriptor = Descriptor.MessageTypes[19];
+        internal__static_MessageStruct_Undo__Descriptor = Descriptor.MessageTypes[20];
         internal__static_MessageStruct_Undo__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.Undo, global::MessageStruct.Undo.Builder>(internal__static_MessageStruct_Undo__Descriptor,
                 new string[] { "RepOrRespon", "SrcUserLocate", "TarUserLocate", "Status", });
-        internal__static_MessageStruct_GameReadyReq__Descriptor = Descriptor.MessageTypes[20];
+        internal__static_MessageStruct_GameReadyReq__Descriptor = Descriptor.MessageTypes[21];
         internal__static_MessageStruct_GameReadyReq__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.GameReadyReq, global::MessageStruct.GameReadyReq.Builder>(internal__static_MessageStruct_GameReadyReq__Descriptor,
                 new string[] { "SrcUserLocate", "Opcode", "TotalTime", "SingleStepTime", });
-        internal__static_MessageStruct_GameStatusReply__Descriptor = Descriptor.MessageTypes[21];
+        internal__static_MessageStruct_GameStatusReply__Descriptor = Descriptor.MessageTypes[22];
         internal__static_MessageStruct_GameStatusReply__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.GameStatusReply, global::MessageStruct.GameStatusReply.Builder>(internal__static_MessageStruct_GameStatusReply__Descriptor,
                 new string[] { "LeftUserStatus", "RightUserStatus", "BottomUserStatus", "TokenLocate", "TotalTime", "SingleStepTime", });
-        internal__static_MessageStruct_FindPassword__Descriptor = Descriptor.MessageTypes[22];
+        internal__static_MessageStruct_FindPassword__Descriptor = Descriptor.MessageTypes[23];
         internal__static_MessageStruct_FindPassword__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.FindPassword, global::MessageStruct.FindPassword.Builder>(internal__static_MessageStruct_FindPassword__Descriptor,
                 new string[] { "Email", "Opt", });
-        internal__static_MessageStruct_UpdateUserInfo__Descriptor = Descriptor.MessageTypes[23];
+        internal__static_MessageStruct_UpdateUserInfo__Descriptor = Descriptor.MessageTypes[24];
         internal__static_MessageStruct_UpdateUserInfo__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.UpdateUserInfo, global::MessageStruct.UpdateUserInfo.Builder>(internal__static_MessageStruct_UpdateUserInfo__Descriptor,
                 new string[] { "UserName", "Account", "Password", "ExEmail", "Phone", "HeadImage", });
-        internal__static_MessageStruct_AdPictureItemReply__Descriptor = Descriptor.MessageTypes[24];
+        internal__static_MessageStruct_AdPictureItemReply__Descriptor = Descriptor.MessageTypes[25];
         internal__static_MessageStruct_AdPictureItemReply__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.AdPictureItemReply, global::MessageStruct.AdPictureItemReply.Builder>(internal__static_MessageStruct_AdPictureItemReply__Descriptor,
                 new string[] { "ImageId", "Existed", "ImageType", "ImageName", "ImageHashcode", "Url", "ImageSize", });
-        internal__static_MessageStruct_AdPictureReq__Descriptor = Descriptor.MessageTypes[25];
+        internal__static_MessageStruct_AdPictureReq__Descriptor = Descriptor.MessageTypes[26];
         internal__static_MessageStruct_AdPictureReq__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.AdPictureReq, global::MessageStruct.AdPictureReq.Builder>(internal__static_MessageStruct_AdPictureReq__Descriptor,
-                new string[] { "ImageId", "ImageHashcode", "Url", "LastOne", });
-        internal__static_MessageStruct_AdPictureContentReply__Descriptor = Descriptor.MessageTypes[26];
+                new string[] { "ImageId", "ReqType", "LastOne", });
+        internal__static_MessageStruct_AdPictureContentReply__Descriptor = Descriptor.MessageTypes[27];
         internal__static_MessageStruct_AdPictureContentReply__FieldAccessorTable = 
             new pb::FieldAccess.FieldAccessorTable<global::MessageStruct.AdPictureContentReply, global::MessageStruct.AdPictureContentReply.Builder>(internal__static_MessageStruct_AdPictureContentReply__Descriptor,
-                new string[] { "Synced", "Content", "Ended", });
+                new string[] { "Ended", "Content", });
         return null;
       };
       pbd::FileDescriptor.InternalBuildGeneratedFileFrom(descriptorData,
@@ -861,11 +869,332 @@ namespace MessageStruct {
   }
   
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class ImageVersion : pb::GeneratedMessage<ImageVersion, ImageVersion.Builder> {
+    private ImageVersion() { }
+    private static readonly ImageVersion defaultInstance = new ImageVersion().MakeReadOnly();
+    private static readonly string[] _imageVersionFieldNames = new string[] { "mandatory_update", "server_version" };
+    private static readonly uint[] _imageVersionFieldTags = new uint[] { 16, 10 };
+    public static ImageVersion DefaultInstance {
+      get { return defaultInstance; }
+    }
+    
+    public override ImageVersion DefaultInstanceForType {
+      get { return DefaultInstance; }
+    }
+    
+    protected override ImageVersion ThisMessage {
+      get { return this; }
+    }
+    
+    public static pbd::MessageDescriptor Descriptor {
+      get { return global::MessageStruct.Message.internal__static_MessageStruct_ImageVersion__Descriptor; }
+    }
+    
+    protected override pb::FieldAccess.FieldAccessorTable<ImageVersion, ImageVersion.Builder> InternalFieldAccessors {
+      get { return global::MessageStruct.Message.internal__static_MessageStruct_ImageVersion__FieldAccessorTable; }
+    }
+    
+    public const int ServerVersionFieldNumber = 1;
+    private bool hasServerVersion;
+    private string serverVersion_ = "";
+    public bool HasServerVersion {
+      get { return hasServerVersion; }
+    }
+    public string ServerVersion {
+      get { return serverVersion_; }
+    }
+    
+    public const int MandatoryUpdateFieldNumber = 2;
+    private bool hasMandatoryUpdate;
+    private bool mandatoryUpdate_;
+    public bool HasMandatoryUpdate {
+      get { return hasMandatoryUpdate; }
+    }
+    public bool MandatoryUpdate {
+      get { return mandatoryUpdate_; }
+    }
+    
+    public override bool IsInitialized {
+      get {
+        if (!hasServerVersion) return false;
+        if (!hasMandatoryUpdate) return false;
+        return true;
+      }
+    }
+    
+    public override void WriteTo(pb::ICodedOutputStream output) {
+      CalcSerializedSize();
+      string[] field_names = _imageVersionFieldNames;
+      if (hasServerVersion) {
+        output.WriteString(1, field_names[1], ServerVersion);
+      }
+      if (hasMandatoryUpdate) {
+        output.WriteBool(2, field_names[0], MandatoryUpdate);
+      }
+      UnknownFields.WriteTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public override int SerializedSize {
+      get {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+        return CalcSerializedSize();
+      }
+    }
+    
+    private int CalcSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+      
+      size = 0;
+      if (hasServerVersion) {
+        size += pb::CodedOutputStream.ComputeStringSize(1, ServerVersion);
+      }
+      if (hasMandatoryUpdate) {
+        size += pb::CodedOutputStream.ComputeBoolSize(2, MandatoryUpdate);
+      }
+      size += UnknownFields.SerializedSize;
+      memoizedSerializedSize = size;
+      return size;
+    }
+    public static ImageVersion ParseFrom(pb::ByteString data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static ImageVersion ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static ImageVersion ParseFrom(byte[] data) {
+      return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
+    }
+    public static ImageVersion ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
+    }
+    public static ImageVersion ParseFrom(global::System.IO.Stream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static ImageVersion ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    public static ImageVersion ParseDelimitedFrom(global::System.IO.Stream input) {
+      return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
+    }
+    public static ImageVersion ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+      return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
+    }
+    public static ImageVersion ParseFrom(pb::ICodedInputStream input) {
+      return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
+    }
+    public static ImageVersion ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
+    }
+    private ImageVersion MakeReadOnly() {
+      return this;
+    }
+    
+    public static Builder CreateBuilder() { return new Builder(); }
+    public override Builder ToBuilder() { return CreateBuilder(this); }
+    public override Builder CreateBuilderForType() { return new Builder(); }
+    public static Builder CreateBuilder(ImageVersion prototype) {
+      return new Builder(prototype);
+    }
+    
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed partial class Builder : pb::GeneratedBuilder<ImageVersion, Builder> {
+      protected override Builder ThisBuilder {
+        get { return this; }
+      }
+      public Builder() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+      }
+      internal Builder(ImageVersion cloneFrom) {
+        result = cloneFrom;
+        resultIsReadOnly = true;
+      }
+      
+      private bool resultIsReadOnly;
+      private ImageVersion result;
+      
+      private ImageVersion PrepareBuilder() {
+        if (resultIsReadOnly) {
+          ImageVersion original = result;
+          result = new ImageVersion();
+          resultIsReadOnly = false;
+          MergeFrom(original);
+        }
+        return result;
+      }
+      
+      public override bool IsInitialized {
+        get { return result.IsInitialized; }
+      }
+      
+      protected override ImageVersion MessageBeingBuilt {
+        get { return PrepareBuilder(); }
+      }
+      
+      public override Builder Clear() {
+        result = DefaultInstance;
+        resultIsReadOnly = true;
+        return this;
+      }
+      
+      public override Builder Clone() {
+        if (resultIsReadOnly) {
+          return new Builder(result);
+        } else {
+          return new Builder().MergeFrom(result);
+        }
+      }
+      
+      public override pbd::MessageDescriptor DescriptorForType {
+        get { return global::MessageStruct.ImageVersion.Descriptor; }
+      }
+      
+      public override ImageVersion DefaultInstanceForType {
+        get { return global::MessageStruct.ImageVersion.DefaultInstance; }
+      }
+      
+      public override ImageVersion BuildPartial() {
+        if (resultIsReadOnly) {
+          return result;
+        }
+        resultIsReadOnly = true;
+        return result.MakeReadOnly();
+      }
+      
+      public override Builder MergeFrom(pb::IMessage other) {
+        if (other is ImageVersion) {
+          return MergeFrom((ImageVersion) other);
+        } else {
+          base.MergeFrom(other);
+          return this;
+        }
+      }
+      
+      public override Builder MergeFrom(ImageVersion other) {
+        if (other == global::MessageStruct.ImageVersion.DefaultInstance) return this;
+        PrepareBuilder();
+        if (other.HasServerVersion) {
+          ServerVersion = other.ServerVersion;
+        }
+        if (other.HasMandatoryUpdate) {
+          MandatoryUpdate = other.MandatoryUpdate;
+        }
+        this.MergeUnknownFields(other.UnknownFields);
+        return this;
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input) {
+        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      }
+      
+      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+        PrepareBuilder();
+        pb::UnknownFieldSet.Builder unknownFields = null;
+        uint tag;
+        string field_name;
+        while (input.ReadTag(out tag, out field_name)) {
+          if(tag == 0 && field_name != null) {
+            int field_ordinal = global::System.Array.BinarySearch(_imageVersionFieldNames, field_name, global::System.StringComparer.Ordinal);
+            if(field_ordinal >= 0)
+              tag = _imageVersionFieldTags[field_ordinal];
+            else {
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              continue;
+            }
+          }
+          switch (tag) {
+            case 0: {
+              throw pb::InvalidProtocolBufferException.InvalidTag();
+            }
+            default: {
+              if (pb::WireFormat.IsEndGroupTag(tag)) {
+                if (unknownFields != null) {
+                  this.UnknownFields = unknownFields.Build();
+                }
+                return this;
+              }
+              if (unknownFields == null) {
+                unknownFields = pb::UnknownFieldSet.CreateBuilder(this.UnknownFields);
+              }
+              ParseUnknownField(input, unknownFields, extensionRegistry, tag, field_name);
+              break;
+            }
+            case 10: {
+              result.hasServerVersion = input.ReadString(ref result.serverVersion_);
+              break;
+            }
+            case 16: {
+              result.hasMandatoryUpdate = input.ReadBool(ref result.mandatoryUpdate_);
+              break;
+            }
+          }
+        }
+        
+        if (unknownFields != null) {
+          this.UnknownFields = unknownFields.Build();
+        }
+        return this;
+      }
+      
+      
+      public bool HasServerVersion {
+        get { return result.hasServerVersion; }
+      }
+      public string ServerVersion {
+        get { return result.ServerVersion; }
+        set { SetServerVersion(value); }
+      }
+      public Builder SetServerVersion(string value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasServerVersion = true;
+        result.serverVersion_ = value;
+        return this;
+      }
+      public Builder ClearServerVersion() {
+        PrepareBuilder();
+        result.hasServerVersion = false;
+        result.serverVersion_ = "";
+        return this;
+      }
+      
+      public bool HasMandatoryUpdate {
+        get { return result.hasMandatoryUpdate; }
+      }
+      public bool MandatoryUpdate {
+        get { return result.MandatoryUpdate; }
+        set { SetMandatoryUpdate(value); }
+      }
+      public Builder SetMandatoryUpdate(bool value) {
+        PrepareBuilder();
+        result.hasMandatoryUpdate = true;
+        result.mandatoryUpdate_ = value;
+        return this;
+      }
+      public Builder ClearMandatoryUpdate() {
+        PrepareBuilder();
+        result.hasMandatoryUpdate = false;
+        result.mandatoryUpdate_ = false;
+        return this;
+      }
+    }
+    static ImageVersion() {
+      object.ReferenceEquals(global::MessageStruct.Message.Descriptor, null);
+    }
+  }
+  
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class ReplyStatus : pb::GeneratedMessage<ReplyStatus, ReplyStatus.Builder> {
     private ReplyStatus() { }
     private static readonly ReplyStatus defaultInstance = new ReplyStatus().MakeReadOnly();
-    private static readonly string[] _replyStatusFieldNames = new string[] { "status", "user" };
-    private static readonly uint[] _replyStatusFieldTags = new uint[] { 8, 18 };
+    private static readonly string[] _replyStatusFieldNames = new string[] { "status", "user", "version_info" };
+    private static readonly uint[] _replyStatusFieldTags = new uint[] { 8, 18, 26 };
     public static ReplyStatus DefaultInstance {
       get { return defaultInstance; }
     }
@@ -907,11 +1236,24 @@ namespace MessageStruct {
       get { return user_ ?? global::MessageStruct.ChessBoardUser.DefaultInstance; }
     }
     
+    public const int VersionInfoFieldNumber = 3;
+    private bool hasVersionInfo;
+    private global::MessageStruct.ImageVersion versionInfo_;
+    public bool HasVersionInfo {
+      get { return hasVersionInfo; }
+    }
+    public global::MessageStruct.ImageVersion VersionInfo {
+      get { return versionInfo_ ?? global::MessageStruct.ImageVersion.DefaultInstance; }
+    }
+    
     public override bool IsInitialized {
       get {
         if (!hasStatus) return false;
         if (HasUser) {
           if (!User.IsInitialized) return false;
+        }
+        if (HasVersionInfo) {
+          if (!VersionInfo.IsInitialized) return false;
         }
         return true;
       }
@@ -925,6 +1267,9 @@ namespace MessageStruct {
       }
       if (hasUser) {
         output.WriteMessage(2, field_names[1], User);
+      }
+      if (hasVersionInfo) {
+        output.WriteMessage(3, field_names[2], VersionInfo);
       }
       UnknownFields.WriteTo(output);
     }
@@ -948,6 +1293,9 @@ namespace MessageStruct {
       }
       if (hasUser) {
         size += pb::CodedOutputStream.ComputeMessageSize(2, User);
+      }
+      if (hasVersionInfo) {
+        size += pb::CodedOutputStream.ComputeMessageSize(3, VersionInfo);
       }
       size += UnknownFields.SerializedSize;
       memoizedSerializedSize = size;
@@ -1077,6 +1425,9 @@ namespace MessageStruct {
         if (other.HasUser) {
           MergeUser(other.User);
         }
+        if (other.HasVersionInfo) {
+          MergeVersionInfo(other.VersionInfo);
+        }
         this.MergeUnknownFields(other.UnknownFields);
         return this;
       }
@@ -1131,6 +1482,15 @@ namespace MessageStruct {
               }
               input.ReadMessage(subBuilder, extensionRegistry);
               User = subBuilder.BuildPartial();
+              break;
+            }
+            case 26: {
+              global::MessageStruct.ImageVersion.Builder subBuilder = global::MessageStruct.ImageVersion.CreateBuilder();
+              if (result.hasVersionInfo) {
+                subBuilder.MergeFrom(VersionInfo);
+              }
+              input.ReadMessage(subBuilder, extensionRegistry);
+              VersionInfo = subBuilder.BuildPartial();
               break;
             }
           }
@@ -1202,6 +1562,46 @@ namespace MessageStruct {
         PrepareBuilder();
         result.hasUser = false;
         result.user_ = null;
+        return this;
+      }
+      
+      public bool HasVersionInfo {
+       get { return result.hasVersionInfo; }
+      }
+      public global::MessageStruct.ImageVersion VersionInfo {
+        get { return result.VersionInfo; }
+        set { SetVersionInfo(value); }
+      }
+      public Builder SetVersionInfo(global::MessageStruct.ImageVersion value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        result.hasVersionInfo = true;
+        result.versionInfo_ = value;
+        return this;
+      }
+      public Builder SetVersionInfo(global::MessageStruct.ImageVersion.Builder builderForValue) {
+        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
+        PrepareBuilder();
+        result.hasVersionInfo = true;
+        result.versionInfo_ = builderForValue.Build();
+        return this;
+      }
+      public Builder MergeVersionInfo(global::MessageStruct.ImageVersion value) {
+        pb::ThrowHelper.ThrowIfNull(value, "value");
+        PrepareBuilder();
+        if (result.hasVersionInfo &&
+            result.versionInfo_ != global::MessageStruct.ImageVersion.DefaultInstance) {
+            result.versionInfo_ = global::MessageStruct.ImageVersion.CreateBuilder(result.versionInfo_).MergeFrom(value).BuildPartial();
+        } else {
+          result.versionInfo_ = value;
+        }
+        result.hasVersionInfo = true;
+        return this;
+      }
+      public Builder ClearVersionInfo() {
+        PrepareBuilder();
+        result.hasVersionInfo = false;
+        result.versionInfo_ = null;
         return this;
       }
     }
@@ -10550,8 +10950,8 @@ namespace MessageStruct {
   public sealed partial class AdPictureReq : pb::GeneratedMessage<AdPictureReq, AdPictureReq.Builder> {
     private AdPictureReq() { }
     private static readonly AdPictureReq defaultInstance = new AdPictureReq().MakeReadOnly();
-    private static readonly string[] _adPictureReqFieldNames = new string[] { "image_hashcode", "image_id", "last_one", "url" };
-    private static readonly uint[] _adPictureReqFieldTags = new uint[] { 18, 8, 32, 26 };
+    private static readonly string[] _adPictureReqFieldNames = new string[] { "image_id", "last_one", "req_type" };
+    private static readonly uint[] _adPictureReqFieldTags = new uint[] { 8, 24, 16 };
     public static AdPictureReq DefaultInstance {
       get { return defaultInstance; }
     }
@@ -10583,27 +10983,18 @@ namespace MessageStruct {
       get { return imageId_; }
     }
     
-    public const int ImageHashcodeFieldNumber = 2;
-    private bool hasImageHashcode;
-    private string imageHashcode_ = "";
-    public bool HasImageHashcode {
-      get { return hasImageHashcode; }
+    public const int ReqTypeFieldNumber = 2;
+    private bool hasReqType;
+    private uint reqType_;
+    public bool HasReqType {
+      get { return hasReqType; }
     }
-    public string ImageHashcode {
-      get { return imageHashcode_; }
-    }
-    
-    public const int UrlFieldNumber = 3;
-    private bool hasUrl;
-    private string url_ = "";
-    public bool HasUrl {
-      get { return hasUrl; }
-    }
-    public string Url {
-      get { return url_; }
+    [global::System.CLSCompliant(false)]
+    public uint ReqType {
+      get { return reqType_; }
     }
     
-    public const int LastOneFieldNumber = 4;
+    public const int LastOneFieldNumber = 3;
     private bool hasLastOne;
     private bool lastOne_;
     public bool HasLastOne {
@@ -10616,6 +11007,7 @@ namespace MessageStruct {
     public override bool IsInitialized {
       get {
         if (!hasImageId) return false;
+        if (!hasReqType) return false;
         return true;
       }
     }
@@ -10624,16 +11016,13 @@ namespace MessageStruct {
       CalcSerializedSize();
       string[] field_names = _adPictureReqFieldNames;
       if (hasImageId) {
-        output.WriteUInt32(1, field_names[1], ImageId);
+        output.WriteUInt32(1, field_names[0], ImageId);
       }
-      if (hasImageHashcode) {
-        output.WriteString(2, field_names[0], ImageHashcode);
-      }
-      if (hasUrl) {
-        output.WriteString(3, field_names[3], Url);
+      if (hasReqType) {
+        output.WriteUInt32(2, field_names[2], ReqType);
       }
       if (hasLastOne) {
-        output.WriteBool(4, field_names[2], LastOne);
+        output.WriteBool(3, field_names[1], LastOne);
       }
       UnknownFields.WriteTo(output);
     }
@@ -10655,14 +11044,11 @@ namespace MessageStruct {
       if (hasImageId) {
         size += pb::CodedOutputStream.ComputeUInt32Size(1, ImageId);
       }
-      if (hasImageHashcode) {
-        size += pb::CodedOutputStream.ComputeStringSize(2, ImageHashcode);
-      }
-      if (hasUrl) {
-        size += pb::CodedOutputStream.ComputeStringSize(3, Url);
+      if (hasReqType) {
+        size += pb::CodedOutputStream.ComputeUInt32Size(2, ReqType);
       }
       if (hasLastOne) {
-        size += pb::CodedOutputStream.ComputeBoolSize(4, LastOne);
+        size += pb::CodedOutputStream.ComputeBoolSize(3, LastOne);
       }
       size += UnknownFields.SerializedSize;
       memoizedSerializedSize = size;
@@ -10789,11 +11175,8 @@ namespace MessageStruct {
         if (other.HasImageId) {
           ImageId = other.ImageId;
         }
-        if (other.HasImageHashcode) {
-          ImageHashcode = other.ImageHashcode;
-        }
-        if (other.HasUrl) {
-          Url = other.Url;
+        if (other.HasReqType) {
+          ReqType = other.ReqType;
         }
         if (other.HasLastOne) {
           LastOne = other.LastOne;
@@ -10845,15 +11228,11 @@ namespace MessageStruct {
               result.hasImageId = input.ReadUInt32(ref result.imageId_);
               break;
             }
-            case 18: {
-              result.hasImageHashcode = input.ReadString(ref result.imageHashcode_);
+            case 16: {
+              result.hasReqType = input.ReadUInt32(ref result.reqType_);
               break;
             }
-            case 26: {
-              result.hasUrl = input.ReadString(ref result.url_);
-              break;
-            }
-            case 32: {
+            case 24: {
               result.hasLastOne = input.ReadBool(ref result.lastOne_);
               break;
             }
@@ -10889,45 +11268,25 @@ namespace MessageStruct {
         return this;
       }
       
-      public bool HasImageHashcode {
-        get { return result.hasImageHashcode; }
+      public bool HasReqType {
+        get { return result.hasReqType; }
       }
-      public string ImageHashcode {
-        get { return result.ImageHashcode; }
-        set { SetImageHashcode(value); }
+      [global::System.CLSCompliant(false)]
+      public uint ReqType {
+        get { return result.ReqType; }
+        set { SetReqType(value); }
       }
-      public Builder SetImageHashcode(string value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+      [global::System.CLSCompliant(false)]
+      public Builder SetReqType(uint value) {
         PrepareBuilder();
-        result.hasImageHashcode = true;
-        result.imageHashcode_ = value;
+        result.hasReqType = true;
+        result.reqType_ = value;
         return this;
       }
-      public Builder ClearImageHashcode() {
+      public Builder ClearReqType() {
         PrepareBuilder();
-        result.hasImageHashcode = false;
-        result.imageHashcode_ = "";
-        return this;
-      }
-      
-      public bool HasUrl {
-        get { return result.hasUrl; }
-      }
-      public string Url {
-        get { return result.Url; }
-        set { SetUrl(value); }
-      }
-      public Builder SetUrl(string value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
-        PrepareBuilder();
-        result.hasUrl = true;
-        result.url_ = value;
-        return this;
-      }
-      public Builder ClearUrl() {
-        PrepareBuilder();
-        result.hasUrl = false;
-        result.url_ = "";
+        result.hasReqType = false;
+        result.reqType_ = 0;
         return this;
       }
       
@@ -10960,8 +11319,8 @@ namespace MessageStruct {
   public sealed partial class AdPictureContentReply : pb::GeneratedMessage<AdPictureContentReply, AdPictureContentReply.Builder> {
     private AdPictureContentReply() { }
     private static readonly AdPictureContentReply defaultInstance = new AdPictureContentReply().MakeReadOnly();
-    private static readonly string[] _adPictureContentReplyFieldNames = new string[] { "content", "ended", "synced" };
-    private static readonly uint[] _adPictureContentReplyFieldTags = new uint[] { 18, 24, 8 };
+    private static readonly string[] _adPictureContentReplyFieldNames = new string[] { "content", "ended" };
+    private static readonly uint[] _adPictureContentReplyFieldTags = new uint[] { 18, 8 };
     public static AdPictureContentReply DefaultInstance {
       get { return defaultInstance; }
     }
@@ -10982,14 +11341,14 @@ namespace MessageStruct {
       get { return global::MessageStruct.Message.internal__static_MessageStruct_AdPictureContentReply__FieldAccessorTable; }
     }
     
-    public const int SyncedFieldNumber = 1;
-    private bool hasSynced;
-    private bool synced_;
-    public bool HasSynced {
-      get { return hasSynced; }
+    public const int EndedFieldNumber = 1;
+    private bool hasEnded;
+    private bool ended_;
+    public bool HasEnded {
+      get { return hasEnded; }
     }
-    public bool Synced {
-      get { return synced_; }
+    public bool Ended {
+      get { return ended_; }
     }
     
     public const int ContentFieldNumber = 2;
@@ -11002,19 +11361,9 @@ namespace MessageStruct {
       get { return content_; }
     }
     
-    public const int EndedFieldNumber = 3;
-    private bool hasEnded;
-    private bool ended_;
-    public bool HasEnded {
-      get { return hasEnded; }
-    }
-    public bool Ended {
-      get { return ended_; }
-    }
-    
     public override bool IsInitialized {
       get {
-        if (!hasSynced) return false;
+        if (!hasEnded) return false;
         return true;
       }
     }
@@ -11022,14 +11371,11 @@ namespace MessageStruct {
     public override void WriteTo(pb::ICodedOutputStream output) {
       CalcSerializedSize();
       string[] field_names = _adPictureContentReplyFieldNames;
-      if (hasSynced) {
-        output.WriteBool(1, field_names[2], Synced);
+      if (hasEnded) {
+        output.WriteBool(1, field_names[1], Ended);
       }
       if (hasContent) {
         output.WriteBytes(2, field_names[0], Content);
-      }
-      if (hasEnded) {
-        output.WriteBool(3, field_names[1], Ended);
       }
       UnknownFields.WriteTo(output);
     }
@@ -11048,14 +11394,11 @@ namespace MessageStruct {
       if (size != -1) return size;
       
       size = 0;
-      if (hasSynced) {
-        size += pb::CodedOutputStream.ComputeBoolSize(1, Synced);
+      if (hasEnded) {
+        size += pb::CodedOutputStream.ComputeBoolSize(1, Ended);
       }
       if (hasContent) {
         size += pb::CodedOutputStream.ComputeBytesSize(2, Content);
-      }
-      if (hasEnded) {
-        size += pb::CodedOutputStream.ComputeBoolSize(3, Ended);
       }
       size += UnknownFields.SerializedSize;
       memoizedSerializedSize = size;
@@ -11179,14 +11522,11 @@ namespace MessageStruct {
       public override Builder MergeFrom(AdPictureContentReply other) {
         if (other == global::MessageStruct.AdPictureContentReply.DefaultInstance) return this;
         PrepareBuilder();
-        if (other.HasSynced) {
-          Synced = other.Synced;
+        if (other.HasEnded) {
+          Ended = other.Ended;
         }
         if (other.HasContent) {
           Content = other.Content;
-        }
-        if (other.HasEnded) {
-          Ended = other.Ended;
         }
         this.MergeUnknownFields(other.UnknownFields);
         return this;
@@ -11232,15 +11572,11 @@ namespace MessageStruct {
               break;
             }
             case 8: {
-              result.hasSynced = input.ReadBool(ref result.synced_);
+              result.hasEnded = input.ReadBool(ref result.ended_);
               break;
             }
             case 18: {
               result.hasContent = input.ReadBytes(ref result.content_);
-              break;
-            }
-            case 24: {
-              result.hasEnded = input.ReadBool(ref result.ended_);
               break;
             }
           }
@@ -11253,23 +11589,23 @@ namespace MessageStruct {
       }
       
       
-      public bool HasSynced {
-        get { return result.hasSynced; }
+      public bool HasEnded {
+        get { return result.hasEnded; }
       }
-      public bool Synced {
-        get { return result.Synced; }
-        set { SetSynced(value); }
+      public bool Ended {
+        get { return result.Ended; }
+        set { SetEnded(value); }
       }
-      public Builder SetSynced(bool value) {
+      public Builder SetEnded(bool value) {
         PrepareBuilder();
-        result.hasSynced = true;
-        result.synced_ = value;
+        result.hasEnded = true;
+        result.ended_ = value;
         return this;
       }
-      public Builder ClearSynced() {
+      public Builder ClearEnded() {
         PrepareBuilder();
-        result.hasSynced = false;
-        result.synced_ = false;
+        result.hasEnded = false;
+        result.ended_ = false;
         return this;
       }
       
@@ -11291,26 +11627,6 @@ namespace MessageStruct {
         PrepareBuilder();
         result.hasContent = false;
         result.content_ = pb::ByteString.Empty;
-        return this;
-      }
-      
-      public bool HasEnded {
-        get { return result.hasEnded; }
-      }
-      public bool Ended {
-        get { return result.Ended; }
-        set { SetEnded(value); }
-      }
-      public Builder SetEnded(bool value) {
-        PrepareBuilder();
-        result.hasEnded = true;
-        result.ended_ = value;
-        return this;
-      }
-      public Builder ClearEnded() {
-        PrepareBuilder();
-        result.hasEnded = false;
-        result.ended_ = false;
         return this;
       }
     }

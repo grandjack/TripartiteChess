@@ -426,10 +426,22 @@
 
                 <Grid x:Name="gridBottomRightAd" Grid.Row="11" Grid.Column="19" Grid.ColumnSpan="4" Grid.RowSpan="4">
                 </Grid>
-                
+
+                <Grid x:Name="gridBottomLeftAd" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="4">
+                </Grid>
+
                 <Grid Grid.Row="5" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2">
                     <Grid x:Name="LeftHeadImageGrid" Grid.Row="0" Grid.RowSpan="2" Loaded="LeftUserInfoLoad"/>
                 </Grid>
+
+                <Grid Grid.Row="5" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid x:Name="LeftStatusGrid"  Grid.Column="1" Grid.ColumnSpan="1" Margin="0"/>
+                </Grid>
+                
                 <Grid Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -448,6 +460,15 @@
                 <Grid Grid.Row="11" Grid.Column="6" Grid.RowSpan="2" Grid.ColumnSpan="2">
                     <Grid x:Name="BottomHeadImageGrid" Grid.Row="0" Grid.RowSpan="2" Loaded="BottomUserinfoLoad"/>
                 </Grid>
+
+                <Grid Grid.Row="11" Grid.Column="5" Grid.RowSpan="1" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="1.5*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid x:Name="BottomStatusGrid"  Grid.Column="0" Grid.ColumnSpan="2" Margin="0"/>
+                </Grid>
+                
                 <Grid Grid.Row="13" Grid.Column="6" Grid.ColumnSpan="3" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -463,8 +484,18 @@
                     <TextBlock x:Name="BottomUserScore" Grid.Row="1"  Grid.Column="1" Grid.ColumnSpan="1" Foreground="White" Margin="5,0,0,0"/>
                 </Grid>
 
+                
+                
                 <Grid Grid.Row="5" Grid.Column="24" Grid.RowSpan="2" Grid.ColumnSpan="2">
                     <Grid x:Name="RightHeadImageGrid" Grid.Row="0" Grid.RowSpan="2" Loaded="RightUserInfoLoad"/>
+                </Grid>
+                
+                <Grid Grid.Row="5" Grid.Column="25" Grid.RowSpan="1" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid x:Name="RightStatusGrid"  Grid.Column="0" Grid.ColumnSpan="1" Margin="0"/>
                 </Grid>
                 
                 <Grid Grid.Row="7" Grid.Column="24" Grid.ColumnSpan="3" >
@@ -483,9 +514,12 @@
                 </Grid>
 
                 <Grid Grid.Row="15" Grid.Column="9" Grid.ColumnSpan="9" >
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <Label Content="版权所有 © 2015-2016 众游三人象棋" HorizontalAlignment="Center"/>
-                        <Label Content="  联系我们" HorizontalAlignment="Center" Cursor="Hand" Foreground="Wheat" MouseLeftButtonDown="ContactMe"/>
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Label Content="中华人民共和国专利号: ZL 2014 3 0414401.2" HorizontalAlignment="Center" Padding="0" Margin="0"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0">
+                            <Label Content="版权所有 © 2015-2016 众游三人象棋" HorizontalAlignment="Center" Padding="0,0,0,3" />
+                            <Label Content="  联系我们" HorizontalAlignment="Center" Cursor="Hand"  Padding="0,0,0,3"  Foreground="Wheat" MouseLeftButtonDown="ContactMe"/>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
             </Grid>

@@ -82,6 +82,9 @@
     <Compile Include="ChessImage.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="IniFileHand.cs" />
+    <Compile Include="Loading.xaml.cs">
+      <DependentUpon>Loading.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MD5Hash.cs" />
     <Compile Include="MediaBackgroundThread.cs" />
     <Compile Include="Message.cs" />
@@ -103,6 +106,10 @@
       <DependentUpon>UserInfoWin.xaml</DependentUpon>
     </Compile>
     <Page Include="Chess.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Loading.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

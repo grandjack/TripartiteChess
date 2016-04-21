@@ -18,7 +18,7 @@ namespace WpfApplication2
         right = 1,
         bottom = 2,
         unknown = 3,
-        //middle = 3
+        middle = 4
     };
 
     abstract class User
@@ -80,19 +80,30 @@ namespace WpfApplication2
             ChessMan chessMan = sender as ChessMan;
             //只有该当前用户走棋的时候才需要显示手型鼠标
             //(ChessBoard.GetChessBoardObj().GetUserByUsrLocation((Location)WpfApplication2.GameState.locate).State != User.GameState.PLAYING)
-            if ((board.currUserLocation == WpfApplication2.GameState.currentTokenLocate)&&
+            if ((board.currUserLocation == WpfApplication2.GameState.currentTokenLocate) &&
                 (board.currentUser.State == User.GameState.PLAYING) &&
                 (ChessBoard.GetChessBoardObj().gGameStatus == ChessBoard.GameSatus.PLAYING) &&
                 ((chessMan.GetOwnUser() == board.currentUser) || (board.currSelectChess != null)))
             {
                 chessMan.Cursor = Cursors.Hand;
+
+                if (chessMan.GetChessType() == ChessMan.ChessSpec.CHESS_BING)
+                {
+                    DisplayBingTips.DisplayBingTip(chessMan.Row, chessMan.Column);
+                }
             }
+
         }
 
         private void chessMan_MouseLeave(object sender, MouseEventArgs e)
         {
             ChessMan chessMan = sender as ChessMan;
             chessMan.Cursor = Cursors.Arrow;
+            //ChessBoard.GetChessBoardObj().g_chess_board[chessMan.Row, chessMan.Column].chessGrid.Background = Brushes.Transparent;
+            if (chessMan.GetChessType() == ChessMan.ChessSpec.CHESS_BING)
+            {
+                DisplayBingTips.DestroryBingTip();
+            }
         }
 
         private void chessMan_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -112,6 +123,11 @@ namespace WpfApplication2
                 (ChessBoard.GetChessBoardObj().GetUserByUsrLocation((Location)WpfApplication2.GameState.locate).State != User.GameState.PLAYING))
             {
                 return;
+            }
+
+            if (chessMan.GetChessType() == ChessMan.ChessSpec.CHESS_BING)
+            {
+                DisplayBingTips.DestroryBingTip();
             }
 
             if (board.currSelectChess == null)
@@ -168,6 +184,7 @@ namespace WpfApplication2
                 e.Handled = true;
             }
         }
+
 
         public Location GetUserLocation()
         {
@@ -255,20 +272,24 @@ namespace WpfApplication2
                         }
                     }
                     else if (ChessBoard.CheckIfPublicArea(r_row, r_column) || (ChessBoard.GetPointLocation(r_row, r_column) == Location.right))
-                    //处于交战区和右方区域的规则
-                    //else if ((r_column >= 5) && (r_column < ChessBoard.BOARD_COLUMN_NUM) && (r_row >= 0) && (r_row <= 8))
+                    //处于交战区和右方区域的规则,不能向左
+                    //else if ((ChessBoard.GetPointLocation(r_row, r_column) == Location.middle) || (ChessBoard.GetPointLocation(r_row, r_column) == Location.right))
                     {
                         if (!((d_column - r_column <= 1) && (d_column >= r_column)))
                         {
                             return false;
                         }
                     }
-                    else
-                    {//处于下方区域
+                    else if (ChessBoard.GetPointLocation(r_row, r_column) == Location.bottom)
+                    {//处于下方区域，不能向上
                         if (!((d_row - r_row <= 1) && (d_row >= r_row)))
                         {
                             return false;
                         }
+                    }
+                    else
+                    {
+                        return false;
                     }
                     break;
 
@@ -340,21 +361,25 @@ namespace WpfApplication2
                             return false;
                         }
                     }
-                    //处于交战区和左方区域的规则
-                    //else if ((r_column >= 0) && (r_column < 14) && (r_row >= 0) && (r_row <= 8))
+                    //处于交战区和左方区域的规则,不能向右
                     else if (ChessBoard.CheckIfPublicArea(r_row, r_column) || ChessBoard.GetPointLocation(r_row, r_column) == Location.left)
+                    //else if (ChessBoard.GetPointLocation(r_row, r_column) == Location.middle || ChessBoard.GetPointLocation(r_row, r_column) == Location.left)
                     {
                         if (!((r_column - d_column <= 1) && (d_column <= r_column)))
                         {
                             return false;
                         }
                     }
-                    else
+                    else if (ChessBoard.GetPointLocation(r_row, r_column) == Location.bottom)
                     {//处于下方区域
                         if (!((d_row - r_row <= 1) && (d_row >= r_row)))
                         {
                             return false;
                         }
+                    }
+                    else
+                    {
+                        return false;
                     }
                     break;
 
@@ -431,25 +456,31 @@ namespace WpfApplication2
                     //处于交战区的规则,只能向上、左、右
                     //else if ((r_column > 4) && (r_column < 14) && (r_row >= 0) && (r_row < 9))
                     else if (ChessBoard.CheckIfPublicArea(r_row, r_column))
+                    //else if (ChessBoard.GetPointLocation(r_row, r_column) == Location.middle)
                     {
                         if (!((r_row - d_row <= 1) && (r_row >= d_row)))
                         {
                             return false;
                         }
                     }
-                    else if (r_column <= 4)
-                    {//处于左方区域
+                    //else if (r_column <= 4)
+                    else if (ChessBoard.GetPointLocation(r_row, r_column) == Location.left)
+                    {//处于左方区域不能向右
                         if (!((r_column - d_column <= 1) && (r_column >= d_column)))
                         {
                             return false;
                         }
                     }
-                    else
-                    {//处于右方区域
+                    else if (ChessBoard.GetPointLocation(r_row, r_column) == Location.right)
+                    {//处于右方区域不能向左
                         if (!((d_column - r_column <= 1) && (d_column >= r_column)))
                         {
                             return false;
                         }
+                    }
+                    else
+                    {
+                        return false;
                     }
                     break;
 

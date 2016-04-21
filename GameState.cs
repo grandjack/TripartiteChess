@@ -13,7 +13,7 @@ using System.Windows.Threading;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Composition;
-
+using System.Diagnostics;
 namespace WpfApplication2
 {
     public enum MessageType
@@ -190,19 +190,19 @@ namespace WpfApplication2
             int num = 0;
 
             if ((!board.LeftUser.ChessBoardEmpty) &&
-                ((UserStatus)board.LeftUser.Status > UserStatus.STATUS_ENDED))
+                ((UserStatus)board.LeftUser.Status > UserStatus.STATUS_BEGAN))
             {
                 ++num;
             }
 
             if ((!board.RightUser.ChessBoardEmpty) &&
-                ((UserStatus)board.RightUser.Status > UserStatus.STATUS_ENDED))
+                ((UserStatus)board.RightUser.Status > UserStatus.STATUS_BEGAN))
             {
                 ++num;
             }
 
             if ((!board.BottomUser.ChessBoardEmpty) &&
-                ((UserStatus)board.BottomUser.Status > UserStatus.STATUS_ENDED))
+                ((UserStatus)board.BottomUser.Status > UserStatus.STATUS_BEGAN))
             {
                 ++num;
             }
@@ -434,6 +434,49 @@ namespace WpfApplication2
 
     class LoginState : GameState
     {
+        private void UpdateImage()
+        {
+            try
+            {
+                string src_exe = @"\UpdateProcess\Update.exe";
+                string des_exe = @"\UpdateProcess\MyUpdate.exe";
+                Process process = new Process();
+                if (File.Exists(GameState.gWorkPath + src_exe))
+                {
+                    if (File.Exists(GameState.gWorkPath + des_exe))
+                    {
+                        File.Delete(GameState.gWorkPath + des_exe);
+                    }
+
+                    File.Copy(GameState.gWorkPath + src_exe, GameState.gWorkPath + des_exe);
+                    process.StartInfo.FileName = GameState.gWorkPath + des_exe;
+                }
+                else
+                {
+                    //仅仅用于测试
+                    process.StartInfo.FileName = @"C:\Users\GBX386\Desktop\Visual C#\WpfApplication4_publish2\Update\bin\Debug\" + "Update.exe";
+                }
+                process.Start();
+
+                //Thread.Sleep(1000);
+                //Application.Current.Shutdown();
+                //NetworkThread.DestroryWorkThread();
+
+                logginWin.Dispatcher.Invoke(DispatcherPriority.Normal,
+                 (ThreadStart)delegate()
+                 {
+                     logginWin.LoadingImageClose();
+                     logginWin.Close();
+                     Application.Current.Shutdown();
+                 }
+                );
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine("Start Update failed for " + ee.Message);
+            }
+        }
+
         public override bool MessageHandle(MessageType msg_type, byte[] msg)
         {
             switch (msg_type)
@@ -518,7 +561,35 @@ namespace WpfApplication2
                                  {
                                      logginWin.SavePassword();
                                  }
-                             );                            
+                             );
+
+                            if (reply.HasVersionInfo)
+                            {
+                                string version = IniFileHand.ReadIniData("ImageVersion", "version", "None", GameState.gWorkPath + @"\res\files\info.ini");
+                                if (String.Compare(reply.VersionInfo.ServerVersion, version) > 0)
+                                {
+                                    if (reply.VersionInfo.MandatoryUpdate)
+                                    {
+                                        logginWin.Dispatcher.Invoke(DispatcherPriority.Normal, (ThreadStart)delegate() {
+                                             WindowShowTimer box = new WindowShowTimer(logginWin, "提示", "系统有新版本，需要马上升级", 2);
+                                             box.Show();
+                                         }
+                                        );
+                                        Thread.Sleep(2000);
+                                        IniFileHand.WriteIniData("ImageVersion", "version", reply.VersionInfo.ServerVersion, GameState.gWorkPath + @"\res\files\info.ini");
+                                        UpdateImage();
+                                    }
+                                    else
+                                    {
+                                        MessageBoxResult result = MessageBox.Show("发现有新版本，是否需要升级？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
+                                        if (result == MessageBoxResult.Yes)
+                                        {
+                                            IniFileHand.WriteIniData("ImageVersion", "version", reply.VersionInfo.ServerVersion, GameState.gWorkPath + @"\res\files\info.ini");
+                                            UpdateImage();
+                                        }
+                                    }
+                                }
+                            }
 
                             ImageDownloadState state = new ImageDownloadState();
                             NetworkThread.SetGameState(state);
@@ -532,6 +603,7 @@ namespace WpfApplication2
                             logginWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                 (ThreadStart)delegate()
                                 {
+                                    logginWin.LoadingImageClose();
                                     WindowShowTimer box = new WindowShowTimer(logginWin, "提示", "用户名或密码错误", 3);
                                     box.Show();
                                 }
@@ -941,8 +1013,9 @@ namespace WpfApplication2
 
                             if (giveUp.HasOpt && (giveUp.Opt.Equals("exit")))
                             {
+                                gameWin.DisplayUserStatus(giveUp.SrcUserLocate, UserStatus.STATUS_EXITED);
                                 MessageBoxResult result = MyMessageBox.Show(GameState.gameWin, give_up_usr.UserName + " 退出游戏，Ta将被扣掉30分，本轮游戏结束！ 是否再来一局？", "提示", MessageBoxButton.YesNo);
-                                if (result == MessageBoxResult.OK)
+                                if (result == MessageBoxResult.Yes)
                                 {
                                     GameReadyState s = new GameReadyState();
                                     s.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
@@ -954,7 +1027,7 @@ namespace WpfApplication2
                             else
                             {
                                 MessageBoxResult result = MyMessageBox.Show(GameState.gameWin, give_up_usr.UserName + " 已经认输，恭喜你赢得本局胜利！ 是否再来一局？", "提示", MessageBoxButton.YesNo);
-                                if (result == MessageBoxResult.OK)
+                                if (result == MessageBoxResult.Yes)
                                 {
                                     GameReadyState s = new GameReadyState();
                                     s.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
@@ -1109,10 +1182,51 @@ namespace WpfApplication2
             NetworkThread.SendMessage(MessageType.MSG_GAME_READY_REQ, bytes);
         }
 
+        private void DisplayReadyStatus(GameStatusReply reply)
+        {
+            if (reply.LeftUserStatus == true)
+            {
+                gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
+                {
+                    if (gameWin.LeftStatusGrid.Children.Count == 0)
+                    {
+                        gameWin.DisplayUserStatus((uint)Location.left, UserStatus.STATUS_BEGAN);
+                    }
+                }
+                );
+            }
+
+            if (reply.RightUserStatus == true)
+            {
+                gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
+                {
+                    if (gameWin.RightStatusGrid.Children.Count == 0)
+                    {
+                        gameWin.DisplayUserStatus((uint)Location.right, UserStatus.STATUS_BEGAN);
+                    }
+                }
+                );
+            }
+
+            if (reply.BottomUserStatus == true)
+            {
+                gameWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
+                {
+                    if (gameWin.BottomStatusGrid.Children.Count == 0)
+                    {
+                        gameWin.DisplayUserStatus((uint)Location.bottom, UserStatus.STATUS_BEGAN);
+                    }
+                }
+                );
+            }
+        }
+
         public bool ParseGameStatusReply(byte[] msg)
         {
             GameStatusReply reply = GameStatusReply.ParseFrom(msg);
             bool ret = false;
+
+            DisplayReadyStatus(reply);
 
             currentTokenLocate = (Location)(reply.TokenLocate);
             if ((reply.LeftUserStatus == true) &&
@@ -1138,6 +1252,10 @@ namespace WpfApplication2
                     ChessBoard.GetChessBoardObj().leftUser.timer.Reset();
                     ChessBoard.GetChessBoardObj().righttUser.timer.Reset();
                     ChessBoard.GetChessBoardObj().bottomUser.timer.Reset();
+
+                    gameWin.LeftStatusGrid.Children.Clear();
+                    gameWin.RightStatusGrid.Children.Clear();
+                    gameWin.BottomStatusGrid.Children.Clear();
 
                     User user = ChessBoard.GetChessBoardObj().GetUserByUsrLocation((Location)currentTokenLocate);
                     if (user != null)
@@ -1355,7 +1473,7 @@ namespace WpfApplication2
                                      //WindowShowTimer box = new WindowShowTimer(gameWin, "提示", "合棋，游戏结束！", -1);
                                      //box.Show();
                                      MessageBoxResult result = MyMessageBox.Show(GameState.gameWin, "合棋，本轮游戏结束！ 是否再来一局？", "提示", MessageBoxButton.YesNo);
-                                     if (result == MessageBoxResult.OK)
+                                     if (result == MessageBoxResult.Yes)
                                      {
                                          GameReadyState s = new GameReadyState();
                                          s.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
@@ -1425,7 +1543,7 @@ namespace WpfApplication2
                                             //WindowShowTimer box = new WindowShowTimer(gameWin, "提示", GameState.GetChessBoardtUserByLocate(qiuhe.SrcUserLocate).UserName.ToString() + " 同意了您的请求，和棋，本轮游戏结束！", -1);
                                             //box.Show();
                                             MessageBoxResult result = MyMessageBox.Show(GameState.gameWin, GameState.GetChessBoardtUserByLocate(qiuhe.SrcUserLocate).UserName.ToString() + " 同意了您的请求，和棋，本轮游戏结束！ 是否再来一局？", "提示", MessageBoxButton.YesNo);
-                                            if (result == MessageBoxResult.OK)
+                                            if (result == MessageBoxResult.Yes)
                                             {
                                                 GameReadyState s = new GameReadyState();
                                                 s.RequestGamePlay(GameState.gameHallID, GameState.chessBoardID, GameState.locate);
@@ -1536,6 +1654,9 @@ namespace WpfApplication2
         private static string PathPrefix = GameState.gWorkPath + @"\res\Images\AdPictures\";
         private FileStream fs = null;
         private int currentImageID = (int)ImageID.IMAGE_ID_AD_HALL_TOP_LEFT - 1;
+        private bool end_state = false;
+        const uint IMAGE_INFO = 1;
+        const uint IMAGE_CONTENT = 2;
 
         public static ImageIDLocateMap[] ImageIDMap = new ImageIDLocateMap[] { 
             new ImageIDLocateMap (ImageID.IMAGE_ID_AD_HALL_TOP_LEFT,    PathPrefix),
@@ -1585,7 +1706,7 @@ namespace WpfApplication2
         {
             //chessBoard = ChessBoardInfo.ParseFrom(msg);
             AdPictureContentReply reply = AdPictureContentReply.ParseFrom(msg);
-            if (reply.Synced && (!reply.HasEnded || (reply.HasEnded && !reply.Ended)))
+            if (!reply.Ended)
             {
                 if (fs == null)
                 {
@@ -1598,65 +1719,24 @@ namespace WpfApplication2
                 {
                     //Console.WriteLine("Write content length=" + reply.Content.Length.ToString() + "  recv_length:" + recv_length.ToString() + " total:" + ImageIDMap[currentImageID].size.ToString());
                     fs.Write(reply.Content.ToByteArray(), 0, reply.Content.Length);
-                }  
+                } 
             }
             else
-            {
-                if (reply.HasEnded)
-                {
-                    if (reply.Ended)
-                    {
-                        if (fs != null)
-                        {
-                            fs.Close();
-                            fs = null;
-                        }
-                    }
-                    else
-                    {
-                        if (fs != null)
-                        {
-                            fs.Close();
-                            fs = null;
-                        }
-                    }
-                }
-            }
-
-            if ((reply.HasEnded && reply.Ended) && (!reply.Synced))
-            {
-                currentWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                (ThreadStart)delegate()
-                    {
-                        Window1 gameHall = new Window1();
-                        currentWin.Hide();
-                        gameHall.Owner = currentWin;
-                        logginWin = (MainWindow)currentWin;
-                        SetCurrentWin(gameHall);
-                        SetGameHallWin(gameHall);
-                        gameHall.ShowDialog();
-
-                        NetworkThread.DestroryWorkThread();
-                        logginWin.Close();
-                    }
-                );
-
-                NetworkThread.SetGameState(new GameReadyState());
-                EchoRequest.TimerTest();
-
-                GameReadyState ready = new GameReadyState();
-                ready.GameHallSumay();
-            }
-            else if ((reply.HasEnded && reply.Ended) && (reply.Synced))
             {
                 if (fs != null)
                 {
                     fs.Close();
                     fs = null;
-                    //recv_length = 0;
                 }
+            }
 
-                GetNextFile();
+            if (reply.Ended)
+            {
+                GetNextImgInfo();
+            }
+            else
+            {
+                GetCurrentImgContent();
             }
         }
 
@@ -1680,25 +1760,27 @@ namespace WpfApplication2
                 if (hashcode == null || hashcode.Length <= 0)
                 {
                     Console.WriteLine("Open file failed!!!  Maybe It's not exsited, Now get it down!");
-                    WrapImageReq((ImageID)currPicItemReply.ImageId, "00");
+                    //WrapImageReq((ImageID)currPicItemReply.ImageId, "00");
+                    GetCurrentImgContent();
                 }
                 else
                 {
                     if (hashcode.Equals(currPicItemReply.ImageHashcode))
                     {
-                        //Get next file
-                        GetNextFile();
+                        //Get next image content
+                        GetNextImgInfo();
                     }
                     else
                     {
-                        WrapImageReq((ImageID)currPicItemReply.ImageId, "00");
+                        //WrapImageReq((ImageID)currPicItemReply.ImageId, "00");
+                        GetCurrentImgContent();
                     }
                 }
             }
             else
             {
                 //Get next file
-                GetNextFile();
+                GetNextImgInfo();
             }
         }
 
@@ -1730,34 +1812,86 @@ namespace WpfApplication2
 
         public void SendImageInfo()
         {
+            //初始化存储广告的创建文件夹
+            if (!Directory.Exists(PathPrefix))
+            {
+                // Create the directory it does not exist.
+                Directory.CreateDirectory(PathPrefix);
+            }
+
             ++currentImageID;
-            WrapImageReq((ImageID)currentImageID);
+            WrapImageReq((ImageID)currentImageID, 1);
         }
 
-        private void GetNextFile()
+        private void GetNextImgInfo()
         {
             ++currentImageID;
             if (currentImageID < (int)ImageID.IMAGE_ID_MAX)
             {
                 if (currentImageID < (int)ImageID.IMAGE_ID_MAX - 1)
-                    WrapImageReq((ImageID)currentImageID);
+                    WrapImageReq((ImageID)currentImageID, IMAGE_INFO);
                 else
-                    WrapImageReq((ImageID)currentImageID, "", true);
+                {
+                    WrapImageReq((ImageID)currentImageID, IMAGE_INFO, true);
+                    end_state = true;
+                }
+            }
+            else
+            {
+                if (end_state)
+                {
+                    currentWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                    (ThreadStart)delegate()
+                    {
+                        logginWin.LoadingImageClose();
+
+                        Window1 gameHall = new Window1();
+                        currentWin.Hide();
+                        gameHall.Owner = currentWin;
+                        logginWin = (MainWindow)currentWin;
+                        SetCurrentWin(gameHall);
+                        SetGameHallWin(gameHall);
+                        gameHall.ShowDialog();
+                        //之前为啥要毁掉这个通信线程?????
+                        //NetworkThread.DestroryWorkThread();
+                        logginWin.Close();
+                    }
+                    );
+
+                    NetworkThread.SetGameState(new GameReadyState());
+                    EchoRequest.TimerTest();
+
+                    GameReadyState ready = new GameReadyState();
+                    ready.GameHallSumay();
+                }
             }
         }
 
-        private void WrapImageReq(ImageID id, string hash="", bool last=false)
+        private void GetCurrentImgContent()
+        {
+            if (currentImageID < (int)ImageID.IMAGE_ID_MAX)
+            {
+                if (currentImageID < (int)ImageID.IMAGE_ID_MAX - 1)
+                    WrapImageReq((ImageID)currentImageID, IMAGE_CONTENT);
+                else
+                {
+                    WrapImageReq((ImageID)currentImageID, IMAGE_CONTENT, true);
+                    end_state = true;
+                }
+            }
+        }
+
+        //type=1:image info type=2:image content;
+        private void WrapImageReq(ImageID id, uint type, bool last=false)
         {
             AdPictureReq picItem;
             AdPictureReq.Builder builder = new AdPictureReq.Builder();
 
             builder.SetImageId((uint)id);
-            if ((hash != null) && (hash.Length > 0))
-            {
-                builder.SetImageHashcode(hash);
-            }
+            builder.SetReqType(type);
 
-            builder.SetLastOne(last);
+            if (last)
+                builder.SetLastOne(last);
 
             picItem = builder.Build();
             byte[] bytes = picItem.ToByteArray();

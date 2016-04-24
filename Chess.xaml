@@ -421,7 +421,7 @@
 
                 </Grid>
                 
-                <Grid x:Name="gridMiddleAd" Grid.Row="3" Grid.Column="10" Grid.ColumnSpan="7" Grid.RowSpan="6">                    
+                <Grid x:Name="gridMiddleAd" Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="11" Grid.RowSpan="9" Margin="30,15,30,15">
                 </Grid>
 
                 <Grid x:Name="gridBottomRightAd" Grid.Row="11" Grid.Column="19" Grid.ColumnSpan="4" Grid.RowSpan="4">

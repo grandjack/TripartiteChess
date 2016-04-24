@@ -7,7 +7,10 @@
     <Window.Background>
         <SolidColorBrush Color="Gray" Opacity="0.7" />
     </Window.Background>
-    <Grid x:Name="mainGrid">
-        
+    
+    <Grid>
+        <Grid x:Name="mainGrid" Height="100" Width="100">
+            <Label x:Name="loadingStatus" Content="Loading" Foreground="BlanchedAlmond" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
     </Grid>
 </Window>

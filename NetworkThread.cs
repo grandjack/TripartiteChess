@@ -9,6 +9,7 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using System.Windows.Threading;
 
 namespace WpfApplication2
 {
@@ -16,8 +17,8 @@ namespace WpfApplication2
     {
         static private Socket tcpClient = null;
         static private int port = 8888;
-        //static private string host = "123.57.180.67";
-        static private string host = "10.193.90.79";
+        static private string host = "123.57.180.67";
+        //static private string host = "10.193.90.79";
         private const int HEAD_SIZE = 2 * sizeof(uint);
         static private GameState state = null;
         private const int MAX_RECONNECT_NUM = 10;
@@ -103,6 +104,28 @@ namespace WpfApplication2
         {
             if (currentReconNum < MAX_RECONNECT_NUM)
             {
+                if (GameState.gameHallWin != null)
+                {
+                    GameState.currentWin.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate()
+                    {
+                        WindowShowTimer box = new WindowShowTimer(GameState.currentWin, "提示", "已经断开与服务器的链接，请重新登录", -1);
+                        box.Show();
+                    }
+                    );
+                    try
+                    {
+                        if (tcpClient != null)
+                            tcpClient.Close();
+                        tcpClient = null;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Close failed for " + e.Message);
+                    }
+                    return false;
+                }
+                
+
                 try
                 {
                     tcpClient.Close();
@@ -222,7 +245,7 @@ namespace WpfApplication2
                         else
                         {
                             Console.WriteLine("Send failed. send_bytes=" + total_size);
-                            if (reTry)
+                            if (/*reTry*/true)
                             {
                                 if (!ReConnectServer())
                                     return;
@@ -235,12 +258,16 @@ namespace WpfApplication2
                 catch (Exception e)
                 {
                     Console.WriteLine("send failed for {0}", e.Message);
-                    if (reTry)
+                    if (/*reTry*/true)
                     {
                         if (!ReConnectServer())
                             return;
                     }
                 }
+            }
+            else
+            {
+                ReConnectServer();
             }
         } 
         

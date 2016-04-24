@@ -77,10 +77,17 @@ namespace WpfApplication2
 
         public void Show()
         {
-            this.Start();
-            win = new PromptMessageBox(title, message);
-            win.Owner = own_win;
-            win.Show();
+            try
+            {
+                this.Start();
+                win = new PromptMessageBox(title, message);
+                win.Owner = own_win;
+                win.Show();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Can NOT show box for " + e.Message);
+            }
         }
 
 

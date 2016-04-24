@@ -26,7 +26,7 @@ namespace WpfApplication2
             gif.StartAnimate();
             //gif.Opacity = 0.7;
             gif.Stretch = Stretch.Uniform;
-            gif.Height = 100;
+            gif.Height = 80;
             mainGrid.Children.Add(gif);
         }
 

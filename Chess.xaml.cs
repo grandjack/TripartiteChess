@@ -862,6 +862,10 @@ namespace WpfApplication2
                 {
                     DisplayUserStatus((uint)Location.left, UserStatus.STATUS_EXITED);
                 }
+                else
+                {
+                    LeftStatusGrid.Children.Clear();
+                }
             }
         }
 
@@ -896,6 +900,10 @@ namespace WpfApplication2
                 {
                     DisplayUserStatus((uint)Location.bottom, UserStatus.STATUS_EXITED);
                 }
+                else
+                {
+                    BottomStatusGrid.Children.Clear();
+                }
             }
         }
 
@@ -929,6 +937,10 @@ namespace WpfApplication2
                 if (ChessBoard.GetChessBoardObj() != null)
                 {
                     DisplayUserStatus((uint)Location.right, UserStatus.STATUS_EXITED);
+                }
+                else
+                {
+                    RightStatusGrid.Children.Clear();
                 }
             }
         }

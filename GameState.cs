@@ -98,10 +98,10 @@ namespace WpfApplication2
         static public int currentUserScore = 0;
         static public byte[] currentUserHeadImage = null;
 
-        static public MainWindow logginWin;
-        static public Window1 gameHallWin;
-        static public Chess gameWin;
-        static public Window currentWin;
+        static public MainWindow logginWin = null;
+        static public Window1 gameHallWin = null;
+        static public Chess gameWin = null;
+        static public Window currentWin = null;
         static public GameHallSumary sumary = null;
         static public HallInfo hallInfo = null;
         static public ChessBoardInfo chessBoard = null;
@@ -424,6 +424,7 @@ namespace WpfApplication2
                                 (ThreadStart)delegate()
                                 {
                                     gameWin.UsersInfoLoadAndUpdate();
+                                    //gameWin.DisplayUserStatus((uint)reply., UserStatus.STATUS_READY);
                                 }
                             );
             }
